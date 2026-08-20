@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIS Midterm 2026 — Mock Exam</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI",Tahoma,sans-serif;background:#0f2438;color:#fff;margin:0;padding:24px;}
+  .wrap{max-width:860px;margin:0 auto;}
+  h1{background:#1b3a5b;border:2px solid #3d6591;padding:14px 20px;border-radius:8px;font-size:22px;margin:0 0 6px;}
+  .sub{color:#a9c4de;margin:0 0 16px;font-size:14px;}
+  h2.sec{background:#2f5f86;padding:10px 16px;border-radius:8px;font-size:17px;margin:26px 0 12px;}
+  .q{background:#16324c;border:1px solid #2f5f86;border-radius:8px;padding:16px;margin-bottom:12px;}
+  .qtext{font-weight:600;font-size:15px;margin-bottom:10px;line-height:1.55;}
+  .qtext .num{color:#f3a94e;margin-right:6px;}
+  .opt{display:block;background:#22415c;border:1px solid #34597c;border-radius:6px;padding:9px 12px;margin:5px 0;cursor:pointer;font-size:14px;}
+  .opt:hover{background:#2b5175;}
+  .opt.sel{background:#2f5f86;border-color:#5b90bd;}
+  .opt.correct{background:#1e7a45;border-color:#2e9e5b;}
+  .opt.wrong{background:#8f3636;border-color:#d05050;}
+  .opt input{margin-right:8px;}
+  .expl{display:none;margin-top:8px;background:#17402a;border-left:3px solid #2e9e5b;border-radius:4px;padding:7px 12px;font-size:13px;line-height:1.5;}
+  .expl.show{display:block;}
+  .expl.wrongmark{background:#4a2626;border-left-color:#d05050;}
+  .written{background:#16324c;border:1px solid #2f5f86;border-radius:8px;padding:16px;margin-bottom:14px;}
+  .written .wq{font-weight:600;font-size:15px;line-height:1.6;margin-bottom:6px;}
+  .written textarea{width:100%;min-height:90px;border-radius:6px;border:1px solid #3d6591;background:#dbe6f0;color:#12293d;padding:9px;font-size:13px;font-family:inherit;resize:vertical;}
+  .model{display:none;margin-top:10px;background:#17402a;border:1px solid #2e9e5b;border-radius:6px;padding:10px 12px;font-size:13px;line-height:1.55;}
+  .model.show{display:block;}
+  .model .badge{display:inline-block;background:#2e9e5b;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:6px;}
+  .bar{position:sticky;bottom:0;background:#1b3a5b;border:2px solid #3d6591;border-radius:10px;padding:14px 18px;margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  button{border:none;border-radius:6px;padding:11px 18px;font-size:14px;font-weight:600;cursor:pointer;}
+  #check{background:#2e9e5b;color:#fff;}
+  #reset{background:#6b7c8c;color:#fff;}
+  .btn-model{background:#2f5f86;color:#fff;}
+  #score{font-size:18px;font-weight:800;margin-left:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>MIS — MIDTERM 2026 (Mock Exam)</h1>
+  <p class="sub">Part 1: ปรนัย 5 ตัวเลือก 45 ข้อ · Part 2: อัตนัย 3 ข้อ (บท1 แนว Assignment / บท3 Assignment+ทฤษฎี / เทคนิคโยงระบบ IT) — ครอบคลุมบท 1–5</p>
+
+  <h2 class="sec">Part 1 — ปรนัย 45 ข้อ (ข้อละ 1 คะแนน)</h2>
+  <div id="quiz"></div>
+  <div class="bar">
+    <button id="check">ตรวจคำตอบ Part 1</button>
+    <button id="reset">เริ่มใหม่</button>
+    <span id="score"></span>
+  </div>
+
+  <h2 class="sec">Part 2 — อัตนัย 3 ข้อ</h2>
+  <div id="written"></div>
+</div>
+
+<script>
+const Q = [
+ {q:"มิติต่าง ๆ ของระบบสารสนเทศ (IS) คือข้อใด",o:["Technology, Input, Output","Organization, Environment, People","Organization, Management, Technology","Management, Culture, Business Process","Hardware, Software, Data"],a:2,e:"3 มิติ = Organization, Management, Technology"},
+ {q:"ข้อใด ไม่ใช่ วัตถุประสงค์ทางธุรกิจเชิงกลยุทธ์ 6 ข้อของ IS",o:["Operational excellence","Customer & supplier intimacy","Survival","Improved decision making","การลดจำนวนพนักงานให้น้อยที่สุด"],a:4,e:"6 ข้อไม่มี 'ลดจำนวนพนักงาน'"},
+ {q:"ข้อใดเป็นตัวอย่างของข้อมูลดิบ (Raw data)",o:["ยอดขายรายปีเพิ่มขึ้น 5.3%","รถ 1 คันถูกขายราคา 24,000 ดอลลาร์ วันที่ 27 ก.ค. 2016","ขายได้เฉลี่ยวันละ 120 คัน","ไตรมาสแรกยอดขายพุ่ง 1,200 คัน","กำไรรวมทั้งปี 5 ล้านดอลลาร์"],a:1,e:"ธุรกรรมเดี่ยว/เหตุการณ์เดียว = raw data ; ที่เหลือผ่านการประมวลผลแล้ว"},
+ {q:"Time shifting และ Space shifting เป็นลักษณะเด่นของสิ่งใด",o:["TPS","Big data","Feedback loop","Digital firm","Cross-functional process"],a:3,e:"ปรับเวลา/สถานที่ทำงานได้ = Digital firm"},
+ {q:"กิจกรรมใดของ IS ที่ส่งผลลัพธ์กลับไปประเมินและแก้ไขขั้น input",o:["Input","Processing","Output","Feedback","Storage"],a:3,e:"Feedback = ส่ง output กลับไปประเมิน/แก้ไข input"},
+ {q:"Walmart Retail Link เชื่อมผู้ผลิตกับสาขาเพื่อลดสต็อกและต้นทุน ตรงกับวัตถุประสงค์ใด",o:["Customer intimacy","Survival","Operational excellence","New products","Improved decision making"],a:2,e:"ลดต้นทุน/สต็อก/เพิ่มประสิทธิภาพ = Operational excellence"},
+ {q:"ธนาคารต้องเปิดแอปเพราะคู่แข่งมีหมดแล้ว ไม่มีจะสู้ไม่ได้ ตรงกับวัตถุประสงค์ใด",o:["Operational excellence","Improved decision making","New products","Competitive advantage","Survival"],a:4,e:"'ไม่ทำแล้วอยู่ไม่ได้/ตามคู่แข่ง' = Survival"},
+ {q:"ข้อใดคือผลจากความเป็นโลกาภิวัตน์ (Globalization opportunities)",o:["การเพิ่มขึ้นของรายจ่ายในการซื้อขาย","การลดลงของค่าใช้จ่ายในการดำเนินงานอย่างมีนัยสำคัญ","การใช้ทักษะเดิมในการทำงาน","การหาคู่ค้าที่มีต้นทุนสูง","การลดการค้าระหว่างประเทศ"],a:1,e:"IS + โลกาภิวัตน์ = ลดต้นทุนดำเนินงาน/ธุรกรรมทั่วโลก"},
+ {q:"ลำดับการประกอบขององค์กรข้อใดถูกต้อง",o:["Firm → Business process → Routine","Business process → Routine → Firm","Firm → Routine → Business process","Routines → Business processes → Firm","Routine → Firm → Business process"],a:3,e:"Routines → Business processes → Firm"},
+ {q:"ข้อใดถูกต้องเกี่ยวกับความสัมพันธ์ระหว่าง IS กับ business process",o:["ทุก business process ต้องมี IS","IS ไม่เกี่ยวกับ business process","IS หนึ่งๆ ต้องเชื่อมกับอย่างน้อย 1 business process แต่ process ไม่จำเป็นต้องมี IS","business process คือ IS ชนิดหนึ่ง","IS มีได้โดยไม่ต้องเกี่ยวกับ process"],a:2,e:"IS → ต้องมี ≥1 process ; process → ไม่จำเป็นต้องมี IS"},
+ {q:"ข้อใดเป็นตัวอย่างกระบวนการทางธุรกิจแบบข้ามฟังก์ชัน (Cross-functional)",o:["การนับสต๊อกในคลัง","การระบุกลุ่มลูกค้าเป้าหมาย","การออกใบเสร็จ","การจ่ายเงินเดือน","การสร้างสินค้าใหม่ตั้งแต่ไอเดีย ออกแบบ การตลาด กำหนดราคา"],a:4,e:"ข้ามหลายฝ่าย (R&D+ผลิต+การตลาด+การเงิน) = cross-functional"},
+ {q:"ระบบใดบันทึกธุรกรรมประจำวัน เช่น ออกใบเสร็จ รับชำระเงิน",o:["จำลอง what-if","Transaction Processing System (TPS)","Digital dashboard ผู้บริหาร","รายงานสรุปรายเดือน","จัดการความรู้"],a:1,e:"บันทึกธุรกรรมประจำวัน = TPS"},
+ {q:"รายงานว่าซัพพลายเออร์รายใดส่งของตรงเวลาที่สุด (ดูผลย้อนหลัง) ควรใช้ระบบใด",o:["MIS","DSS","ESS","TPS","KMS"],a:0,e:"รายงานสรุปสิ่งที่เกิดแล้ว = MIS"},
+ {q:"การทำนาย ROI ถ้าบริษัทจะเปลี่ยนซัพพลายเออร์ใหม่ ควรใช้ระบบใด",o:["MIS","TPS","DSS","ESS","CRM"],a:2,e:"จำลอง/ทำนาย what-if = DSS"},
+ {q:"ระบบใดใช้ Digital Dashboard แสดง KPI ทั้งองค์กรสำหรับผู้บริหารระดับสูง",o:["MIS","DSS","TPS","ESS","SCM"],a:3,e:"ภาพรวมทั้งองค์กร ผู้บริหารสูง = ESS"},
+ {q:"รายงานที่ถูกสร้างอัตโนมัติเมื่อค่าผิดปกติเกิน trigger point คือ",o:["Scheduled report","Exception report","On-demand report","Summary report","Ad-hoc report"],a:1,e:"ผิดปกติ/เกิน trigger = Exception report"},
+ {q:"4 Enterprise applications ได้แก่",o:["ERP, SCM, CRM, KMS","SCM, CRM, ESS, KMS","SCM, CRM, DSS, KMS","ERP, SCM, DSS, CRM","ERP, TPS, CRM, KMS"],a:0,e:"ERP, SCM, CRM, KMS"},
+ {q:"เว็บที่เข้าถึงได้เฉพาะพนักงาน / เว็บที่เปิดให้ซัพพลายเออร์ภายนอก (เรียงตามลำดับ) คือ",o:["Intranet / Extranet","Extranet / Intranet","Internet / Intranet","Extranet / Internet","Internet / Extranet"],a:0,e:"ภายในพนักงาน=Intranet ; คู่ค้าภายนอก=Extranet"},
+ {q:"“องค์กรคือโครงสร้างสังคมที่แปลง input (ทุน+แรงงาน) เป็น output” เป็นมุมมองใด",o:["Behavioral view","Technical view","Political view","Cultural view","Environmental view"],a:1,e:"แปลง input→output เน้นทุน/แรงงาน = Technical view"},
+ {q:"ข้อใดกล่าวถึงมุมมองเชิงเทคนิค (Technical view) ไม่ถูกต้อง",o:["มองทุนและแรงงานเป็นปัจจัยหลักในการผลิต","มอง IS เป็นวิธีใหม่ในการจัดการ input/output","มององค์กรแปลง input เป็น output","มอง input/output ทุนและแรงงาน เป็นสิ่งไม่สำคัญ","เน้นประสิทธิภาพในการผลิต"],a:3,e:"มุมมองเทคนิคถือว่าสิ่งเหล่านี้ 'สำคัญ' → ข้อนี้จึงผิด"},
+ {q:"มุมมองที่แตกต่างเรื่องการจัดสรรทรัพยากร รางวัล การลงโทษ และการต่อสู้แข่งขัน หมายถึงลักษณะองค์กรใด",o:["วัฒนธรรมองค์กร","โครงสร้างองค์กร","การเมืององค์กร","สภาพแวดล้อมองค์กร","หลักประสิทธิภาพ"],a:2,e:"แย่งชิงทรัพยากร/รางวัล/ลงโทษ = การเมืององค์กร"},
+ {q:"เทคโนโลยีใดทำให้สำนักพิมพ์/นิตยสาร/ทีวีดั้งเดิมกลายเป็นผู้แพ้ (disruptive)",o:["World Wide Web","Microprocessor","Personal computer","SaaS","Cloud computing"],a:0,e:"WWW → ผู้แพ้คือสำนักพิมพ์/นิตยสาร/ทีวี"},
+ {q:"ตามทฤษฎี Transaction cost ปัจจุบัน IT ทำให้บริษัทมีแนวโน้มอย่างไร",o:["ขยายใหญ่ ซื้อกิจการซัพพลายเออร์","จ้างพนักงานมากขึ้น","เลิกติดต่อบริษัทอื่น","รวมศูนย์อำนาจมากขึ้น","เล็กลง/แบนราบ และ outsource มากขึ้น"],a:4,e:"IT ลด transaction cost → บริษัทเล็กลง outsource มากขึ้น"},
+ {q:"ข้อใด ไม่ถูกต้อง เกี่ยวกับผลกระทบของ IT ต่อบริษัท",o:["ช่วยขยายขนาดองค์กร","ช่วยลดต้นทุนธุรกรรม","ช่วยลดค่าใช้จ่ายด้านการจัดการภายใน","ช่วยลดต้นทุนการมีส่วนร่วมในตลาด","ทำให้องค์กรแบนราบ"],a:0,e:"ผิด! IT ทำองค์กรแบนราบ ไม่ใช่ขยายขนาด"},
+ {q:"โมเดลใดอธิบายการปฏิสัมพันธ์ระหว่างแรงจากภายนอกกับความสามารถในการแข่งขัน",o:["Competitive advantage model","Competitive force model","Network economic model","Demand control model","Value chain model"],a:1,e:"Porter's 5 forces = Competitive force model"},
+ {q:"ธุรกิจใดมีอุปสรรคน้อยที่สุดในการเข้าตลาด",o:["ธุรกิจร้านค้าปลีกขนาดเล็ก","ธุรกิจผลิตยานยนต์","ธุรกิจผลิตชิปคอมพิวเตอร์","ธุรกิจสายการบิน","ธุรกิจโรงกลั่นน้ำมัน"],a:0,e:"ร้านค้าปลีกเล็ก = อุปสรรคเข้าตลาดต่ำสุด"},
+ {q:"บริษัทจะต่อรองและควบคุมซัพพลายเออร์ได้มากขึ้นโดย",o:["มี supplier เพียงรายเดียว","มี suppliers น้อยลง","มี suppliers มากขึ้น","มี supplier ท้องถิ่นรายเดียว","ซื้อกิจการ supplier"],a:2,e:"ยิ่งมีหลายราย ยิ่งต่อรองได้เปรียบ"},
+ {q:"Amazon และ Netflix ใช้ IS เพิ่ม switching cost จนลูกค้าไม่อยากย้าย ตรงกับกลยุทธ์ใด",o:["Customer & supplier intimacy","Low-cost leadership","Product differentiation","Focus on market niche","Survival"],a:0,e:"เพิ่ม switching cost/ความผูกพัน = Customer & supplier intimacy"},
+ {q:"การตรวจสอบความสอดคล้อง (alignment) ระหว่างแผนธุรกิจกับแผนไอที เกี่ยวข้องกับข้อใด",o:["Operational IT planning","Tactical IT planning","Strategic IT planning","Resource allocation","Project planning"],a:2,e:"alignment แผนธุรกิจ↔แผนไอที = Strategic IT planning"},
+ {q:"การวางแผนระดับใดเน้นการจัดลำดับความสำคัญ กำหนดเวลา และตั้งมาตรวัดประสิทธิภาพ (1–2 ปี)",o:["Strategic IT planning","Operational IT planning","Tactical IT planning","Resource allocation","Requirements analysis"],a:2,e:"จัดลำดับ+เวลา+มาตรวัด = Tactical"},
+ {q:"Output ของระยะที่ 1 (Strategic IT Planning) คือข้อใด",o:["IT Architecture","Financial plan","Data class","Application portfolio","Gantt chart"],a:3,e:"ระยะ 1 → Application portfolio"},
+ {q:"Output ของระยะที่ 2 (Information Requirements Analysis) คือข้อใด",o:["Application portfolio","IT Architecture","PERT chart","Hardware design","CSF"],a:1,e:"ระยะ 2 → IT Architecture"},
+ {q:"การจัดสรรทรัพยากร (ระยะ 3) ไม่เกี่ยวกับข้อใด",o:["จัดหา hardware","จัดหา software","จัดหาบุคลากร","จัดทำ financial plan","จัดหา critical success factor"],a:4,e:"CSF เป็นเครื่องมือวางแผน ไม่ใช่ทรัพยากรที่จัดสรร"},
+ {q:"ข้อใด ไม่ใช่ เครื่องมือหลักในการจัดการวางแผนโครงการระยะที่ 4",o:["PERT chart","CPM chart","Bar chart","Gantt chart","PERT & CPM"],a:2,e:"เครื่องมือระยะ 4 = PERT/CPM/Gantt ; Bar chart ไม่ใช่"},
+ {q:"ข้อใด ไม่ถูกต้อง เกี่ยวกับประเภทแอปใน application portfolio",o:["High potential = อาจสำคัญในอนาคต","Strategic = สำคัญต่อกลยุทธ์ในอนาคต","Key operational = องค์กรพึ่งพาในปัจจุบัน","Support = มีคุณค่าและวิกฤตต่อความสำเร็จ","Strategic = สร้างความได้เปรียบการแข่งขัน"],a:3,e:"Support มีคุณค่าแต่ 'ไม่วิกฤต' → ข้อนี้ผิด"},
+ {q:"ข้อใด ไม่ใช่ เครื่องมือ/วิธีการในการจัดทำแผนระบบสารสนเทศเชิงกลยุทธ์",o:["Business systems planning (BSP)","Nolan’s Stages of IT Growth","Critical Success Factors","Business Process Planning","ทุกข้อเป็นเครื่องมือ"],a:3,e:"เครื่องมือมีแค่ BSP, Nolan, CSF ; Business Process Planning ไม่ใช่"},
+ {q:"วิธีการที่จัดการ business process + data class เป็นพื้นฐานของ information architecture คือ",o:["Critical Success Factors","Nolan’s Stages of IT Growth","Business systems planning (BSP)","Business Process Planning","PERT"],a:2,e:"BSP (โดย IBM) จัดการ business process + data class"},
+ {q:"เครื่องมือที่ 'นำเสนอภาวะการเติบโตของ IT ในองค์กร 6 ระยะ' คือ",o:["BSP model","Nolan’s Stages of IT Growth","Critical Success Factors","Application portfolio","Gantt chart"],a:1,e:"6 ระยะการเติบโต IT = Nolan's Stages"},
+ {q:"ในโมเดล 'สระน้ำสงบ' IT เปรียบเหมือนอะไร",o:["น้ำในสระ (ความมั่นคง)","ปลาในสระ (ผู้ใช้)","ก้อนหินที่โยนลงสระ (สร้างคลื่นสถานการณ์ใหม่ที่กฎเดิมไม่ครอบคลุม)","แสงแดด (ความโปร่งใส)","ตาข่าย (การควบคุม)"],a:2,e:"IT = ก้อนหินโยนลงสระ → คลื่นประเด็นใหม่ที่กฎเดิมยังไม่ครอบคลุม"},
+ {q:"ข้อใด ไม่ใช่ แนวโน้มเทคโนโลยีที่ทำให้เกิดประเด็นจริยธรรม",o:["ขีดความสามารถประมวลผลเพิ่มขึ้น","ต้นทุนเก็บข้อมูลลดลง","ความก้าวหน้าของเครือข่าย/อินเทอร์เน็ต","ความก้าวหน้าด้านการวิเคราะห์ข้อมูล","การเพิ่มคุณภาพของข้อมูล"],a:4,e:"'เพิ่มคุณภาพข้อมูล' ไม่ใช่แนวโน้มใน 5 ข้อ"},
+ {q:"'ยอมรับค่าเสียหายและข้อผูกมัดที่เกิดจากการตัดสินใจของตนเอง' ตรงกับแนวคิดใด",o:["Accountability","Liability","Due process","Responsibility","Consent"],a:3,e:"ยอมรับผลจากการตัดสินใจของตน = Responsibility"},
+ {q:"การคุ้มครองทรัพย์สินทางปัญญาแบบใดให้สิทธิ์แก่ผู้คิดค้นเป็นเวลา 20 ปี",o:["Copyright","Patent","Trade secret","Trademark","Due process"],a:1,e:"สิทธิบัตรการประดิษฐ์ (Patent) = 20 ปี"},
+ {q:"แนวทาง Opt-in (ใช้ในสหภาพยุโรป) หมายถึงข้อใด",o:["เก็บข้อมูลได้จนกว่าลูกค้าจะขอให้หยุด","แจ้งให้ทราบก่อนเก็บข้อมูล","ห้ามเก็บข้อมูลจนกว่าลูกค้าจะกดยินยอมก่อน","การเข้ารหัสอีเมล","ตราสัญลักษณ์ความเป็นส่วนตัว"],a:2,e:"Opt-in = ห้ามเก็บจนกว่าจะยินยอมก่อน (เข้มงวด)"},
+ {q:"หลักการ Notice/awareness ของ FIP ระบุว่าอย่างไร",o:["เว็บไซต์ต้องเปิดเผยวิธีปฏิบัติต่อข้อมูลก่อนเก็บ","ผู้บริโภคเลือกวัตถุประสงค์การใช้ข้อมูล","ผู้บริโภคตรวจสอบ/แก้ไขข้อมูลได้","ผู้เก็บต้องรักษาความปลอดภัย","ต้องมีกลไกบังคับใช้"],a:0,e:"Notice = แจ้ง/เปิดเผยก่อนเก็บ"},
+ {q:"อาชญากรรมทางคอมพิวเตอร์และการใช้คอมพิวเตอร์ในทางที่ผิด อยู่ในมิติจริยธรรมด้านใด",o:["System quality","Property rights","Information rights","Quality of life","Accountability & control"],a:3,e:"Computer crime/abuse = Quality of life"}
+];
+
+const quiz=document.getElementById("quiz");
+Q.forEach((item,qi)=>{
+  const div=document.createElement("div");
+  div.className="q";
+  let opts="";
+  item.o.forEach((o,oi)=>{opts+=`<label class="opt" data-q="${qi}" data-o="${oi}"><input type="radio" name="q${qi}" value="${oi}">${o}</label>`;});
+  div.innerHTML=`<div class="qtext"><span class="num">${qi+1}.</span>${item.q}</div>${opts}<div class="expl" id="e${qi}"></div>`;
+  quiz.appendChild(div);
+});
+
+quiz.addEventListener("click",e=>{
+  const lab=e.target.closest(".opt"); if(!lab) return;
+  const qi=lab.dataset.q;
+  document.querySelectorAll(`.opt[data-q="${qi}"]`).forEach(l=>l.classList.remove("sel"));
+  lab.classList.add("sel"); lab.querySelector("input").checked=true;
+});
+
+document.getElementById("check").addEventListener("click",()=>{
+  let score=0;
+  Q.forEach((item,qi)=>{
+    const sel=document.querySelector(`input[name="q${qi}"]:checked`);
+    const opts=document.querySelectorAll(`.opt[data-q="${qi}"]`);
+    opts.forEach(o=>o.classList.remove("correct","wrong"));
+    const expl=document.getElementById("e"+qi);
+    expl.classList.add("show"); expl.classList.remove("wrongmark");
+    opts[item.a].classList.add("correct");
+    if(sel){ const c=parseInt(sel.value); if(c===item.a) score++; else{opts[c].classList.add("wrong"); expl.classList.add("wrongmark");} }
+    expl.innerHTML=`✅ คำตอบ: <b>${item.o[item.a]}</b><br>${item.e}`;
+  });
+  const s=document.getElementById("score");
+  s.textContent=`คะแนน: ${score} / ${Q.length}`;
+  s.style.color= score>=Q.length*0.8?"#7ee6a5":score>=Q.length*0.5?"#ffd98a":"#ff9a9a";
+  if(score===Q.length) s.textContent+="  🎉 เต็ม!";
+});
+
+document.getElementById("reset").addEventListener("click",()=>{
+  document.querySelectorAll("input[type=radio]").forEach(r=>r.checked=false);
+  document.querySelectorAll(".opt").forEach(o=>o.classList.remove("sel","correct","wrong"));
+  document.querySelectorAll(".expl").forEach(x=>x.classList.remove("show","wrongmark"));
+  document.getElementById("score").textContent="";
+});
+
+// ---------- Part 2: Written ----------
+const W = [
+ {t:"ข้อ 1 (บทที่ 1 — แนว Assignment)",
+  q:"จงเลือกบริษัท 1 แห่ง (เช่น 7-Eleven, Grab, ธนาคาร) แล้วอธิบายว่าบริษัทนั้นใช้ระบบสารสนเทศเพื่อบรรลุ 'วัตถุประสงค์ทางธุรกิจเชิงกลยุทธ์' อย่างน้อย 3 ข้อ (จาก 6 ข้อ) พร้อมยกตัวอย่างการใช้งานประกอบแต่ละข้อ",
+  model:"ตัวอย่างคำตอบ (Grab): <br>1) <b>Operational excellence</b> — ใช้ระบบจับคู่คนขับ-ผู้โดยสารอัตโนมัติ ลดเวลารอ ลดต้นทุนต่อเที่ยว <br>2) <b>Customer & supplier intimacy</b> — เก็บประวัติการใช้งานทำ personalization + สะสมแต้ม ทำให้ลูกค้าผูกพัน (switching cost สูง) <br>3) <b>Improved decision making</b> — ใช้ dashboard/ข้อมูลเรียลไทม์ปรับราคาแบบ dynamic <br>4) <b>New products/business models</b> — super-app รวมเรียกรถ+ส่งอาหาร+GrabPay <br>เกณฑ์: ระบุบริษัท + จับคู่วัตถุประสงค์ให้ถูก + ตัวอย่างสมเหตุผล"},
+ {t:"ข้อ 2 (บทที่ 3 — Assignment + ทฤษฎี)",
+  q:"(ก) จงวิเคราะห์ธุรกิจ 'ร้านเช่า DVD/ร้านหนังสือ' ที่กำลังโดน disruption ด้วย Porter's Five Forces ทั้ง 5 แรง <br>(ข) อธิบายว่า 'IT ทำให้องค์กรแบนราบ (IT flattens organizations)' อย่างไร และเกี่ยวข้องกับ Transaction cost theory อย่างไร",
+  model:"(ก) 5 แรง: <b>คู่แข่งเดิม</b> ร้านเช่า/ร้านหนังสืออื่น | <b>รายใหม่</b> แพลตฟอร์มดิจิทัลเข้าง่าย | <b>สินค้าทดแทน (แรงสุด)</b> Netflix/e-book/streaming | <b>ลูกค้า</b> อำนาจสูง switching cost ต่ำ | <b>ซัพพลายเออร์</b> ค่าย/สำนักพิมพ์มีอำนาจ บางรายไปทำแพลตฟอร์มเอง <br>(ข) IT ให้ข้อมูลผู้จัดการคุมคนได้กว้างขึ้น ตัดสินใจเร็วขึ้น → ลดชั้นการบริหาร (แบนราบ) ; Transaction cost: IT ลดต้นทุนธุรกรรม → บริษัทเล็กลง outsource แทนขยายใหญ่"},
+ {t:"ข้อ 3 (เทคนิค — โยงถึงระบบ IT)",
+  q:"บริษัทผลิตแห่งหนึ่งพบปัญหา: ข้อมูลแต่ละแผนกไม่ตรงกัน สั่งผลิตเกิน/ขาดบ่อย และผู้บริหารขาดข้อมูลเรียลไทม์ในการตัดสินใจ จงเสนอว่าควรใช้ 'ระบบสารสนเทศ' และ 'การวางแผน IT ระดับใด' เพื่อแก้ปัญหา พร้อมเหตุผลโดยโยงกับแนวคิดที่เรียนมา",
+  model:"แนวคำตอบ: <br>• ข้อมูลไม่ตรงกัน/ซ้ำซ้อน → ใช้ <b>ERP</b> ('หนึ่งบริษัท หนึ่งฐานข้อมูล') รวมข้อมูลทุกแผนก <br>• สั่งผลิตเกิน/ขาด → ใช้ <b>SCM</b> จัดการสต็อก/ซัพพลายเชน + <b>DSS</b> จำลอง what-if วางแผนผลิต <br>• ผู้บริหารขาดข้อมูลเรียลไทม์ → ใช้ <b>ESS/Dashboard</b> <br>• ด้านการวางแผน: ต้องเริ่มจาก <b>Strategic IT planning</b> (alignment แผนธุรกิจกับ IT) แล้วทำ 4 ระยะ (Application portfolio → IT architecture → resource → project) <br>เกณฑ์: ระบุระบบให้เหมาะกับปัญหา + โยงเหตุผลถูกต้อง"}
+];
+
+const wbox=document.getElementById("written");
+W.forEach((item,i)=>{
+  const d=document.createElement("div");
+  d.className="written";
+  d.innerHTML=`<div class="wq">${item.t}<br>${item.q}</div>
+    <textarea placeholder="เขียนคำตอบของคุณที่นี่..."></textarea>
+    <div style="margin-top:8px"><button class="btn-model" data-i="${i}">ดูแนวคำตอบ</button></div>
+    <div class="model" id="m${i}"><span class="badge">แนวคำตอบ</span><br>${item.model}</div>`;
+  wbox.appendChild(d);
+});
+document.querySelectorAll(".btn-model").forEach(b=>b.addEventListener("click",()=>{
+  const m=document.getElementById("m"+b.dataset.i);
+  m.classList.toggle("show");
+  b.textContent = m.classList.contains("show") ? "ซ่อนแนวคำตอบ" : "ดูแนวคำตอบ";
+}));
+</script>
+</body>
+</html>

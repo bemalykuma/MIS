@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz MIS 20 ข้อ (บท 1–2)</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI",Tahoma,sans-serif;background:#0f2438;color:#fff;margin:0;padding:24px;}
+  .wrap{max-width:820px;margin:0 auto;}
+  h1{background:#1b3a5b;border:2px solid #3d6591;padding:14px 20px;border-radius:8px;font-size:21px;margin:0 0 6px;}
+  .sub{color:#a9c4de;margin:0 0 18px;font-size:14px;}
+  .q{background:#16324c;border:1px solid #2f5f86;border-radius:8px;padding:16px;margin-bottom:14px;}
+  .qtext{font-weight:600;font-size:15px;margin-bottom:10px;line-height:1.5;}
+  .qtext .num{color:#f3a94e;margin-right:6px;}
+  .opt{display:block;background:#22415c;border:1px solid #34597c;border-radius:6px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:14px;transition:background .12s;}
+  .opt:hover{background:#2b5175;}
+  .opt.sel{background:#2f5f86;border-color:#5b90bd;}
+  .opt.correct{background:#1e7a45;border-color:#2e9e5b;}
+  .opt.wrong{background:#8f3636;border-color:#d05050;}
+  .opt input{margin-right:8px;}
+  .expl{display:none;margin-top:8px;background:#17402a;border-left:3px solid #2e9e5b;border-radius:4px;padding:8px 12px;font-size:13px;line-height:1.5;}
+  .expl.show{display:block;}
+  .expl.wrongmark{background:#4a2626;border-left-color:#d05050;}
+  .bar{position:sticky;bottom:0;background:#1b3a5b;border:2px solid #3d6591;border-radius:10px;padding:14px 18px;margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  button{border:none;border-radius:6px;padding:11px 20px;font-size:15px;font-weight:600;cursor:pointer;}
+  #check{background:#2e9e5b;color:#fff;}
+  #reset{background:#6b7c8c;color:#fff;}
+  #score{font-size:18px;font-weight:800;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Quiz MIS — 20 ข้อ (บท 1–2)</h1>
+  <p class="sub">เลือกคำตอบให้ครบ แล้วกด “ตรวจคำตอบ” — ช่องเขียว = ถูก, แดง = คุณตอบผิด พร้อมเหตุผลใต้แต่ละข้อ</p>
+  <div id="quiz"></div>
+  <div class="bar">
+    <button id="check">ตรวจคำตอบ</button>
+    <button id="reset">เริ่มใหม่</button>
+    <span id="score"></span>
+  </div>
+</div>
+
+<script>
+const Q = [
+ {q:"มิติต่าง ๆ ของระบบสารสนเทศคือข้อใด",
+  o:["Technology, Input, Output","Organization, Environment, People","Organization, Management, Technology","Management, Culture, Business Process"],a:2,
+  e:"3 มิติของ IS = Organization, Management, Technology (IS เป็นมากกว่าคอมพิวเตอร์)"},
+ {q:"ในองค์กรที่มีลำดับชั้น ตำแหน่งระดับสูง (Upper level) คือ",
+  o:["Chief Executive Officer (CEO)","นักวิทยาศาสตร์","professional employees","knowledge workers"],a:0,
+  e:"ระดับสูง = senior management เช่น CEO ; นักวิทยาศาสตร์/knowledge worker อยู่ระดับกลาง"},
+ {q:"ข้อใดคือตัวอย่างกระบวนการทางธุรกิจแบบข้ามฟังก์ชัน (Cross-functional)",
+  o:["การขนส่งสินค้า","การสร้างสินค้าใหม่ตั้งแต่คุยไอเดีย ออกแบบบรรจุภัณฑ์ ทำการตลาด กำหนดราคา","การนับสต๊อกสินค้าในคลัง","ระบุกลุ่มลูกค้าเป้าหมาย"],a:1,
+  e:"Cross-functional = ข้ามหลายฝ่าย (R&D+ผลิต+การตลาด+การเงิน) ส่วนข้ออื่นอยู่ฝ่ายเดียว"},
+ {q:"ข้อใดแสดงรายงาน Supplier ที่ส่งของตรงเวลาที่สุดตามกำหนดการผลิตของบริษัท",
+  o:["MIS","CRM","DSS","TPS"],a:0,
+  e:"เป็นรายงานสรุป/ประจำจากข้อมูล TPS → MIS (routine/summary report) ระวังสับกับ DSS"},
+ {q:"เครื่องมือที่สนับสนุนการทำงานร่วมจากต่างสถานที่แต่เวลาเดียวกัน (Different place/Same time)",
+  o:["A chat room","Video conferencing","E-mail","Project management"],a:1,
+  e:"Video conferencing = คนละที่แต่เวลาเดียวกัน (real time) ; E-mail = ต่างเวลา"},
+ {q:"Verizon ใช้ web-based digital dashboard ให้ผู้จัดการมีข้อมูล real time เป็นการปรับปรุงข้อใด",
+  o:["การตัดสินใจเชิงบริหารจัดการ","การปฏิบัติตามกฎระเบียบ","ความใกล้ชิดกับผู้ผลิต","ประสิทธิภาพในการสร้างสินค้าใหม่"],a:0,
+  e:"Dashboard ช่วยผู้จัดการ = Improved decision making (การตัดสินใจดีขึ้น)"},
+ {q:"ข้อใดไม่ใช่ตัวอย่างองค์ประกอบสิ่งแวดล้อม (Environment) ในระบบสารสนเทศ",
+  o:["คู่แข่งทางการค้า (competitors)","ลูกค้า (customers)","ฝ่ายขาย (sales department)","หน่วยงานกำกับดูแล (regulatory agencies)"],a:2,
+  e:"ฝ่ายขายอยู่ 'ภายใน' องค์กร ไม่ใช่ environment ; คู่แข่ง/ลูกค้า/หน่วยงานกำกับ = ภายนอก"},
+ {q:"ข้อใดกล่าวไม่ถูกต้องเกี่ยวกับบริษัทดิจิทัล (Digital Firms)",
+  o:["มีความยืดหยุ่นมากขึ้นเพื่อความอยู่รอด","รับรู้และตอบสนองต่อสิ่งแวดล้อมได้เร็วกว่าบริษัทดั้งเดิม","เป็นเรื่องปกติที่จะเปลี่ยนช่วงเวลาและสถานที่ทำงานได้","เหมาะอย่างยิ่งสำหรับการดำเนินงานทั่วโลกซึ่งเกิดในสถานที่เดียวกันและ time zone เดียวกัน"],a:3,
+  e:"ผิด! บริษัทดิจิทัลเหมาะกับงานที่อยู่ 'คนละสถานที่ คนละ time zone' (remote/global) ต่างหาก"},
+ {q:"แอปวิเคราะห์ยอดใช้จ่ายเพื่อให้มีเสื้อผ้าที่ลูกค้าต้องการในสต็อก สนับสนุนวัตถุประสงค์ข้อใด",
+  o:["ความสัมพันธ์อันดีกับลูกค้า (Customer intimacy)","ความอยู่รอด (Survival)","การดำเนินงานที่เป็นเลิศ (Operational excellence)","สินค้าและผลิตภัณฑ์ใหม่ ๆ"],a:2,
+  e:"เน้นการจัดการสต็อก/ประสิทธิภาพการเติมสินค้า = Operational excellence"},
+ {q:"ข้อใดเป็นระบบที่ใช้บริหารความสัมพันธ์กับลูกค้า",
+  o:["KMS","ERP","MIS","CRM"],a:3,
+  e:"CRM = Customer Relationship Management"},
+ {q:"ข้อใดไม่ใช่สิ่งใหม่ด้านองค์การ (organization) ใน MIS (ตามเอกสารการสอน)",
+  o:["Telework","Social business","Co-creation of business value","Business Intelligence"],a:3,
+  e:"Business Intelligence อยู่ในด้าน 'การจัดการ (management)' ไม่ใช่ด้านองค์การ"},
+ {q:"เครื่องมือสำหรับประเมินและเลือกใช้เครื่องมือทำงานร่วมกันคือ",
+  o:["The collaboration matrix","IBM Notes","Virtual meeting system","Time/space collaboration and social tool matrix"],a:3,
+  e:"Time/Space collaboration and social tool matrix ใช้เลือกเครื่องมือตามมิติเวลา×สถานที่"},
+ {q:"4 Enterprise applications ได้แก่",
+  o:["ERP, SCM, CRM, and KMS","SCM, CRM, ESS, and KMS","SCM, CRM, DSS, and KMS","ERP, SCM, DSS, and CRM"],a:0,
+  e:"Enterprise apps = ERP, SCM, CRM, KMS (DSS/ESS ไม่ใช่ enterprise application)"},
+ {q:"ระบบใดใช้ทำนาย ROI ถ้าบริษัทวางแผนเปลี่ยน Supplier ใหม่ที่เสนอราคาต่ำกว่า",
+  o:["ESS","DSS","MIS","TPS"],a:1,
+  e:"การจำลอง what-if/ทำนายผล = DSS (Decision Support System)"},
+ {q:"ลงทุนในระบบสารสนเทศเพราะเป็นสิ่งจำเป็นในการทำธุรกิจ ตรงกับวัตถุประสงค์ข้อใด",
+  o:["ความอยู่รอด (Survival)","การดำเนินงานที่เป็นเลิศ","การตัดสินใจที่ดีขึ้น","การได้เปรียบในการแข่งขัน"],a:0,
+  e:"'สิ่งจำเป็นในการทำธุรกิจ' = Survival (business necessity)"},
+ {q:"ข้อใดเป็นตัวอย่างข้อมูลดิบ (Raw data) จากผู้ผลิตรถยนต์",
+  o:["ยอดขายรายปีของ Outback เพิ่ม 5.3%","รถ Outback 1 คัน ถูกขายราคา 24,000 ดอลลาร์ วันที่ 27 ก.ค. 2016 ที่ทะเลสาบโมฮีแกน","Subaru ขายได้เฉลี่ยวันละ 120 คันที่นิวยอร์ก","ไตรมาสแรกปี 2016 ยอดขาย Outback พุ่งถึง 1,200 คัน"],a:1,
+  e:"Raw data = ข้อเท็จจริงดิบรายการเดียว (1 ธุรกรรม) ; ข้ออื่นผ่านการประมวลผล/สรุปแล้ว = information"},
+ {q:"ข้อใดคือผลจากความเป็นโลกาภิวัตน์ (Globalization opportunities)",
+  o:["การใช้ทักษะเดิมในการทำงาน","การเพิ่มขึ้นของรายจ่ายในการซื้อขาย","การลดลงของค่าใช้จ่ายในการดำเนินงานอย่างมีนัยสำคัญ","การหาคู่ค้าที่มีต้นทุนสูง"],a:2,
+  e:"โลกาภิวัตน์ + IS = ลดต้นทุนดำเนินงาน/ธุรกรรมทั่วโลกอย่างมาก"},
+ {q:"ระบบใดใช้ Digital Dashboard แสดง KPI ทั้งหมดขององค์กร",
+  o:["TPS","MIS","ESS","CRM"],a:2,
+  e:"Dashboard ภาพรวมทั้งองค์กรสำหรับผู้บริหารสูง = ESS"},
+ {q:"ถ้า Supplier ส่งสินค้าไม่ทันกำหนด คุณจะใช้ระบบใดอัพเดตตารางการผลิต",
+  o:["TPS","DSS","MIS","ESS"],a:1,
+  e:"ปรับตารางผลิตแบบ non-routine/what-if = DSS"},
+ {q:"ระบบที่รู้จักในอีกชื่อว่า Enterprise System คือ",
+  o:["Resource Planning","Enterprise Resource Planning","Enterprise Support","Management Information"],a:1,
+  e:"Enterprise System = Enterprise Resource Planning (ERP)"}
+];
+
+const quiz = document.getElementById("quiz");
+Q.forEach((item,qi)=>{
+  const div=document.createElement("div");
+  div.className="q";
+  let opts="";
+  item.o.forEach((o,oi)=>{
+    opts+=`<label class="opt" data-q="${qi}" data-o="${oi}"><input type="radio" name="q${qi}" value="${oi}">${o}</label>`;
+  });
+  div.innerHTML=`<div class="qtext"><span class="num">${qi+1}.</span>${item.q}</div>${opts}<div class="expl" id="e${qi}"></div>`;
+  quiz.appendChild(div);
+});
+
+quiz.addEventListener("click",e=>{
+  const lab=e.target.closest(".opt");
+  if(!lab) return;
+  const qi=lab.dataset.q;
+  document.querySelectorAll(`.opt[data-q="${qi}"]`).forEach(l=>l.classList.remove("sel"));
+  lab.classList.add("sel");
+  lab.querySelector("input").checked=true;
+});
+
+document.getElementById("check").addEventListener("click",()=>{
+  let score=0, answered=0;
+  Q.forEach((item,qi)=>{
+    const sel=document.querySelector(`input[name="q${qi}"]:checked`);
+    const opts=document.querySelectorAll(`.opt[data-q="${qi}"]`);
+    opts.forEach(o=>o.classList.remove("correct","wrong"));
+    const expl=document.getElementById("e"+qi);
+    expl.classList.add("show");
+    expl.classList.remove("wrongmark");
+    opts[item.a].classList.add("correct");
+    if(sel){
+      answered++;
+      const chosen=parseInt(sel.value);
+      if(chosen===item.a){ score++; }
+      else{ opts[chosen].classList.add("wrong"); expl.classList.add("wrongmark"); }
+    }
+    expl.innerHTML=`✅ คำตอบ: <b>${item.o[item.a]}</b><br>${item.e}`;
+  });
+  const s=document.getElementById("score");
+  s.textContent=`คะแนน: ${score} / 20`;
+  s.style.color = score>=16 ? "#7ee6a5" : score>=10 ? "#ffd98a" : "#ff9a9a";
+  if(score===20) s.textContent+="  🎉 เต็ม!";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+document.getElementById("reset").addEventListener("click",()=>{
+  document.querySelectorAll("input[type=radio]").forEach(r=>r.checked=false);
+  document.querySelectorAll(".opt").forEach(o=>o.classList.remove("sel","correct","wrong"));
+  document.querySelectorAll(".expl").forEach(x=>x.classList.remove("show","wrongmark"));
+  document.getElementById("score").textContent="";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+</script>
+</body>
+</html>

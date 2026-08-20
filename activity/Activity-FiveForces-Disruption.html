@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activity: Five Forces & Digital Disruption (Drag & Drop)</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI",Tahoma,sans-serif;background:#0f2438;color:#fff;margin:0;padding:24px;}
+  .wrap{max-width:960px;margin:0 auto;}
+  h1{background:#1b3a5b;border:2px solid #3d6591;padding:14px 20px;border-radius:8px;font-size:21px;margin:0 0 6px;}
+  .sub{color:#a9c4de;margin:0 0 18px;font-size:14px;}
+  .tabs{display:flex;gap:8px;margin-bottom:16px;}
+  .tab{flex:1;padding:12px;border-radius:8px 8px 0 0;background:#16324c;border:1px solid #3d6591;cursor:pointer;font-weight:600;text-align:center;font-size:14px;}
+  .tab.active{background:#2f5f86;}
+  .case{display:none;}
+  .case.active{display:block;}
+  .casehead{background:#244a6b;border-radius:8px;padding:12px 16px;margin-bottom:14px;font-size:15px;color:#ffd98a;font-weight:600;}
+  .force{display:flex;align-items:stretch;gap:10px;margin-bottom:10px;}
+  .flabel{width:300px;flex-shrink:0;background:#244a6b;border-radius:6px;padding:10px 12px;font-size:13px;font-weight:600;display:flex;align-items:center;}
+  .flabel .en{color:#f3a94e;}
+  .cell{flex:1;background:#dbe6f0;border-radius:6px;padding:5px;min-height:56px;transition:background .15s,box-shadow .15s;}
+  .cell.over{background:#b9d4ec;box-shadow:inset 0 0 0 2px #2f5f86;}
+  .cell.correct{background:#bdead0;box-shadow:inset 0 0 0 2px #2e9e5b;}
+  .cell.wrong{background:#f4c4c4;box-shadow:inset 0 0 0 2px #d05050;}
+  .tile{background:#f3a94e;color:#3a2400;border:1px solid #d98b2b;border-radius:6px;padding:9px 11px;font-size:13px;font-weight:600;cursor:grab;user-select:none;line-height:1.4;}
+  .tile:active{cursor:grabbing;}
+  .tile.selected{outline:3px solid #ffe08a;}
+  .cell .tile{width:100%;}
+  .pool{margin-top:16px;background:#16324c;border:1px dashed #3d6591;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:8px;min-height:56px;}
+  .pool.over{background:#1d4463;}
+  .pool-title{font-size:13px;color:#a9c4de;margin:16px 0 0;}
+  .controls{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  button{border:none;border-radius:6px;padding:11px 18px;font-size:14px;font-weight:600;cursor:pointer;}
+  .btn-check{background:#2e9e5b;color:#fff;}
+  .btn-ans{background:#2f5f86;color:#fff;}
+  .btn-reset{background:#6b7c8c;color:#fff;}
+  .score{font-size:16px;font-weight:700;margin-left:6px;}
+  .hint{font-size:13px;color:#a9c4de;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ACTIVITY: จับคู่ Five Forces กับ Digital Disruption</h1>
+  <p class="sub">ลากข้อความ 5 ข้อจากกล่องด้านล่าง ไปวางในช่องแรงกดดันที่ตรงกัน (หรือคลิกข้อความ แล้วคลิกช่อง) เสร็จแล้วกด “ตรวจคำตอบ”</p>
+
+  <div class="tabs">
+    <div class="tab active" data-case="A">Case A: โรงภาพยนตร์ 🎬</div>
+    <div class="tab" data-case="B">Case B: ร้านอาหารมีหน้าร้าน 🍽️</div>
+  </div>
+
+  <div class="case active" id="caseA">
+    <div class="casehead">Case A: ธุรกิจโรงภาพยนตร์ (ต้องสู้กับ Streaming และพฤติกรรมคนเปลี่ยน)</div>
+    <div id="zonesA"></div>
+    <p class="pool-title">ข้อความให้จับคู่ (ลากไปวาง):</p>
+    <div class="pool" id="poolA"></div>
+    <div class="controls">
+      <button class="btn-check" data-c="A">ตรวจคำตอบ</button>
+      <button class="btn-ans" data-c="A">เฉลย</button>
+      <button class="btn-reset" data-c="A">เริ่มใหม่</button>
+      <span class="score" id="scoreA"></span>
+    </div>
+  </div>
+
+  <div class="case" id="caseB">
+    <div class="casehead">Case B: ธุรกิจร้านอาหารแบบมีหน้าร้าน (ต้องสู้กับ Cloud Kitchen และ App Delivery)</div>
+    <div id="zonesB"></div>
+    <p class="pool-title">ข้อความให้จับคู่ (ลากไปวาง):</p>
+    <div class="pool" id="poolB"></div>
+    <div class="controls">
+      <button class="btn-check" data-c="B">ตรวจคำตอบ</button>
+      <button class="btn-ans" data-c="B">เฉลย</button>
+      <button class="btn-reset" data-c="B">เริ่มใหม่</button>
+      <span class="score" id="scoreB"></span>
+    </div>
+  </div>
+
+  <p class="hint">💡 ช่องเขียว = ถูก, ช่องแดง = ผิด — ลากสลับช่องหรือลากกลับลงกล่องได้ตลอด</p>
+</div>
+
+<script>
+const forceLabels = [
+  { key:"trad", th:"แรงกดดันจากคู่แข่งรายเดิมที่อยู่ในตลาด", en:"Traditional competitors" },
+  { key:"new",  th:"แรงกดดันจากคู่แข่งรายใหม่ที่เข้าในตลาด", en:"New market entrants" },
+  { key:"sub",  th:"แรงกดดันของสินค้าหรือบริการทดแทน", en:"Substitute products and services" },
+  { key:"cust", th:"แรงกดดันจากอำนาจการต่อรองของลูกค้า", en:"Customers" },
+  { key:"sup",  th:"แรงกดดันจากอำนาจการต่อรองจากผู้จัดส่งวัตถุดิบ", en:"Suppliers" }
+];
+
+const statements = {
+  A: [
+    { correct:"new",  text:"ประเมินอุปสรรคในการเข้าตลาด เช่น การลงทุนในโรงภาพยนตร์และการขออนุญาต" },
+    { correct:"sup",  text:"พิจารณาอิทธิพลของสตูดิโอภาพยนตร์และผู้จัดจำหน่ายต่อการกำหนดราคาและความพร้อม" },
+    { correct:"cust", text:"วิเคราะห์ว่าความนิยมของผู้บริโภคที่เลือกชมภาพยนตร์ที่บ้านส่งผลกระทบต่อยอดขายตั๋วอย่างไร" },
+    { correct:"sub",  text:"ประเมินผลกระทบของบริการสตรีมมิ่งต่อการชมภาพยนตร์แบบดั้งเดิม" },
+    { correct:"trad", text:"ตรวจสอบการแข่งขันระหว่างโรงภาพยนตร์และผลกระทบจากตัวเลือกความบันเทิงอื่น ๆ" }
+  ],
+  B: [
+    { correct:"sub",  text:"ประเมินแรงกดดันจากคู่แข่งระบบ Cloud Kitchen และการทำอาหารที่บ้าน" },
+    { correct:"cust", text:"ตรวจสอบความภักดีของลูกค้าและความอ่อนไหวต่อราคาในตลาดร้านอาหาร" },
+    { correct:"new",  text:"พิจารณาความง่ายของการเริ่มต้นร้านอาหารเมื่อเทียบกับระบบ Cloud Kitchen" },
+    { correct:"sup",  text:"พิจารณาว่าผู้จัดหาส่งผลต่อราคาวัตถุดิบและความพร้อมใช้งานอย่างไร" },
+    { correct:"trad", text:"วิเคราะห์การแข่งขันจากร้านอาหารอื่น ๆ และผลกระทบของแอปพลิเคชันส่งอาหารที่มีต่อการตัดสินใจของลูกค้า" }
+  ]
+};
+
+let selected = null;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function makeTile(caseId, st, idx){
+  const el=document.createElement("div");
+  el.className="tile";
+  el.textContent=st.text;
+  el.draggable=true;
+  el.id=caseId+"-t"+idx;
+  el.dataset.correct=caseId+"-"+st.correct;
+  el.addEventListener("dragstart",e=>{e.dataTransfer.setData("text/plain",el.id);});
+  el.addEventListener("click",e=>{
+    e.stopPropagation();
+    if(selected===el){el.classList.remove("selected");selected=null;}
+    else{if(selected)selected.classList.remove("selected");selected=el;el.classList.add("selected");}
+  });
+  return el;
+}
+
+function buildCase(caseId){
+  const zones=document.getElementById("zones"+caseId);
+  zones.innerHTML="";
+  forceLabels.forEach(f=>{
+    const row=document.createElement("div");
+    row.className="force";
+    row.innerHTML=`<div class="flabel"><div>${f.th}<br><span class="en">(${f.en})</span></div></div>
+      <div class="cell" data-slot="${caseId}-${f.key}"></div>`;
+    zones.appendChild(row);
+  });
+  const pool=document.getElementById("pool"+caseId);
+  pool.innerHTML="";
+  const tiles=statements[caseId].map((st,i)=>makeTile(caseId,st,i));
+  shuffle(tiles).forEach(t=>pool.appendChild(t));
+
+  const cells=zones.querySelectorAll(".cell");
+  [...cells,pool].forEach(zone=>{
+    zone.addEventListener("dragover",e=>{e.preventDefault();zone.classList.add("over");});
+    zone.addEventListener("dragleave",()=>zone.classList.remove("over"));
+    zone.addEventListener("drop",e=>{
+      e.preventDefault();zone.classList.remove("over");
+      const t=document.getElementById(e.dataTransfer.getData("text/plain"));
+      if(t) place(t,zone);
+    });
+    zone.addEventListener("click",()=>{if(selected)place(selected,zone);});
+  });
+}
+
+function place(tile,target){
+  if(target.classList.contains("cell")){
+    const ex=target.querySelector(".tile");
+    const pool=tile.closest(".pool") || document.getElementById(tile.id.charAt(0)==="A"?"poolA":"poolB");
+    if(ex&&ex!==tile) document.getElementById("pool"+tile.id.charAt(0)).appendChild(ex);
+  }
+  target.appendChild(tile);
+  if(selected){selected.classList.remove("selected");selected=null;}
+  target.closest(".case").querySelectorAll(".cell").forEach(c=>c.classList.remove("correct","wrong"));
+  document.getElementById("score"+tile.id.charAt(0)).textContent="";
+}
+
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".case").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("case"+t.dataset.case).classList.add("active");
+}));
+
+document.querySelectorAll(".btn-check").forEach(b=>b.addEventListener("click",()=>{
+  const id=b.dataset.c; let correct=0;
+  document.querySelectorAll(`#zones${id} .cell`).forEach(cell=>{
+    cell.classList.remove("correct","wrong");
+    const t=cell.querySelector(".tile");
+    if(t){ if(t.dataset.correct===cell.dataset.slot){cell.classList.add("correct");correct++;} else cell.classList.add("wrong"); }
+  });
+  const s=document.getElementById("score"+id);
+  s.textContent=`คะแนน: ${correct} / 5`;
+  s.style.color= correct===5 ? "#7ee6a5":"#ffd98a";
+  if(correct===5) s.textContent+="  🎉 ถูกทั้งหมด!";
+}));
+
+document.querySelectorAll(".btn-ans").forEach(b=>b.addEventListener("click",()=>{
+  const id=b.dataset.c;
+  document.querySelectorAll(`#pool${id} .tile, #zones${id} .tile`).forEach(t=>{
+    const cell=document.querySelector(`[data-slot="${t.dataset.correct}"]`);
+    cell.appendChild(t);
+  });
+  document.querySelectorAll(`#zones${id} .cell`).forEach(c=>{c.classList.remove("wrong");c.classList.add("correct");});
+  const s=document.getElementById("score"+id); s.textContent="แสดงเฉลยแล้ว ✓"; s.style.color="#7ee6a5";
+}));
+
+document.querySelectorAll(".btn-reset").forEach(b=>b.addEventListener("click",()=>{
+  buildCase(b.dataset.c);
+  document.getElementById("score"+b.dataset.c).textContent="";
+}));
+
+buildCase("A");
+buildCase("B");
+</script>
+</body>
+</html>

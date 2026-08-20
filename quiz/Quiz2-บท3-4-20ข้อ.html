@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz 2 — บท 3 &amp; บท 4 (20 ข้อ)</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI",Tahoma,sans-serif;background:#0f2438;color:#fff;margin:0;padding:24px;}
+  .wrap{max-width:840px;margin:0 auto;}
+  h1{background:#1b3a5b;border:2px solid #3d6591;padding:14px 20px;border-radius:8px;font-size:20px;margin:0 0 6px;}
+  .sub{color:#a9c4de;margin:0 0 18px;font-size:14px;}
+  .q{background:#16324c;border:1px solid #2f5f86;border-radius:8px;padding:16px;margin-bottom:14px;}
+  .qtext{font-weight:600;font-size:15px;margin-bottom:10px;line-height:1.55;}
+  .qtext .num{color:#f3a94e;margin-right:6px;}
+  .opt{display:block;background:#22415c;border:1px solid #34597c;border-radius:6px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:14px;transition:background .12s;}
+  .opt:hover{background:#2b5175;}
+  .opt.sel{background:#2f5f86;border-color:#5b90bd;}
+  .opt.correct{background:#1e7a45;border-color:#2e9e5b;}
+  .opt.wrong{background:#8f3636;border-color:#d05050;}
+  .opt input{margin-right:8px;}
+  .expl{display:none;margin-top:8px;background:#17402a;border-left:3px solid #2e9e5b;border-radius:4px;padding:8px 12px;font-size:13px;line-height:1.5;}
+  .expl.show{display:block;}
+  .expl.wrongmark{background:#4a2626;border-left-color:#d05050;}
+  .bar{position:sticky;bottom:0;background:#1b3a5b;border:2px solid #3d6591;border-radius:10px;padding:14px 18px;margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  button{border:none;border-radius:6px;padding:11px 20px;font-size:15px;font-weight:600;cursor:pointer;}
+  #check{background:#2e9e5b;color:#fff;}
+  #reset{background:#6b7c8c;color:#fff;}
+  #score{font-size:18px;font-weight:800;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Quiz 2 — บท 3 &amp; บท 4 (20 ข้อ)</h1>
+  <p class="sub">เลือกคำตอบให้ครบ แล้วกด “ตรวจคำตอบ” — ช่องเขียว = ถูก, แดง = ตอบผิด พร้อมเหตุผลใต้แต่ละข้อ</p>
+  <div id="quiz"></div>
+  <div class="bar">
+    <button id="check">ตรวจคำตอบ</button>
+    <button id="reset">เริ่มใหม่</button>
+    <span id="score"></span>
+  </div>
+</div>
+
+<script>
+const Q = [
+ {q:"การจัดสรรทรัพยากร (Resource Allocation) ในระยะที่ 3 ของการวางแผนระบบสารสนเทศ ไม่เกี่ยวกับข้อใด",
+  o:["จัดหา hardware, software, data networks และ facilities ต่างๆ","จัดหาบุคลากร","จัดทำ financial plans","จัดหา critical success factor"],a:3,
+  e:"ระยะ 3 จัดหา hardware/software/network/คน/เงิน ; CSF เป็นเครื่องมือวางแผน ไม่ใช่ทรัพยากรที่จัดสรร"},
+ {q:"Amazon ใช้อินเทอร์เน็ตในการขายหนังสือได้มีประสิทธิภาพกว่าร้านหนังสือทั่วไป ข้อความนี้เป็นการใช้กลยุทธ์ด้านใด",
+  o:["ประสิทธิผลทางการตลาด (Marketing effectiveness)","เป็นผู้นำทางด้านต้นทุนต่ำ (Low-cost leadership)","สร้างความสัมพันธ์ที่ดีผู้จัดหาวัตถุดิบ","มุ่งตลาดเฉพาะกลุ่ม (Market niche)"],a:1,
+  e:"'ขายได้มีประสิทธิภาพกว่า/ต้นทุนต่ำกว่า' = Low-cost leadership"},
+ {q:"โมเดลใดใช้อธิบายการปฏิสัมพันธ์ระหว่างแรงจากภายนอก (External forces) ซึ่งส่งผลต่อกลยุทธ์ขององค์กร กับความสามารถในการแข่งขัน",
+  o:["Demand control model","Network economic model","Competitive advantage model","Competitive force model"],a:3,
+  e:"โมเดลแรงกดดัน 5 แรงของ Porter = Competitive force model"},
+ {q:"การปฏิสัมพันธ์ระหว่างเทคโนโลยีสารสนเทศกับองค์กรได้รับอิทธิพลจากข้อใด",
+  o:["หลายปัจจัย เช่น โครงสร้างองค์กร, การเมือง, วัฒนธรรม, สภาพแวดล้อม","การพัฒนาของเทคโนโลยีสารสนเทศใหม่ ๆ","สองปัจจัยในเศรษฐกิจมหภาค คือ ทุนและแรงงาน","การตัดสินใจของผู้จัดการระดับกลางและผู้จัดการระดับสูง"],a:0,
+  e:"ความสัมพันธ์ IT↔องค์กร ถูกไกล่เกลี่ยด้วยหลายปัจจัย (โครงสร้าง การเมือง วัฒนธรรม สภาพแวดล้อม ฯลฯ)"},
+ {q:"ข้อใดไม่ถูกต้องเกี่ยวกับประเภทของ application ใน application portfolio",
+  o:["High potential แอปพลิเคชันที่อาจมีความสำคัญในการประสบความสำเร็จในอนาคต","Support แอปพลิเคชันที่มีคุณค่า และสำคัญต่อความสำเร็จ","Strategic แอปพลิเคชันที่มีความสำคัญต่อการพัฒนากลยุทธ์ทางธุรกิจในอนาคตอย่างยั่งยืน","Key operational แอปพลิเคชันที่องค์กรต้องพึ่งพาอยู่ในปัจจุบันเพื่อความสำเร็จ"],a:1,
+  e:"Support มีคุณค่าแต่ 'ไม่วิกฤต/ไม่สำคัญต่อความสำเร็จ' → ข้อนี้จึงกล่าวผิด"},
+ {q:"ข้อใดไม่ใช่ เครื่องมือหรือวิธีการในการจัดทำแผนระบบสารสนเทศเชิงกลยุทธ์",
+  o:["Business systems planning (BSP) model","Nolan’s Stages of IT Growth Model","Critical Success Factors","Business Process Planning"],a:3,
+  e:"เครื่องมือมีแค่ BSP, Nolan's Stages, CSF ; 'Business Process Planning' ไม่ใช่"},
+ {q:"ข้อใดกล่าวถูกต้องเกี่ยวกับการวางแผนเทคโนโลยีสารสนเทศ",
+  o:["Operational IT planning เกี่ยวข้องกับการสร้างแผนเฉพาะสำหรับแต่ละโครงการของระบบสารสนเทศ","Strategic IT planning มุ่งเน้นไปที่การจัดลำดับความสำคัญและกำหนดเวลาในการพัฒนาระบบสารสนเทศหรือโครงการด้านไอที","Tactical IT planning มุ่งเป้าไปที่การกำหนดทิศทางของการพัฒนาระบบสารสนเทศ หรือ การนำ IT มาใช้ในองค์กรเพื่อสร้างความได้เปรียบในการแข่งขัน","Strategic IT planning กำหนดมาตรการวัดประสิทธิภาพที่จะใช้ในระหว่างการวางแผนปฏิบัติการ operational IT planning"],a:0,
+  e:"Operational = แผนเฉพาะแต่ละโครงการ (ถูก) ; ตัวเลือกอื่นสลับหน้าที่ Strategic/Tactical กัน"},
+ {q:"บริษัทจะสามารถต่อรองและควบคุม Suppliers ได้มากขึ้นโดยการมีข้อใด",
+  o:["มี Supplier เพียงรายเดียว","มี Suppliers น้อยลง","มี Suppliers มากขึ้น","มี Supplier ท้องถิ่นรายเดียว"],a:2,
+  e:"ยิ่งมีซัพพลายเออร์หลายราย ยิ่งต่อรองได้เปรียบ (เลือกได้ ไม่ต้องง้อ)"},
+ {q:"ธุรกิจใดต่อไปนี้มีอุปสรรคน้อยที่สุดในการเข้าในธุรกิจนั้น",
+  o:["ธุรกิจร้านค้าปลีกขนาดเล็ก","ธุรกิจผลิตยานยนต์","ธุรกิจผลิตชิปคอมพิวเตอร์","ธุรกิจสายการบิน"],a:0,
+  e:"ร้านค้าปลีกเล็ก = อุปสรรคเข้าตลาดต่ำสุด ; ยานยนต์/ชิป/สายการบิน = ทุนสูงมาก"},
+ {q:"ข้อใดกล่าวไม่ถูกต้องเกี่ยวกับกระบวนการทางธุรกิจ (Business processes)",
+  o:["บริษัท คือ การรวมกันหลายๆ กระบวนการทางธุรกิจ","โดยทั่วไปขั้นตอนทางธุรกิจจะไม่ได้รับผลกระทบจากการเปลี่ยนแปลงในระบบสารสนเทศ","กระบวนการทางธุรกิจมีอิทธิพลกับความสัมพันธ์ระหว่างองค์กรและเทคโนโลยีสารสนเทศ","กระบวนการทางธุรกิจ คือ การรวมกันหลายๆ มาตรฐาน/กิจกรรมในการปฏิบัติงาน"],a:1,
+  e:"ผิด! การเปลี่ยนระบบสารสนเทศ 'มีผล' ต่อกระบวนการทางธุรกิจ"},
+ {q:"ข้อใดไม่ถูกต้องเกี่ยวกับผลกระทบของเทคโนโลยีสารสนเทศต่อบริษัท",
+  o:["ช่วยขยายขนาดองค์กร","ช่วยลดต้นทุนการมีส่วนร่วมในตลาด (lower the cost of market participation)","ช่วยลดค่าใช้จ่ายด้านการจัดการภายในองค์กร","ช่วยลดต้นทุนธุรกรรม (Transaction costs)"],a:0,
+  e:"ผิด! IT ทำให้องค์กร 'แบนราบ/เล็กลง' ไม่ใช่ขยายขนาด"},
+ {q:"การตรวจสอบความสอดคล้องระหว่างแผนธุรกิจและวัตถุประสงค์เชิงกลยุทธ์กับแผนไอทีและกลยุทธ์ด้านไอที เกี่ยวข้องกับข้อใด",
+  o:["Operational IT planning","Tactical IT planning","Strategic IT planning","ไม่มีข้อใดถูก"],a:2,
+  e:"การทำ alignment ระหว่างแผนธุรกิจกับแผนไอที = Strategic IT planning"},
+ {q:"ข้อใดกล่าวถึงมุมมองเชิงเทคนิคต่อองค์กร (Technical view of organization) ไม่ถูกต้อง",
+  o:["มอง Input และ Output, ทุนและแรงงาน เป็นสิ่งที่ไม่สำคัญ","มองทุนและแรงงานเป็นปัจจัยหลักในการผลิต","มุ่งเน้นความสัมพันธ์ของกลุ่ม มูลค่าและโครงสร้างองค์กร","มองระบบสารสนเทศเป็นวิธีใหม่ในการจัดการ Input และ Output ขององค์กร"],a:0,
+  e:"มุมมองเทคนิคถือว่า input/output/ทุน/แรงงาน 'สำคัญ' → ข้อนี้จึงผิด (หมายเหตุ: ตัวเลือก 'มุ่งเน้นความสัมพันธ์ของกลุ่ม/โครงสร้าง' จริงๆ เป็นมุมมองเชิงพฤติกรรม)"},
+ {q:"เทคโนโลยีข้อใดทำอุตสาหกรรมการพิมพ์ปั่นป่วน มีผลกระทบทำให้สำนักพิมพ์หลายแห่งปิดตัวหรือนิตยสารหลายตัวหยุดตีพิมพ์",
+  o:["World Wide Web","PCs","E-mail","Instant messaging"],a:0,
+  e:"WWW = ผู้แพ้คือสำนักพิมพ์/นิตยสาร/ทีวีดั้งเดิม"},
+ {q:"Output ของการวิเคราะห์ความต้องการด้านเทคโนโลยีสารสนเทศ (ระยะที่ 2) คือข้อใด",
+  o:["IT Architecture","Hardware design","Network design","Application design"],a:0,
+  e:"ระยะ 2 (Information Requirements Analysis) → output = IT Architecture"},
+ {q:"ข้อใดไม่ใช่เครื่องมือหลักที่ใช้ในการจัดการวางแผนโครงการในระยะที่ 4",
+  o:["Bar chart","CPM chart","Gantt chart","PERT chart"],a:0,
+  e:"เครื่องมือระยะ 4 = PERT, CPM, Gantt ; 'Bar chart' ไม่ใช่"},
+ {q:"ระยะที่ 1 ของการวางแผนระบบสารสนเทศ จะต้องจัดทำสิ่งใด",
+  o:["Information Structure","Application portfolio","Information Technology","Application Infrastructure"],a:1,
+  e:"ระยะ 1 (Strategic IT Planning) → output = Application portfolio"},
+ {q:"ข้อใดต่อไปนี้ไม่เกี่ยวข้องกับ CSF",
+  o:["นำเสนอภาวะการเติบโตของเทคโนโลยีสารสนเทศในองค์กร","ปัจจัยสำคัญที่มีผลต่อความสำเร็จขององค์กรจะเป็นแนวทางหลักในการพัฒนาระบบสารสนเทศ","ธุรกิจต่างๆ ไม่จำเป็นต้องกำหนดปัจจัยสำคัญที่ผลต่อความสำเร็จเหมือนกัน","วัตถุประสงค์เชิงกลยุทธ์ที่เป็นศูนย์กลางขององค์กรจะนำไปสู่ปัจจัยสำคัญที่มีผลต่อความสำเร็จ"],a:0,
+  e:"'นำเสนอภาวะการเติบโตของ IT' = Nolan's Stages ไม่ใช่ CSF"},
+ {q:"มุมมองและความคิดที่แตกต่างเกี่ยวกับวิธีการทรัพยากร รางวัลและการลงโทษควรจะถูกกระจาย และการต่อสู้แข่งขันที่เกิดจากความแตกต่างเหล่านี้ หมายถึงคุณลักษณะองค์กรข้อใด",
+  o:["สภาพแวดล้อมองค์กร","การเมืององค์กร","โครงสร้างองค์กร","วัฒนธรรมองค์กร"],a:1,
+  e:"แย่งชิงทรัพยากร/รางวัล/ลงโทษ + การต่อสู้แข่งขัน = การเมืององค์กร"},
+ {q:"วิธีการใดที่เกี่ยวข้องกับ “การจัดการกับ 2 ส่วนหลัก คือ กระบวนการทางธุรกิจ business process และข้อมูล data class ซึ่งกลายเป็นพื้นฐานของสถาปัตยกรรมเทคโนโลยีสารสนเทศ (information architecture)”",
+  o:["Business systems planning (BSP) model","Business Process Planning","Nolan’s Stages of IT Growth Model","Critical Success Factors"],a:0,
+  e:"จัดการ business process + data class เป็นฐาน information architecture = BSP model (โดย IBM)"}
+];
+
+const quiz=document.getElementById("quiz");
+Q.forEach((item,qi)=>{
+  const div=document.createElement("div");
+  div.className="q";
+  let opts="";
+  item.o.forEach((o,oi)=>{opts+=`<label class="opt" data-q="${qi}" data-o="${oi}"><input type="radio" name="q${qi}" value="${oi}">${o}</label>`;});
+  div.innerHTML=`<div class="qtext"><span class="num">${qi+1}.</span>${item.q}</div>${opts}<div class="expl" id="e${qi}"></div>`;
+  quiz.appendChild(div);
+});
+
+quiz.addEventListener("click",e=>{
+  const lab=e.target.closest(".opt"); if(!lab) return;
+  const qi=lab.dataset.q;
+  document.querySelectorAll(`.opt[data-q="${qi}"]`).forEach(l=>l.classList.remove("sel"));
+  lab.classList.add("sel"); lab.querySelector("input").checked=true;
+});
+
+document.getElementById("check").addEventListener("click",()=>{
+  let score=0;
+  Q.forEach((item,qi)=>{
+    const sel=document.querySelector(`input[name="q${qi}"]:checked`);
+    const opts=document.querySelectorAll(`.opt[data-q="${qi}"]`);
+    opts.forEach(o=>o.classList.remove("correct","wrong"));
+    const expl=document.getElementById("e"+qi);
+    expl.classList.add("show"); expl.classList.remove("wrongmark");
+    opts[item.a].classList.add("correct");
+    if(sel){
+      const c=parseInt(sel.value);
+      if(c===item.a) score++;
+      else{ opts[c].classList.add("wrong"); expl.classList.add("wrongmark"); }
+    }
+    expl.innerHTML=`✅ คำตอบ: <b>${item.o[item.a]}</b><br>${item.e}`;
+  });
+  const s=document.getElementById("score");
+  s.textContent=`คะแนน: ${score} / ${Q.length}`;
+  s.style.color= score>=Q.length*0.8?"#7ee6a5":score>=Q.length*0.5?"#ffd98a":"#ff9a9a";
+  if(score===Q.length) s.textContent+="  🎉 เต็ม!";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+document.getElementById("reset").addEventListener("click",()=>{
+  document.querySelectorAll("input[type=radio]").forEach(r=>r.checked=false);
+  document.querySelectorAll(".opt").forEach(o=>o.classList.remove("sel","correct","wrong"));
+  document.querySelectorAll(".expl").forEach(x=>x.classList.remove("show","wrongmark"));
+  document.getElementById("score").textContent="";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+</script>
+</body>
+</html>

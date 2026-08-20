@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz บท 5 ชุด 2 — Ethics (20 ข้อ)</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI",Tahoma,sans-serif;background:#0f2438;color:#fff;margin:0;padding:24px;}
+  .wrap{max-width:840px;margin:0 auto;}
+  h1{background:#1b3a5b;border:2px solid #3d6591;padding:14px 20px;border-radius:8px;font-size:20px;margin:0 0 6px;}
+  .sub{color:#a9c4de;margin:0 0 18px;font-size:14px;}
+  .q{background:#16324c;border:1px solid #2f5f86;border-radius:8px;padding:16px;margin-bottom:14px;}
+  .qtext{font-weight:600;font-size:15px;margin-bottom:10px;line-height:1.55;}
+  .qtext .num{color:#f3a94e;margin-right:6px;}
+  .opt{display:block;background:#22415c;border:1px solid #34597c;border-radius:6px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:14px;transition:background .12s;}
+  .opt:hover{background:#2b5175;}
+  .opt.sel{background:#2f5f86;border-color:#5b90bd;}
+  .opt.correct{background:#1e7a45;border-color:#2e9e5b;}
+  .opt.wrong{background:#8f3636;border-color:#d05050;}
+  .opt input{margin-right:8px;}
+  .expl{display:none;margin-top:8px;background:#17402a;border-left:3px solid #2e9e5b;border-radius:4px;padding:8px 12px;font-size:13px;line-height:1.5;}
+  .expl.show{display:block;}
+  .expl.wrongmark{background:#4a2626;border-left-color:#d05050;}
+  .bar{position:sticky;bottom:0;background:#1b3a5b;border:2px solid #3d6591;border-radius:10px;padding:14px 18px;margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  button{border:none;border-radius:6px;padding:11px 20px;font-size:15px;font-weight:600;cursor:pointer;}
+  #check{background:#2e9e5b;color:#fff;}
+  #reset{background:#6b7c8c;color:#fff;}
+  #score{font-size:18px;font-weight:800;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Quiz บท 5 ชุด 2 — Ethical &amp; Social Issues (20 ข้อ)</h1>
+  <p class="sub">โจทย์ใหม่ เน้น Accountability-กลุ่มคำ + ทรัพย์สินทางปัญญา — เลือกคำตอบให้ครบ แล้วกด “ตรวจคำตอบ”</p>
+  <div id="quiz"></div>
+  <div class="bar">
+    <button id="check">ตรวจคำตอบ</button>
+    <button id="reset">เริ่มใหม่</button>
+    <span id="score"></span>
+  </div>
+</div>
+
+<script>
+const Q = [
+ {q:"ผู้จัดการอนุมัติปล่อยระบบใหม่ทั้งที่รู้ว่ามีความเสี่ยง และประกาศว่าตนพร้อมรับผลที่ตามมาจากการตัดสินใจนี้เอง ตรงกับแนวคิดใด",
+  o:["Accountability","Liability","Due process","Responsibility"],a:3,
+  e:"ยอมรับผล/ข้อผูกมัดจากการตัดสินใจของตนเอง = Responsibility"},
+ {q:"บริษัทติดตั้งระบบบันทึก log ว่าใครเข้าแก้ไขข้อมูลเมื่อไร เพื่อให้สามารถระบุตัวผู้รับผิดชอบได้ กลไกนี้คือ",
+  o:["Responsibility","Accountability","Liability","Due process"],a:1,
+  e:"กลไกที่ใช้ 'ระบุตัว' ว่าใครรับผิดชอบ = Accountability"},
+ {q:"ลูกค้าฟ้องเรียกค่าเสียหายจากบริษัทซอฟต์แวร์ เพราะระบบผิดพลาดทำให้เงินในบัญชีหาย และกฎหมายให้ผู้เสียหายได้รับการชดใช้ ตรงกับแนวคิดใด",
+  o:["Liability","Responsibility","Accountability","Due process"],a:0,
+  e:"ระบบกฎหมายที่ให้ผู้เสียหายได้รับการชดใช้ = Liability"},
+ {q:"พนักงานถูกบริษัทลงโทษ แต่รู้สึกไม่เป็นธรรม จึงยื่นเรื่องอุทธรณ์ต่อคณะกรรมการที่สูงขึ้นเพื่อให้ทบทวน ตรงกับแนวคิดใด",
+  o:["Accountability","Due process","Liability","Responsibility"],a:1,
+  e:"สิทธิอุทธรณ์ต่อหน่วยงานที่สูงกว่าเพื่อให้ใช้กฎอย่างถูกต้อง = Due process"},
+ {q:"นักพัฒนาเกมต้องการปกป้องโค้ดโปรแกรมและเนื้อเรื่องของเกมไม่ให้ถูกคัดลอก ควรใช้การคุ้มครองแบบใด",
+  o:["สิทธิบัตร (Patent)","ลิขสิทธิ์ (Copyright)","ความลับทางการค้า (Trade secret)","เครื่องหมายการค้า (Trademark)"],a:1,
+  e:"โปรแกรมคอมพิวเตอร์/งานสร้างสรรค์ = ลิขสิทธิ์ (คุ้มครองชีวิต + 70 ปี)"},
+ {q:"วิศวกรคิดค้นเครื่องจักรผลิตแบบใหม่ที่ไม่เคยมีมาก่อน อยากได้สิทธิ์ผูกขาดในการผลิต 20 ปี ควรใช้",
+  o:["ลิขสิทธิ์ (Copyright)","สิทธิบัตร (Patent)","ความลับทางการค้า (Trade secret)","Due process"],a:1,
+  e:"สิ่งประดิษฐ์/เครื่องจักร = สิทธิบัตร (Patent) คุ้มครอง 20 ปี"},
+ {q:"บริษัทเครื่องดื่มเก็บสูตรลับไว้ไม่เปิดเผย และให้พนักงานที่รู้สูตรเซ็นข้อตกลงไม่เปิดเผย (NDA) การคุ้มครองนี้คือ",
+  o:["ลิขสิทธิ์ (Copyright)","สิทธิบัตร (Patent)","ความลับทางการค้า (Trade secret)","เครื่องหมายการค้า (Trademark)"],a:2,
+  e:"สูตร/ความลับธุรกิจที่คุ้มครองตราบที่ยังลับ ต้องมี NDA = Trade secret"},
+ {q:"ข้อใดเป็นข้อมูลส่วนบุคคลที่มีความอ่อนไหว (Sensitive data)",
+  o:["เลขที่บัญชีธนาคาร","ประวัติการรักษาพยาบาล","ชื่อบริษัทที่ทำงาน","รหัสไปรษณีย์"],a:1,
+  e:"ข้อมูลอ่อนไหว = สุขภาพ/การรักษาพยาบาล เชื้อชาติ ศาสนา ความเห็นการเมือง ฯลฯ"},
+ {q:"คำถามที่ว่า “ใครควรรับผิดชอบเมื่อระบบสารสนเทศทำอันตรายต่อข้อมูลของบุคคลหรือส่วนรวม” อยู่ในมิติทางจริยธรรมด้านใด",
+  o:["สิทธิด้านสารสนเทศ (Information rights)","ภาระหน้าที่และการควบคุม (Accountability and control)","คุณภาพของระบบ (System quality)","คุณภาพของชีวิต (Quality of life)"],a:1,
+  e:"เรื่อง 'ใครรับผิดชอบเมื่อเกิดอันตราย' = Accountability and control"},
+ {q:"คำถามที่ว่า “มาตรฐานของข้อมูลและคุณภาพของระบบระดับใดที่ยอมรับได้เพื่อปกป้องสิทธิและความปลอดภัย” อยู่ในมิติใด",
+  o:["คุณภาพของระบบ (System quality)","คุณภาพของชีวิต (Quality of life)","สิทธิความเป็นเจ้าของทรัพย์สิน","Information rights"],a:0,
+  e:"เรื่องมาตรฐานข้อมูล/คุณภาพระบบ = System quality"},
+ {q:"เพราะราคาของสื่อจัดเก็บข้อมูล (storage) ถูกลงมาก องค์กรจึงเก็บข้อมูลรายละเอียดของบุคคลได้อย่างไม่จำกัด สถานการณ์นี้ตรงกับแนวโน้มเทคโนโลยีใด",
+  o:["ขีดความสามารถประมวลผลเพิ่มขึ้น","ต้นทุนในการเก็บรักษาข้อมูลลดลง","ความก้าวหน้าของเครือข่าย/อินเทอร์เน็ต","การเติบโตของอุปกรณ์เคลื่อนที่"],a:1,
+  e:"เก็บข้อมูลบุคคลได้ไม่จำกัดเพราะ storage ถูกลง = ต้นทุนเก็บข้อมูลลดลง"},
+ {q:"เทคโนโลยีที่รวมข้อมูลจากหลายแหล่งเพื่อค้นหา “ความสัมพันธ์ที่ถูกซ่อนไว้” ระหว่างบุคคล เช่น พบว่าผู้สมัครงานใช้เบอร์โทรร่วมกับผู้ต้องสงสัย คือ",
+  o:["Profiling","NORA","Behavioral targeting","Web beacon"],a:1,
+  e:"หา 'ความสัมพันธ์ที่ซ่อนอยู่' ระหว่างคน = NORA (Nonobvious Relationship Awareness)"},
+ {q:"การใช้คอมพิวเตอร์รวบรวมข้อมูลจากหลายแหล่งมาสร้าง “แฟ้มโปรไฟล์รายบุคคล” คือ",
+  o:["NORA","Profiling","Phishing","Spamming"],a:1,
+  e:"สร้างโปรไฟล์รายบุคคล = Profiling (ต่างจาก NORA ที่หาความสัมพันธ์ระหว่างคน)"},
+ {q:"ไฟล์ขนาดเล็กที่เว็บไซต์ฝากไว้บนฮาร์ดไดรฟ์ของผู้เข้าชม เพื่อจดจำและติดตามการเข้าชม คือ",
+  o:["Spyware","Web beacon","Cookies","Firewall"],a:2,
+  e:"ไฟล์เล็กบนฮาร์ดไดรฟ์เพื่อจดจำ/ติดตามผู้ใช้ = Cookies"},
+ {q:"เว็บไซต์ในสหภาพยุโรปห้ามเก็บข้อมูลลูกค้าจนกว่าลูกค้าจะกดยินยอมก่อน แนวทางนี้คือ",
+  o:["Opt-out","Opt-in","Notice","Enforcement"],a:1,
+  e:"ห้ามเก็บจนกว่าจะยินยอมก่อน (เข้มงวด ใช้ใน EU) = Opt-in"},
+ {q:"เว็บไซต์ต้องแจ้ง/เปิดเผยวิธีการใช้ข้อมูลให้ผู้ใช้ทราบ ‘ก่อน’ ที่จะเริ่มเก็บข้อมูล ตรงกับหลักการ FIP ข้อใด",
+  o:["Notice/awareness","Choice/consent","Access/participation","Security"],a:0,
+  e:"แจ้งก่อนเก็บ = Notice/awareness (หลักแกน)"},
+ {q:"ผู้เก็บข้อมูลต้องดำเนินการเพื่อรับรองว่าข้อมูลส่วนบุคคลถูกต้องและปลอดภัยจากการเข้าถึงที่ไม่ได้รับอนุญาต ตรงกับหลักการ FIP ข้อใด",
+  o:["Notice/awareness","Choice/consent","Access/participation","Security"],a:3,
+  e:"รักษาความถูกต้องและความปลอดภัยของข้อมูล = Security"},
+ {q:"ขั้นตอน ‘แรก’ ของกระบวนการวิเคราะห์ประเด็นทางจริยธรรม (Five-step ethical analysis) คือ",
+  o:["ระบุผู้มีส่วนได้เสีย","ระบุและอธิบายข้อเท็จจริงอย่างชัดเจน","ระบุตัวเลือกที่ทำได้","ระบุผลลัพธ์ที่อาจเกิดขึ้น"],a:1,
+  e:"ขั้นแรก = ระบุและอธิบายข้อเท็จจริงให้ชัดเจน"},
+ {q:"กฎหมายคุ้มครองข้อมูลของสหภาพยุโรปที่กำหนดว่า ‘ห้ามโอนข้อมูลส่วนบุคคลไปยังประเทศที่ไม่มีการคุ้มครองระดับเดียวกัน’ คือ",
+  o:["PDPA","GDPR","FIP","TRUSTe"],a:1,
+  e:"กฎของ EU ที่ห้ามโอนข้อมูลไปประเทศคุ้มครองต่ำกว่า = GDPR"},
+ {q:"พนักงานทำงานผ่านมือถือและอีเมลตลอด 24 ชั่วโมง จนเส้นแบ่งระหว่างเวลางานกับเวลาครอบครัวเลือนหายไป ปัญหานี้อยู่ในมิติทางจริยธรรมด้านใด",
+  o:["คุณภาพของระบบ (System quality)","สิทธิความเป็นเจ้าของทรัพย์สิน","คุณภาพของชีวิต (Quality of life)","ภาระหน้าที่และการควบคุม"],a:2,
+  e:"เรื่องขอบเขตงาน/ชีวิตส่วนตัว (maintaining boundaries) = Quality of life"}
+];
+
+const quiz=document.getElementById("quiz");
+Q.forEach((item,qi)=>{
+  const div=document.createElement("div");
+  div.className="q";
+  let opts="";
+  item.o.forEach((o,oi)=>{opts+=`<label class="opt" data-q="${qi}" data-o="${oi}"><input type="radio" name="q${qi}" value="${oi}">${o}</label>`;});
+  div.innerHTML=`<div class="qtext"><span class="num">${qi+1}.</span>${item.q}</div>${opts}<div class="expl" id="e${qi}"></div>`;
+  quiz.appendChild(div);
+});
+
+quiz.addEventListener("click",e=>{
+  const lab=e.target.closest(".opt"); if(!lab) return;
+  const qi=lab.dataset.q;
+  document.querySelectorAll(`.opt[data-q="${qi}"]`).forEach(l=>l.classList.remove("sel"));
+  lab.classList.add("sel"); lab.querySelector("input").checked=true;
+});
+
+document.getElementById("check").addEventListener("click",()=>{
+  let score=0;
+  Q.forEach((item,qi)=>{
+    const sel=document.querySelector(`input[name="q${qi}"]:checked`);
+    const opts=document.querySelectorAll(`.opt[data-q="${qi}"]`);
+    opts.forEach(o=>o.classList.remove("correct","wrong"));
+    const expl=document.getElementById("e"+qi);
+    expl.classList.add("show"); expl.classList.remove("wrongmark");
+    opts[item.a].classList.add("correct");
+    if(sel){
+      const c=parseInt(sel.value);
+      if(c===item.a) score++;
+      else{ opts[c].classList.add("wrong"); expl.classList.add("wrongmark"); }
+    }
+    expl.innerHTML=`✅ คำตอบ: <b>${item.o[item.a]}</b><br>${item.e}`;
+  });
+  const s=document.getElementById("score");
+  s.textContent=`คะแนน: ${score} / ${Q.length}`;
+  s.style.color= score>=Q.length*0.8?"#7ee6a5":score>=Q.length*0.5?"#ffd98a":"#ff9a9a";
+  if(score===Q.length) s.textContent+="  🎉 เต็ม!";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+document.getElementById("reset").addEventListener("click",()=>{
+  document.querySelectorAll("input[type=radio]").forEach(r=>r.checked=false);
+  document.querySelectorAll(".opt").forEach(o=>o.classList.remove("sel","correct","wrong"));
+  document.querySelectorAll(".expl").forEach(x=>x.classList.remove("show","wrongmark"));
+  document.getElementById("score").textContent="";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+</script>
+</body>
+</html>

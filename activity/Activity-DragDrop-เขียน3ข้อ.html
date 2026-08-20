@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activity Drag &amp; Drop — อัตนัย 3 ข้อ</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI",Tahoma,sans-serif;background:#0f2438;color:#fff;margin:0;padding:24px;}
+  .wrap{max-width:980px;margin:0 auto;}
+  h1{background:#1b3a5b;border:2px solid #3d6591;padding:14px 20px;border-radius:8px;font-size:21px;margin:0 0 6px;}
+  .sub{color:#a9c4de;margin:0 0 16px;font-size:14px;}
+  .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .tab{flex:1;min-width:180px;padding:11px;border-radius:8px 8px 0 0;background:#16324c;border:1px solid #3d6591;cursor:pointer;font-weight:600;text-align:center;font-size:13px;}
+  .tab.active{background:#2f5f86;}
+  .sec{display:none;}
+  .sec.active{display:block;}
+  .sechead{background:#244a6b;border-radius:8px;padding:12px 16px;margin-bottom:14px;font-size:14px;color:#ffd98a;font-weight:600;line-height:1.5;}
+  .row{display:flex;align-items:stretch;gap:10px;margin-bottom:10px;}
+  .flabel{width:280px;flex-shrink:0;background:#244a6b;border-radius:6px;padding:9px 12px;font-size:13px;font-weight:600;display:flex;align-items:center;}
+  .flabel .en{color:#f3a94e;}
+  .cell{flex:1;background:#dbe6f0;border-radius:6px;padding:5px;min-height:52px;transition:background .15s,box-shadow .15s;}
+  .cell.over{background:#b9d4ec;box-shadow:inset 0 0 0 2px #2f5f86;}
+  .cell.correct{background:#bdead0;box-shadow:inset 0 0 0 2px #2e9e5b;}
+  .cell.wrong{background:#f4c4c4;box-shadow:inset 0 0 0 2px #d05050;}
+  .tile{background:#f3a94e;color:#3a2400;border:1px solid #d98b2b;border-radius:6px;padding:8px 11px;font-size:13px;font-weight:600;cursor:grab;user-select:none;line-height:1.4;}
+  .tile:active{cursor:grabbing;}
+  .tile.selected{outline:3px solid #ffe08a;}
+  .cell .tile{width:100%;}
+  .pool{margin-top:14px;background:#16324c;border:1px dashed #3d6591;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:8px;min-height:52px;}
+  .pool.over{background:#1d4463;}
+  .pool-title{font-size:13px;color:#a9c4de;margin:14px 0 0;}
+  .controls{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  button{border:none;border-radius:6px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;}
+  .btn-check{background:#2e9e5b;color:#fff;}
+  .btn-ans{background:#2f5f86;color:#fff;}
+  .btn-reset{background:#6b7c8c;color:#fff;}
+  .score{font-size:15px;font-weight:700;margin-left:6px;}
+  .hint{font-size:13px;color:#a9c4de;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Activity (ลากวาง) — อัตนัย 3 ข้อ</h1>
+  <p class="sub">ลากการ์ดจากกล่องด้านล่างไปวางในช่องที่ตรงกัน (หรือคลิกการ์ด แล้วคลิกช่อง) แล้วกด “ตรวจคำตอบ”</p>
+
+  <div class="tabs">
+    <div class="tab active" data-c="A">ข้อ 1 · บท1 · 6 วัตถุประสงค์เชิงกลยุทธ์</div>
+    <div class="tab" data-c="B">ข้อ 2 · บท3 · Five Forces (ร้านหนังสือ)</div>
+    <div class="tab" data-c="C">ข้อ 3 · เทคนิค · ปัญหา → ระบบ IT</div>
+  </div>
+
+  <div class="sec active" id="secA">
+    <div class="sechead">ข้อ 1: จับคู่ “ตัวอย่างบริษัท/สถานการณ์” กับ “วัตถุประสงค์ทางธุรกิจเชิงกลยุทธ์” ที่ตรงกัน</div>
+    <div id="zonesA"></div>
+    <p class="pool-title">การ์ดตัวอย่าง (ลากไปวาง):</p>
+    <div class="pool" id="poolA"></div>
+    <div class="controls"><button class="btn-check" data-c="A">ตรวจคำตอบ</button><button class="btn-ans" data-c="A">เฉลย</button><button class="btn-reset" data-c="A">เริ่มใหม่</button><span class="score" id="scoreA"></span></div>
+  </div>
+
+  <div class="sec" id="secB">
+    <div class="sechead">ข้อ 2: ร้านหนังสือมีหน้าร้านกำลังโดน disruption — จับคู่ข้อความกับแรงกดดันทั้ง 5 (Porter's Five Forces)</div>
+    <div id="zonesB"></div>
+    <p class="pool-title">การ์ดข้อความ (ลากไปวาง):</p>
+    <div class="pool" id="poolB"></div>
+    <div class="controls"><button class="btn-check" data-c="B">ตรวจคำตอบ</button><button class="btn-ans" data-c="B">เฉลย</button><button class="btn-reset" data-c="B">เริ่มใหม่</button><span class="score" id="scoreB"></span></div>
+  </div>
+
+  <div class="sec" id="secC">
+    <div class="sechead">ข้อ 3: บริษัทผลิตมีหลายปัญหา — จับคู่ “ปัญหา” กับ “ระบบสารสนเทศ” ที่ควรใช้แก้</div>
+    <div id="zonesC"></div>
+    <p class="pool-title">การ์ดปัญหา (ลากไปวาง):</p>
+    <div class="pool" id="poolC"></div>
+    <div class="controls"><button class="btn-check" data-c="C">ตรวจคำตอบ</button><button class="btn-ans" data-c="C">เฉลย</button><button class="btn-reset" data-c="C">เริ่มใหม่</button><span class="score" id="scoreC"></span></div>
+  </div>
+
+  <p class="hint">💡 ช่องเขียว = ถูก, ช่องแดง = ผิด — ลากสลับช่องหรือลากกลับลงกล่องได้ตลอด</p>
+</div>
+
+<script>
+const SECTIONS = {
+ A: {
+   zones:[
+     {key:"oe",  th:"การดำเนินงานที่เป็นเลิศ", en:"Operational excellence"},
+     {key:"np",  th:"สินค้า/บริการ/โมเดลธุรกิจใหม่", en:"New products & services"},
+     {key:"ci",  th:"ความสัมพันธ์อันดีกับลูกค้า/คู่ค้า", en:"Customer & supplier intimacy"},
+     {key:"dm",  th:"การตัดสินใจที่ดีขึ้น", en:"Improved decision making"},
+     {key:"ca",  th:"การได้เปรียบในการแข่งขัน", en:"Competitive advantage"},
+     {key:"sv",  th:"ความอยู่รอดของธุรกิจ", en:"Survival"}
+   ],
+   tiles:[
+     {correct:"oe",  text:"Walmart Retail Link เชื่อมผู้ผลิตกับสาขา ลดสต็อกและต้นทุน เติมสินค้าได้เร็ว"},
+     {correct:"np",  text:"Apple iTunes / Netflix เปลี่ยนรูปแบบการขายเพลงและหนังเป็นดิจิทัล"},
+     {correct:"ci",  text:"โรงแรมไฮเอนด์จดจำความชอบลูกค้า ปรับอุณหภูมิ/ช่องทีวี ให้ลูกค้ากลับมาซ้ำ"},
+     {correct:"dm",  text:"Coca-Cola ใช้ dashboard รวมข้อมูลหลายแหล่งช่วยผู้จัดการตัดสินใจแบบเรียลไทม์"},
+     {correct:"ca",  text:"Apple, Walmart, UPS ทำผลงานได้ดีกว่าคู่แข่งในหลายด้านอย่างต่อเนื่อง"},
+     {correct:"sv",  text:"Citibank เปิดตู้ ATM จนธนาคารอื่นจำเป็นต้องทำตามเพื่ออยู่รอด"}
+   ]
+ },
+ B: {
+   zones:[
+     {key:"trad", th:"แรงกดดันจากคู่แข่งรายเดิมในตลาด", en:"Traditional competitors"},
+     {key:"new",  th:"แรงกดดันจากคู่แข่งรายใหม่ที่เข้าตลาด", en:"New market entrants"},
+     {key:"sub",  th:"แรงกดดันของสินค้า/บริการทดแทน", en:"Substitute products & services"},
+     {key:"cust", th:"แรงกดดันจากอำนาจต่อรองของลูกค้า", en:"Customers"},
+     {key:"sup",  th:"แรงกดดันจากอำนาจต่อรองของซัพพลายเออร์", en:"Suppliers"}
+   ],
+   tiles:[
+     {correct:"trad", text:"ร้านหนังสืออื่น ๆ ในย่านเดียวกันแข่งกันด้านราคา โปรโมชัน และทำเล"},
+     {correct:"new",  text:"แพลตฟอร์มขาย e-book รายใหม่เปิดได้ง่ายด้วยทุนต่ำ ไม่ต้องมีหน้าร้าน"},
+     {correct:"sub",  text:"e-book, audiobook, Netflix, YouTube ทดแทนการอ่านหนังสือเล่ม"},
+     {correct:"cust", text:"ลูกค้าเทียบราคา/รีวิวออนไลน์ได้ทันที เปลี่ยนไปซื้อร้านอื่นง่าย"},
+     {correct:"sup",  text:"สำนักพิมพ์ใหญ่กำหนดราคาส่งและเงื่อนไข บางรายไปขายตรงบนแพลตฟอร์มเอง"}
+   ]
+ },
+ C: {
+   zones:[
+     {key:"erp", th:"ERP (Enterprise Resource Planning)", en:"หนึ่งบริษัท หนึ่งฐานข้อมูล"},
+     {key:"scm", th:"SCM (Supply Chain Management)", en:"จัดการซัพพลายเชน"},
+     {key:"dss", th:"DSS (Decision Support System)", en:"จำลอง / what-if"},
+     {key:"ess", th:"ESS (Executive Support System)", en:"dashboard ผู้บริหารสูง"},
+     {key:"crm", th:"CRM (Customer Relationship Mgmt)", en:"จัดการลูกค้า"},
+     {key:"tps", th:"TPS (Transaction Processing System)", en:"บันทึกธุรกรรมประจำวัน"}
+   ],
+   tiles:[
+     {correct:"erp", text:"ข้อมูลแต่ละแผนกไม่ตรงกันและซ้ำซ้อน อยากรวมเป็นฐานข้อมูลกลางเดียว"},
+     {correct:"scm", text:"ต้องจัดการสต็อก การสั่งซื้อ และการจัดส่งร่วมกับซัพพลายเออร์ให้เร็วและถูก"},
+     {correct:"dss", text:"อยากจำลองว่า ‘ถ้าเปลี่ยนแผนการผลิต ต้นทุนรวมจะเป็นเท่าไร’"},
+     {correct:"ess", text:"ผู้บริหารระดับสูงต้องการหน้าจอสรุปภาพรวมทั้งบริษัทแบบเรียลไทม์"},
+     {correct:"crm", text:"อยากเก็บข้อมูลลูกค้าจากหลายช่องทาง เพิ่มความพึงพอใจและรักษาลูกค้า"},
+     {correct:"tps", text:"ต้องบันทึกการขายและออกใบเสร็จที่เกิดขึ้นทุกวัน"}
+   ]
+ }
+};
+
+let selected=null;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function makeTile(cid, st, idx){
+  const el=document.createElement("div");
+  el.className="tile"; el.textContent=st.text; el.draggable=true;
+  el.id=cid+"-t"+idx; el.dataset.correct=cid+"-"+st.correct;
+  el.addEventListener("dragstart",e=>{e.dataTransfer.setData("text/plain",el.id);});
+  el.addEventListener("click",e=>{e.stopPropagation();
+    if(selected===el){el.classList.remove("selected");selected=null;}
+    else{if(selected)selected.classList.remove("selected");selected=el;el.classList.add("selected");}});
+  return el;
+}
+
+function build(cid){
+  const sec=SECTIONS[cid];
+  const zones=document.getElementById("zones"+cid); zones.innerHTML="";
+  sec.zones.forEach(f=>{
+    const row=document.createElement("div"); row.className="row";
+    row.innerHTML=`<div class="flabel"><div>${f.th}<br><span class="en">${f.en}</span></div></div><div class="cell" data-slot="${cid}-${f.key}"></div>`;
+    zones.appendChild(row);
+  });
+  const pool=document.getElementById("pool"+cid); pool.innerHTML="";
+  shuffle(sec.tiles.map((st,i)=>makeTile(cid,st,i))).forEach(t=>pool.appendChild(t));
+
+  const cells=zones.querySelectorAll(".cell");
+  [...cells,pool].forEach(zone=>{
+    zone.addEventListener("dragover",e=>{e.preventDefault();zone.classList.add("over");});
+    zone.addEventListener("dragleave",()=>zone.classList.remove("over"));
+    zone.addEventListener("drop",e=>{e.preventDefault();zone.classList.remove("over");
+      const t=document.getElementById(e.dataTransfer.getData("text/plain")); if(t) place(t,zone,cid);});
+    zone.addEventListener("click",()=>{if(selected)place(selected,zone,cid);});
+  });
+}
+
+function place(tile,target,cid){
+  if(target.classList.contains("cell")){
+    const ex=target.querySelector(".tile");
+    if(ex&&ex!==tile) document.getElementById("pool"+cid).appendChild(ex);
+  }
+  target.appendChild(tile);
+  if(selected){selected.classList.remove("selected");selected=null;}
+  document.querySelectorAll(`#zones${cid} .cell`).forEach(c=>c.classList.remove("correct","wrong"));
+  document.getElementById("score"+cid).textContent="";
+}
+
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".sec").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active"); document.getElementById("sec"+t.dataset.c).classList.add("active");
+}));
+
+document.querySelectorAll(".btn-check").forEach(b=>b.addEventListener("click",()=>{
+  const cid=b.dataset.c; let correct=0, total=SECTIONS[cid].zones.length;
+  document.querySelectorAll(`#zones${cid} .cell`).forEach(cell=>{
+    cell.classList.remove("correct","wrong");
+    const t=cell.querySelector(".tile");
+    if(t){ if(t.dataset.correct===cell.dataset.slot){cell.classList.add("correct");correct++;} else cell.classList.add("wrong"); }
+  });
+  const s=document.getElementById("score"+cid);
+  s.textContent=`คะแนน: ${correct} / ${total}`; s.style.color= correct===total?"#7ee6a5":"#ffd98a";
+  if(correct===total) s.textContent+="  🎉 ถูกหมด!";
+}));
+
+document.querySelectorAll(".btn-ans").forEach(b=>b.addEventListener("click",()=>{
+  const cid=b.dataset.c;
+  document.querySelectorAll(`#pool${cid} .tile, #zones${cid} .tile`).forEach(t=>{
+    document.querySelector(`[data-slot="${t.dataset.correct}"]`).appendChild(t);
+  });
+  document.querySelectorAll(`#zones${cid} .cell`).forEach(c=>{c.classList.remove("wrong");c.classList.add("correct");});
+  const s=document.getElementById("score"+cid); s.textContent="แสดงเฉลยแล้ว ✓"; s.style.color="#7ee6a5";
+}));
+
+document.querySelectorAll(".btn-reset").forEach(b=>b.addEventListener("click",()=>{build(b.dataset.c);document.getElementById("score"+b.dataset.c).textContent="";}));
+
+build("A"); build("B"); build("C");
+</script>
+</body>
+</html>

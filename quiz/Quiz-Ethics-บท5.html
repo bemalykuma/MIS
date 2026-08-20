@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz บท 5 — Ethics (27 ข้อ)</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI",Tahoma,sans-serif;background:#0f2438;color:#fff;margin:0;padding:24px;}
+  .wrap{max-width:840px;margin:0 auto;}
+  h1{background:#1b3a5b;border:2px solid #3d6591;padding:14px 20px;border-radius:8px;font-size:20px;margin:0 0 6px;}
+  .sub{color:#a9c4de;margin:0 0 18px;font-size:14px;}
+  .q{background:#16324c;border:1px solid #2f5f86;border-radius:8px;padding:16px;margin-bottom:14px;}
+  .qtext{font-weight:600;font-size:15px;margin-bottom:10px;line-height:1.55;}
+  .qtext .num{color:#f3a94e;margin-right:6px;}
+  .opt{display:block;background:#22415c;border:1px solid #34597c;border-radius:6px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:14px;transition:background .12s;}
+  .opt:hover{background:#2b5175;}
+  .opt.sel{background:#2f5f86;border-color:#5b90bd;}
+  .opt.correct{background:#1e7a45;border-color:#2e9e5b;}
+  .opt.wrong{background:#8f3636;border-color:#d05050;}
+  .opt input{margin-right:8px;}
+  .expl{display:none;margin-top:8px;background:#17402a;border-left:3px solid #2e9e5b;border-radius:4px;padding:8px 12px;font-size:13px;line-height:1.5;}
+  .expl.show{display:block;}
+  .expl.wrongmark{background:#4a2626;border-left-color:#d05050;}
+  .bar{position:sticky;bottom:0;background:#1b3a5b;border:2px solid #3d6591;border-radius:10px;padding:14px 18px;margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  button{border:none;border-radius:6px;padding:11px 20px;font-size:15px;font-weight:600;cursor:pointer;}
+  #check{background:#2e9e5b;color:#fff;}
+  #reset{background:#6b7c8c;color:#fff;}
+  #score{font-size:18px;font-weight:800;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Quiz บท 5 — Ethical &amp; Social Issues (27 ข้อ)</h1>
+  <p class="sub">โจทย์เดิมจากที่ส่งมาทั้งหมด — เลือกคำตอบให้ครบ แล้วกด “ตรวจคำตอบ”</p>
+  <div id="quiz"></div>
+  <div class="bar">
+    <button id="check">ตรวจคำตอบ</button>
+    <button id="reset">เริ่มใหม่</button>
+    <span id="score"></span>
+  </div>
+</div>
+
+<script>
+const Q = [
+ {q:"บริษัทแห่งหนึ่งอนุญาตให้พนักงานฝ่ายขายเข้าถึงฐานข้อมูลลูกค้าผ่านระบบออนไลน์ได้จากทุกที่ เพื่อความสะดวกในการทำงาน ต่อมาฝ่าย IT พบว่าพนักงานคนหนึ่งทำการคัดลอกไฟล์ข้อมูลลูกค้าทั้งหมดออกจากระบบ แล้วส่งต่อไปยังอีเมลส่วนตัวจากนอกสำนักงาน ก่อนนำไปขายให้กับบริษัทคู่แข่ง โดยที่ฝ่าย IT ไม่ทันได้ป้องกันก่อนจะเกิดเหตุการณ์ดังกล่าว — เหตุการณ์ข้างต้นเกี่ยวข้องกับแนวโน้มของเทคโนโลยีที่ทำให้เกิดประเด็นจริยธรรมในข้อใดมากที่สุด เพราะเหตุใด?",
+  o:["ขีดความสามารถในการประมวลผลเพิ่มขึ้นเป็นสองเท่า","ต้นทุนในการเก็บรักษาข้อมูลลดลง","ความก้าวหน้าของระบบเครือข่ายและอินเทอร์เน็ต","ผลกระทบจากการเติบโตของอุปกรณ์เคลื่อนที่","ความก้าวหน้าในเทคนิคการวิเคราะห์ข้อมูล"],a:2,
+  e:"เครือข่าย/อินเทอร์เน็ตทำให้คัดลอกและส่งข้อมูลจากระยะไกลได้ง่าย ควบคุมการเข้าถึงยาก"},
+ {q:"ข้อใด ไม่ใช่ ขั้นตอนของการวิเคราะห์ประเด็นทางจริยธรรม (Ethical Analysis)?",
+  o:["ระบุและอธิบายข้อเท็จจริงอย่างชัดเจน","ระบุผู้มีส่วนได้เสีย","ระบุตัวเลือกที่สามารถทำได้อย่างสมเหตุสมผล","เลือกวิธีที่ทำให้องค์กรได้กำไรสูงสุด"],a:3,
+  e:"5 ขั้น = ระบุข้อเท็จจริง, กำหนดความขัดแย้ง, ระบุผู้มีส่วนได้เสีย, ระบุตัวเลือก, ระบุผลลัพธ์ ; 'กำไรสูงสุด' ไม่ใช่ขั้นตอน"},
+ {q:"ข้อใดเป็นหนึ่งใน มิติทางจริยธรรม 5 ด้านของยุคสารสนเทศ (Five moral dimensions of the information age)?",
+  o:["การเพิ่มยอดขายขององค์กร","คุณภาพของระบบ (System quality)","การบริหารทรัพยากรมนุษย์","การสร้างความได้เปรียบในการแข่งขัน"],a:1,
+  e:"5 มิติ = Information rights, Property rights, Accountability & control, System quality, Quality of life"},
+ {q:"ข้อมูลใดต่อไปนี้ จัดเป็นข้อมูลส่วนบุคคลที่มีความอ่อนไหว",
+  o:["ชื่อ-นามสกุล","ที่อยู่","หมายเลขโทรศัพท์","ข้อมูลเกี่ยวกับสุขภาพ","อีเมล"],a:3,
+  e:"ข้อมูลอ่อนไหว = สุขภาพ เชื้อชาติ ศาสนา ความเห็นการเมือง ประวัติอาชญากรรม ฯลฯ"},
+ {q:"ข้อใดไม่ได้ถูกระบุไว้ในมาตรา 24 ของพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. ๒๕๖๒",
+  o:["ได้รับความยินยอมจากเจ้าของข้อมูล (Consent)","เพื่อป้องกันหรือระงับการสูญเสียทรัพย์สิน (Financial Interest)","เพื่อป้องกันหรือระงับอันตรายต่อชีวิต (Vital Interest)","เป็นการปฎิบัติตามกฎหมายของผู้ควบคุมข้อมูล (Legal Obligation)","เพื่อจัดทำเอกสารประวัติศาสตร์ จดหมายเหตุ วิจัย สถิติ (Scientific or research)"],a:1,
+  e:"'การสูญเสียทรัพย์สิน (Financial Interest)' ไม่ใช่ฐานตามมาตรา 24 ; Vital interest คุ้มครองชีวิต/ร่างกาย/สุขภาพ ไม่ใช่ทรัพย์สิน"},
+ {q:"ข้อใดกล่าวถูกต้องเกี่ยวกับ “ทางเลือก/การได้รับความยินยอม (Choice/consent)” ของหลักการ The United States Federal Trade Commission’s Fair Information Practices (FIP) principles",
+  o:["เว็ปไซต์ต้องเปิดเผยการปฏิบัติต่อข้อมูลก่อนเก็บรวบรวมข้อมูล","ผู้บริโภคต้องสามารถเลือกวิธีการที่ข้อมูลจะถูกนำมาใช้เพื่อวัตถุประสงค์อื่น ๆ","ผู้บริโภคต้องสามารถตรวจสอบ โต้แย้งความถูกต้องของข้อมูลได้","ผู้เก็บข้อมูลต้องทำตามขั้นตอนเพื่อรับรองความถูกต้อง และรักษาความปลอดภัยข้อมูล"],a:1,
+  e:"Choice/consent = ผู้บริโภคเลือกได้ว่าข้อมูลจะถูกใช้เพื่อวัตถุประสงค์อื่นไหม ; ตัวเลือกอื่น = Notice / Access / Security"},
+ {q:"“ระบบเปิดให้ผู้ใช้กดดูหน้าโปรไฟล์ และสามารถเปลี่ยนชื่อ แก้ไขข้อมูลได้ด้วยตนเอง” เกี่ยวข้องตามหลักการใดใน The United States Federal Trade Commission’s Fair Information Practices (FIP) principles",
+  o:["Notice/awareness","Choice/consent","Access/participation","Security"],a:2,
+  e:"เข้าถึงและแก้ไข/โต้แย้งข้อมูลตนเองได้ = Access/participation"},
+ {q:"ข้อใดต่อไปนี้อธิบายถึงผลกระทบของเทคโนโลยีสารสนเทศต่อสังคมได้ดีที่สุด",
+  o:["มีผลกระทบในการเปิดเผยจริยธรรมธุรกิจ","มีผลกระทบในการเกิดประเด็นทางจริงธรรมที่ซับซ้อนเพิ่มขึ้น","มีผลกระทบในการเพิ่มจำนวนปัญหาด้านจริยธรรม","มีผลกระทบในการสร้างปัญหาใหม่ทางด้านจริยธรรม สังคม และการเมือง"],a:3,
+  e:"IT สร้างประเด็นใหม่ครบทั้ง 3 ด้าน: จริยธรรม สังคม และการเมือง"},
+ {q:"ข้อใดต่อไปนี้ไม่ใช่แนวโน้มของเทคโนโลยีที่สำคัญที่ทำให้เกิดประเด็นทางจริยธรรม",
+  o:["ความก้าวหน้าในระบบเครือข่ายรวมถึงอินเทอร์เน็ต (Networking advances and the Internet)","การพัฒนาที่จัดเก็บข้อมูล (Data storage improvements)","ความก้าวหน้าด้านการวิเคราะห์ข้อมูล (Data analysis advancements)","การเพิ่มคุณภาพของข้อมูล (Increase in data quality)"],a:3,
+  e:"5 แนวโน้ม = computing power, ต้นทุนเก็บข้อมูลลด, เครือข่าย/อินเทอร์เน็ต, มือถือ, วิเคราะห์ข้อมูล ; 'เพิ่มคุณภาพข้อมูล' ไม่ใช่แนวโน้ม"},
+ {q:"สื่อดิจิทัล (digital media) ต่างจากสื่อทางกายภาพ(เช่น หนังสือ) ยกเว้นด้านใด",
+  o:["สื่อดิจิทัลง่ายในการทำซ้ำ ease of replication.","สื่อดิจิทัลง่ายในการส่งผ่าน ease of transmission.","สื่อดิจิทัลง่ายในการเปลี่ยนแปลงแก้ไข ease of alteration.","สื่อดิจิทัลง่ายในการสร้างความเป็นเอกลักษณ์ ease of establishing uniqueness."],a:3,
+  e:"สื่อดิจิทัล 'ยาก' ในการสร้างเอกลักษณ์ จึงเป็นข้อยกเว้น"},
+ {q:"ข้อใดคือลักษณะทางสังคมที่หมายถึงกลไกสำหรับการระบุความรับผิดชอบสำหรับการกระทำนั้นๆ",
+  o:["Due process","Accountability","Responsibility","Liability"],a:1,
+  e:"Accountability = กลไกระบุว่าใครเป็นผู้รับผิดชอบ"},
+ {q:"ภาระผูกพันที่บุคคลและองค์กรกังวลเกี่ยวกับสิทธิทางทรัพย์สินนั้น คือมิติทางจริยธรรมของยุคสารสนเทศด้านใด",
+  o:["คุณภาพของระบบ (System quality)","สิทธิความเป็นเจ้าของทรัพย์สินทางปัญญาและภาระผูกพัน (Property rights and obligations)","ภาระหน้าที่และการควบคุม (Accountability and control)","คุณภาพของชีวิต (Quality of life)"],a:1,
+  e:"เรื่องทรัพย์สิน/ทรัพย์สินทางปัญญา = Property rights and obligations"},
+ {q:"เมื่อ Cookies ถูกสร้างระหว่างเข้าชมเว็บไซต์ มันจะถูกเก็บไว้ในที่ใด",
+  o:["ถูกจัดเก็บแบบชั่วคราวในส่วนตั้งค่าของเบราเซอร์ จะถูกลบเมื่อปิดคอมพิวเตอร์","ฮาร์ดไดร์ฟของผู้เข้าชม","เซิฟเวอร์ที่จัดเก็บเว็บไซต์","เซิฟเวอร์ของผู้ให้บริการอินเทอร์เน็ต"],a:1,
+  e:"Cookies = ไฟล์เล็ก ๆ ที่เว็บฝากไว้บนฮาร์ดไดร์ฟของผู้เข้าชม"},
+ {q:"ข้อใด ให้สิทธิ์ในความเป็นเจ้าของกับผู้คิดค้นเป็นเวลา 20 ปี",
+  o:["กฎหมายเครื่องหมายการค้า Trade Secret law","กฎหมายสิทธิบัตร Patent law","การปกป้องความลับทางการค้า Trade secret protection","กฎหมายทรัพย์สินทางปัญญา Copyright law"],a:1,
+  e:"สิทธิบัตรการประดิษฐ์ (Patent) = 20 ปี ; ลิขสิทธิ์ = ชีวิต + 70 ปี ; ความลับทางการค้า = ตราบที่ยังเป็นความลับ"},
+ {q:"ผู้โฆษณาจะใช้อะไรเพื่อแสดงโฆษณาที่เกี่ยวข้องกับสิ่งที่ผู้ใช้ค้นหาและประวัติในการใช้งาน",
+  o:["Behavioral targeting","NORA","Web bugs","Intelligent agents"],a:0,
+  e:"ยิงโฆษณาตามพฤติกรรม/ประวัติการใช้งาน = Behavioral targeting"},
+ {q:"รูปแบบการปกป้องทรัพย์สินทางปัญญาใดต่อไปนี้ ต้องให้ทรัพย์สินอยู่ภายใต้ข้อตกลงการไม่เปิดเผย (Disclosure agreement)",
+  o:["ความลับทางการค้า Trade secret","ลิขสิทธิ์ Copyright","เครื่องหมายการค้า Trademark","สิทธิบัตร Patent"],a:0,
+  e:"Trade secret ได้รับการคุ้มครองตราบที่ยังเป็นความลับ จึงต้องมีข้อตกลงไม่เปิดเผย (NDA)"},
+ {q:"การใช้คอมพิวเตอร์ในการรวบรวมข้อมูลจากแหล่งต่างๆ เพื่อสร้างแฟ้มข้อมูลดิจิทัลรายบุคคล คือหมายถึงข้อ",
+  o:["Phishing","Spamming","Profiling","Targeting"],a:2,
+  e:"สร้างโปรไฟล์รายบุคคลจากหลายแหล่ง = Profiling"},
+ {q:"ตัวเลือกต่อไปนี้ไม่ใช่วิธีแก้ปัญหาเชิงเทคนิคเพื่อปกป้องความเป็นส่วนตัว",
+  o:["Anti-spyware tools","ไม่ยอมรับ Cookies","E-mail encryption","ยกเลิกการคัดกรอง spam email"],a:3,
+  e:"การ 'ยกเลิก' การคัดกรอง spam ยิ่งทำให้เสี่ยง = ไม่ใช่วิธีปกป้อง"},
+ {q:"ข้อใดต่อไปนี้เกี่ยวข้องกับการแสดงความยินยอม Informed consent",
+  o:["E-mail encryption","Opt-out/Opt-in","Private browsing","Online seals"],a:1,
+  e:"Opt-in/Opt-out = กลไกแสดงความยินยอมในการเก็บ/ใช้ข้อมูล"},
+ {q:"แจ้งให้ทราบล่วงหน้า/การรับรู้ (Notice/awareness) ของหลักการ FIP (Fair information practices) ได้ระบุไว้ว่าอะไร",
+  o:["ผู้บริโภคมีสิทธิ์ที่จะดูข้อมูลที่ถูกเก็บ","เว็บไซต์ต้องเปิดเผยการปฏิบัติต่อข้อมูล ก่อนที่จะเก็บรวบรวมข้อมูล","ผู้จัดเก็บข้อมูลต้องรับผิดชอบเพื่อทำให้มั่นใจว่าข้อมูลของผู้บริโภคมีความถูกต้องและปลอดภัยจากการใช้ที่ไม่ได้รับอนุญาต","จะต้องมีกลไกในการใช้หลักการ FIP"],a:1,
+  e:"Notice/awareness = แจ้ง/เปิดเผยวิธีปฏิบัติต่อข้อมูล 'ก่อน' เก็บ"},
+ {q:"“ถึงแม้บริษัทรู้ว่าซอฟต์แวร์ยังมีบั๊ก แต่เนื่องจากเวลาน้อยและค่าใช้จ่ายในการแก้ไขข้อผิดพลาดอาจจะมาก จะทำให้ไม่สามารถปล่อยขายซอฟต์แวร์ได้” เกี่ยวข้องกับมิติทางจริยธรรมด้านใด",
+  o:["ภาระหน้าที่และการควบคุม (Accountability and control)","คุณภาพของระบบ (System quality)","สิทธิความเป็นเจ้าของทรัพย์สินทางปัญญาและภาระผูกพัน (Property rights and obligations)","คุณภาพของชีวิต (Quality of life)"],a:1,
+  e:"เรื่องมาตรฐาน/ความสมบูรณ์ของซอฟต์แวร์ = System quality"},
+ {q:"ข้อใดเกี่ยวข้องกับการมีกฎหมายที่เป็นที่รู้จักพร้อมกับความสามารถในการอุทธรณ์ไปยังหน่วยงานที่สูงขึ้นเพื่อให้แน่ใจว่ากฎหมายมีผลบังคับใช้อย่างถูกต้อง",
+  o:["Due process","Accountability","Liability","Responsibility"],a:0,
+  e:"สิทธิอุทธรณ์/กระบวนการยุติธรรม = Due process"},
+ {q:"ข้อใดหมายถึง การที่คุณยอมรับค่าเสียหายและข้อผูกมัดที่อาจเกิดขึ้นจากการตัดสินใจของสิ่งที่คุณเลือก",
+  o:["Accountability","Liability","Due process","Responsibility"],a:3,
+  e:"ยอมรับผล/ค่าใช้จ่ายจากการตัดสินใจของตน = Responsibility"},
+ {q:"ข้อใดต่อไปนี้ไม่ได้รับการปกป้องโดยกฎหมายลิขสิทธิ์",
+  o:["การแต่งเพลง","แผนที่","ภาพยนตร์","เครื่องจักร"],a:3,
+  e:"เครื่องจักร/สิ่งประดิษฐ์คุ้มครองด้วย 'สิทธิบัตร' ไม่ใช่ลิขสิทธิ์"},
+ {q:"สภาพแวดล้อมที่เรียกว่า “ทำอะไรก็ได้ทุกที่” ทำให้ขอบเขตระหว่างการทำงาน วันหยุดพักผ่อน และเวลาครอบครัวของครอบครัว ไม่ชัดเจน คือมิติทางจริยธรรมของยุคสารสนเทศด้านใด",
+  o:["คุณภาพของชีวิต (Quality of life)","ภาระหน้าที่และการควบคุม (Accountability and control)","คุณภาพของระบบ (System quality)","สิทธิความเป็นเจ้าของทรัพย์สินทางปัญญาและภาระผูกพัน (Property rights and obligations)"],a:0,
+  e:"เรื่องขอบเขตงาน/ชีวิตส่วนตัว (maintaining boundaries) = Quality of life"},
+ {q:"ข้อใดคือสิ่งที่จะปกป้องนักเขียนหนังสือจากการถูกคัดลอกผลงานโดยผู้อื่น",
+  o:["กฎหมายทรัพย์สินทางปัญญา Copyright law","กฎหมายความลับทางการค้า Trade Secret law","สิทธิบัตร Patent","กระบวนการในการยื่นอุทธรณ์ (Due process)"],a:0,
+  e:"งานเขียน/วรรณกรรม = คุ้มครองด้วยลิขสิทธิ์ (Copyright)"},
+ {q:"อาชญากรรมทางคอมพิวเตอร์และการใช้คอมพิวเตอร์ในทางที่ผิด เกี่ยวข้องกับมิติทางจริยธรรมด้านใด",
+  o:["คุณภาพของระบบ (System quality)","ภาระหน้าที่และการควบคุม (Accountability and control)","คุณภาพของชีวิต (Quality of life)","สิทธิความเป็นเจ้าของทรัพย์สินทางปัญญาและภาระผูกพัน (Property rights and obligations)"],a:2,
+  e:"Computer crime/abuse อยู่ในมิติ Quality of life (ผลกระทบทางสังคมเชิงลบ)"}
+];
+
+const quiz=document.getElementById("quiz");
+Q.forEach((item,qi)=>{
+  const div=document.createElement("div");
+  div.className="q";
+  let opts="";
+  item.o.forEach((o,oi)=>{opts+=`<label class="opt" data-q="${qi}" data-o="${oi}"><input type="radio" name="q${qi}" value="${oi}">${o}</label>`;});
+  div.innerHTML=`<div class="qtext"><span class="num">${qi+1}.</span>${item.q}</div>${opts}<div class="expl" id="e${qi}"></div>`;
+  quiz.appendChild(div);
+});
+
+quiz.addEventListener("click",e=>{
+  const lab=e.target.closest(".opt"); if(!lab) return;
+  const qi=lab.dataset.q;
+  document.querySelectorAll(`.opt[data-q="${qi}"]`).forEach(l=>l.classList.remove("sel"));
+  lab.classList.add("sel"); lab.querySelector("input").checked=true;
+});
+
+document.getElementById("check").addEventListener("click",()=>{
+  let score=0;
+  Q.forEach((item,qi)=>{
+    const sel=document.querySelector(`input[name="q${qi}"]:checked`);
+    const opts=document.querySelectorAll(`.opt[data-q="${qi}"]`);
+    opts.forEach(o=>o.classList.remove("correct","wrong"));
+    const expl=document.getElementById("e"+qi);
+    expl.classList.add("show"); expl.classList.remove("wrongmark");
+    opts[item.a].classList.add("correct");
+    if(sel){
+      const c=parseInt(sel.value);
+      if(c===item.a) score++;
+      else{ opts[c].classList.add("wrong"); expl.classList.add("wrongmark"); }
+    }
+    expl.innerHTML=`✅ คำตอบ: <b>${item.o[item.a]}</b><br>${item.e}`;
+  });
+  const s=document.getElementById("score");
+  s.textContent=`คะแนน: ${score} / ${Q.length}`;
+  s.style.color= score>=Q.length*0.8?"#7ee6a5":score>=Q.length*0.5?"#ffd98a":"#ff9a9a";
+  if(score===Q.length) s.textContent+="  🎉 เต็ม!";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+document.getElementById("reset").addEventListener("click",()=>{
+  document.querySelectorAll("input[type=radio]").forEach(r=>r.checked=false);
+  document.querySelectorAll(".opt").forEach(o=>o.classList.remove("sel","correct","wrong"));
+  document.querySelectorAll(".expl").forEach(x=>x.classList.remove("show","wrongmark"));
+  document.getElementById("score").textContent="";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+</script>
+</body>
+</html>

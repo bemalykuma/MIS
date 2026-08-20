@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activity: Type of Information System (Drag & Drop)</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: #0f2438;
+    color: #fff;
+    margin: 0;
+    padding: 24px;
+  }
+  .wrap { max-width: 1000px; margin: 0 auto; }
+  h1 {
+    background: #1b3a5b;
+    border: 2px solid #3d6591;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 22px;
+    margin: 0 0 6px;
+  }
+  .sub { color: #a9c4de; margin: 0 0 18px; font-size: 14px; }
+  table { width: 100%; border-collapse: separate; border-spacing: 6px; }
+  th {
+    background: #2f5f86;
+    color: #fff;
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 6px;
+    text-align: center;
+  }
+  th.rowhead-blank { background: transparent; }
+  td.rowlabel {
+    background: #244a6b;
+    font-weight: 600;
+    padding: 10px 12px;
+    border-radius: 6px;
+    width: 210px;
+    font-size: 14px;
+  }
+  .cell {
+    background: #dbe6f0;
+    min-height: 70px;
+    border-radius: 6px;
+    padding: 5px;
+    transition: background .15s, box-shadow .15s;
+  }
+  .cell.over { background: #b9d4ec; box-shadow: inset 0 0 0 2px #2f5f86; }
+  .cell.correct { background: #bdead0; box-shadow: inset 0 0 0 2px #2e9e5b; }
+  .cell.wrong { background: #f4c4c4; box-shadow: inset 0 0 0 2px #d05050; }
+  .tile {
+    background: #f3a94e;
+    color: #3a2400;
+    border: 1px solid #d98b2b;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: grab;
+    user-select: none;
+    line-height: 1.35;
+  }
+  .tile:active { cursor: grabbing; }
+  .tile.selected { outline: 3px solid #ffe08a; }
+  .cell .tile { width: 100%; }
+  #pool {
+    margin-top: 22px;
+    background: #16324c;
+    border: 1px dashed #3d6591;
+    border-radius: 8px;
+    padding: 14px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    min-height: 60px;
+  }
+  #pool.over { background: #1d4463; }
+  .pool-title { font-size: 14px; color: #a9c4de; margin: 22px 0 0; }
+  .controls { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  button {
+    border: none; border-radius: 6px; padding: 11px 20px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+  }
+  #check { background: #2e9e5b; color: #fff; }
+  #answer { background: #2f5f86; color: #fff; }
+  #reset { background: #6b7c8c; color: #fff; }
+  #score { font-size: 17px; font-weight: 700; margin-left: 8px; }
+  .hint { font-size: 13px; color: #a9c4de; margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ACTIVITY: วิเคราะห์ Type of Information System</h1>
+  <p class="sub">ลากการ์ดสีส้มด้านล่างไปวางในช่องให้ถูกต้อง (หรือคลิกการ์ด แล้วคลิกช่องที่ต้องการ) เสร็จแล้วกด “ตรวจคำตอบ”</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="rowhead-blank"></th>
+        <th>Inputs</th>
+        <th>Outputs</th>
+        <th>Users</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="rowlabel">Transaction Processing System (TPS)</td>
+        <td class="cell" data-slot="TPS-in"></td>
+        <td class="cell" data-slot="TPS-out"></td>
+        <td class="cell" data-slot="TPS-user"></td>
+      </tr>
+      <tr>
+        <td class="rowlabel">Management Information System (MIS)</td>
+        <td class="cell" data-slot="MIS-in"></td>
+        <td class="cell" data-slot="MIS-out"></td>
+        <td class="cell" data-slot="MIS-user"></td>
+      </tr>
+      <tr>
+        <td class="rowlabel">Decision Support System (DSS)</td>
+        <td class="cell" data-slot="DSS-in"></td>
+        <td class="cell" data-slot="DSS-out"></td>
+        <td class="cell" data-slot="DSS-user"></td>
+      </tr>
+      <tr>
+        <td class="rowlabel">Executive Support System (ESS)</td>
+        <td class="cell" data-slot="ESS-in"></td>
+        <td class="cell" data-slot="ESS-out"></td>
+        <td class="cell" data-slot="ESS-user"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="pool-title">การ์ดคำตอบ (ลากไปวาง):</p>
+  <div id="pool"></div>
+
+  <div class="controls">
+    <button id="check">ตรวจคำตอบ</button>
+    <button id="answer">เฉลย</button>
+    <button id="reset">เริ่มใหม่</button>
+    <span id="score"></span>
+  </div>
+  <p class="hint">💡 ช่องเขียว = ถูก, ช่องแดง = ผิด — ลากการ์ดสลับช่องหรือลากกลับลงกล่องด้านล่างได้</p>
+</div>
+
+<script>
+const tiles = [
+  { id: "t1",  correct: "TPS-in",   text: "Transactions; Daily Events" },
+  { id: "t2",  correct: "TPS-out",  text: "Operational reports" },
+  { id: "t3",  correct: "TPS-user", text: "Operations personnel; first-line supervisors" },
+  { id: "t4",  correct: "MIS-in",   text: "Summary transaction from TPS; simple models" },
+  { id: "t5",  correct: "MIS-out",  text: "Summary report and Exception report" },
+  { id: "t6",  correct: "MIS-user", text: "Middle manager" },
+  { id: "t7",  correct: "DSS-in",   text: "Data from TPS and MIS, external data" },
+  { id: "t8",  correct: "DSS-out",  text: "Analyzed data; Simulations; analysis" },
+  { id: "t9",  correct: "DSS-user", text: "Professionals" },
+  { id: "t10", correct: "ESS-in",   text: "Aggregated data (from all levels) and external data" },
+  { id: "t11", correct: "ESS-out",  text: "Digital dashboard" },
+  { id: "t12", correct: "ESS-user", text: "CEO" }
+];
+
+const pool = document.getElementById("pool");
+const cells = Array.from(document.querySelectorAll(".cell"));
+let selected = null; // for click-to-place
+
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function makeTile(t){
+  const el = document.createElement("div");
+  el.className = "tile";
+  el.textContent = t.text;
+  el.draggable = true;
+  el.id = t.id;
+  el.dataset.correct = t.correct;
+  el.addEventListener("dragstart", e => { e.dataTransfer.setData("text/plain", t.id); setTimeout(()=>el.classList.add("dragging"),0); });
+  el.addEventListener("dragend", () => el.classList.remove("dragging"));
+  el.addEventListener("click", e => {
+    e.stopPropagation();
+    if (selected === el){ el.classList.remove("selected"); selected = null; }
+    else { if(selected) selected.classList.remove("selected"); selected = el; el.classList.add("selected"); }
+  });
+  return el;
+}
+
+function clearMark(cell){ cell.classList.remove("correct","wrong"); }
+
+function place(tile, target){
+  // if target cell already has a tile, move that tile back to pool
+  if (target.classList.contains("cell")) {
+    const existing = target.querySelector(".tile");
+    if (existing && existing !== tile) pool.appendChild(existing);
+  }
+  target.appendChild(tile);
+  if (selected){ selected.classList.remove("selected"); selected = null; }
+  cells.forEach(clearMark);
+  document.getElementById("score").textContent = "";
+}
+
+// drop zones = cells + pool
+[...cells, pool].forEach(zone => {
+  zone.addEventListener("dragover", e => { e.preventDefault(); zone.classList.add("over"); });
+  zone.addEventListener("dragleave", () => zone.classList.remove("over"));
+  zone.addEventListener("drop", e => {
+    e.preventDefault(); zone.classList.remove("over");
+    const id = e.dataTransfer.getData("text/plain");
+    const tile = document.getElementById(id);
+    if (tile) place(tile, zone);
+  });
+  // click-to-place
+  zone.addEventListener("click", () => { if (selected) place(selected, zone); });
+});
+
+document.getElementById("check").addEventListener("click", () => {
+  let correct = 0;
+  cells.forEach(cell => {
+    clearMark(cell);
+    const tile = cell.querySelector(".tile");
+    if (tile){
+      if (tile.dataset.correct === cell.dataset.slot){ cell.classList.add("correct"); correct++; }
+      else cell.classList.add("wrong");
+    }
+  });
+  const s = document.getElementById("score");
+  s.textContent = `คะแนน: ${correct} / 12`;
+  s.style.color = correct === 12 ? "#7ee6a5" : "#ffd98a";
+  if (correct === 12) s.textContent += "  🎉 ถูกทั้งหมด!";
+});
+
+document.getElementById("answer").addEventListener("click", () => {
+  tiles.forEach(t => {
+    const tile = document.getElementById(t.id);
+    const cell = document.querySelector(`[data-slot="${t.correct}"]`);
+    cell.appendChild(tile);
+  });
+  cells.forEach(c => { clearMark(c); c.classList.add("correct"); });
+  const s = document.getElementById("score");
+  s.textContent = "แสดงเฉลยแล้ว ✓"; s.style.color = "#7ee6a5";
+});
+
+document.getElementById("reset").addEventListener("click", init);
+
+function init(){
+  pool.innerHTML = "";
+  cells.forEach(c => { c.innerHTML = ""; clearMark(c); });
+  shuffle(tiles.slice()).forEach(t => pool.appendChild(makeTile(t)));
+  // re-shuffle actual pool order
+  shuffle(Array.from(pool.children)).forEach(el => pool.appendChild(el));
+  document.getElementById("score").textContent = "";
+  selected = null;
+}
+
+init();
+</script>
+</body>
+</html>

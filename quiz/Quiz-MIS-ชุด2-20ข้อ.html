@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz MIS ชุด 2 — 20 ข้อ (เน้น MIS/DSS + มิติ + Collaboration)</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI",Tahoma,sans-serif;background:#0f2438;color:#fff;margin:0;padding:24px;}
+  .wrap{max-width:820px;margin:0 auto;}
+  h1{background:#1b3a5b;border:2px solid #3d6591;padding:14px 20px;border-radius:8px;font-size:20px;margin:0 0 6px;}
+  .sub{color:#a9c4de;margin:0 0 18px;font-size:14px;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:8px;background:#2f5f86;color:#cfe3f5;}
+  .tag.hot{background:#8a5a1e;color:#ffd9a0;}
+  .q{background:#16324c;border:1px solid #2f5f86;border-radius:8px;padding:16px;margin-bottom:14px;}
+  .qtext{font-weight:600;font-size:15px;margin-bottom:10px;line-height:1.5;}
+  .qtext .num{color:#f3a94e;margin-right:6px;}
+  .opt{display:block;background:#22415c;border:1px solid #34597c;border-radius:6px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:14px;transition:background .12s;}
+  .opt:hover{background:#2b5175;}
+  .opt.sel{background:#2f5f86;border-color:#5b90bd;}
+  .opt.correct{background:#1e7a45;border-color:#2e9e5b;}
+  .opt.wrong{background:#8f3636;border-color:#d05050;}
+  .opt input{margin-right:8px;}
+  .expl{display:none;margin-top:8px;background:#17402a;border-left:3px solid #2e9e5b;border-radius:4px;padding:8px 12px;font-size:13px;line-height:1.5;}
+  .expl.show{display:block;}
+  .expl.wrongmark{background:#4a2626;border-left-color:#d05050;}
+  .bar{position:sticky;bottom:0;background:#1b3a5b;border:2px solid #3d6591;border-radius:10px;padding:14px 18px;margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  button{border:none;border-radius:6px;padding:11px 20px;font-size:15px;font-weight:600;cursor:pointer;}
+  #check{background:#2e9e5b;color:#fff;}
+  #reset{background:#6b7c8c;color:#fff;}
+  #score{font-size:18px;font-weight:800;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Quiz MIS ชุด 2 — 20 ข้อ</h1>
+  <p class="sub">เน้นจุดอ่อน: <b>MIS vs DSS</b>, มิติองค์กร/การจัดการ/เทคโนโลยี, Collaboration — เลือกคำตอบให้ครบ แล้วกด “ตรวจคำตอบ”</p>
+  <div id="quiz"></div>
+  <div class="bar">
+    <button id="check">ตรวจคำตอบ</button>
+    <button id="reset">เริ่มใหม่</button>
+    <span id="score"></span>
+  </div>
+</div>
+
+<script>
+const Q = [
+ {t:"มิติของ IS",q:"บริษัทติดตั้งระบบใหม่ ต้องคำนึงถึงคน ลำดับชั้น กระบวนการทำงาน และวัฒนธรรมองค์กร สิ่งเหล่านี้เป็นมิติใดของ IS",
+  o:["Organization","Management","Technology","Environment"],a:0,
+  e:"คน/ลำดับชั้น/กระบวนการ/วัฒนธรรม = มิติ Organization"},
+ {t:"ลำดับชั้นองค์กร",q:"พนักงานผลิตและพนักงานบริการ (production/service workers) อยู่ในระดับใดขององค์กร",
+  o:["ระดับปฏิบัติการ (operational)","ระดับกลาง (middle)","ระดับสูง (senior)","ผู้บริหารสูงสุด (CEO)"],a:0,
+  e:"production/service workers ทำงานระดับปฏิบัติการ ; knowledge/data worker อยู่ระดับกลาง"},
+ {t:"Business process",q:"กระบวนการรับคำสั่งซื้อจนส่งของถึงลูกค้า ที่ต้องประสานฝ่ายขาย บัญชี และผลิต เป็นกระบวนการแบบใด",
+  o:["Functional (ฝ่ายเดียว)","Cross-functional (ข้ามฝ่าย)","Routine เดี่ยว","Transaction เดี่ยว"],a:1,
+  e:"Order fulfillment ต้องประสานหลายฝ่าย = Cross-functional business process"},
+ {t:"🔥 MIS vs DSS",q:"ผู้จัดการขอ “รายงานสรุปยอดขายรายเดือนแยกตามสาขา” ควรใช้ระบบใด",
+  o:["TPS","MIS","DSS","ESS"],a:1,hot:true,
+  e:"รายงานสรุปสิ่งที่เกิดขึ้นแล้ว (routine report) = MIS"},
+ {t:"🔥 MIS vs DSS",q:"ผู้จัดการอยากรู้ว่า “ถ้าลดราคาสินค้า 15% กำไรรวมจะเปลี่ยนอย่างไร” ควรใช้ระบบใด",
+  o:["MIS","DSS","TPS","CRM"],a:1,hot:true,
+  e:"มีคำว่า “ถ้า...” = what-if simulation = DSS"},
+ {t:"TPS",q:"ระบบที่บันทึกการออกใบเสร็จและรับชำระเงินที่เคาน์เตอร์ทุกวันคือ",
+  o:["TPS","MIS","DSS","ESS"],a:0,
+  e:"บันทึกธุรกรรมประจำวัน = TPS"},
+ {t:"ESS",q:"CEO ต้องการ dashboard ภาพรวมการเงินทั้งบริษัท + ข้อมูลคู่แข่งภายนอก เพื่อวางแผนระยะยาว ควรใช้",
+  o:["MIS","DSS","ESS","TPS"],a:2,
+  e:"ผู้บริหารสูง + ภาพรวมทั้งองค์กร + ข้อมูลภายนอก + กลยุทธ์ = ESS"},
+ {t:"🔥 MIS vs DSS",q:"“รายงานว่าพนักงานขายคนใดทำยอดสูงสุดในไตรมาสที่แล้ว” ใช้ระบบใด",
+  o:["MIS","DSS","ESS","KMS"],a:0,hot:true,
+  e:"ดูผลย้อนหลังที่เกิดขึ้นแล้ว (report) = MIS (ไม่ใช่ DSS เพราะไม่มีการจำลอง/ตัดสินใจ)"},
+ {t:"🔥 MIS vs DSS",q:"“ประเมินว่าควรเปิดสาขาใหม่ที่ทำเลไหนจึงคุ้มที่สุด โดยจำลองหลายสถานการณ์” ใช้ระบบใด",
+  o:["MIS","DSS","TPS","CRM"],a:1,hot:true,
+  e:"ต้องจำลองหลายสถานการณ์เพื่อตัดสินใจ (non-routine) = DSS"},
+ {t:"วัตถุประสงค์เชิงกลยุทธ์",q:"สายการบินใช้ระบบจองตั๋วออนไลน์ ลดขั้นตอน ลดต้นทุน ให้บริการเร็วขึ้น ตรงกับวัตถุประสงค์ใด",
+  o:["Operational excellence","Survival","New products and services","Improved decision making"],a:0,
+  e:"ลดต้นทุน/ขั้นตอน/เร็วขึ้น = Operational excellence"},
+ {t:"วัตถุประสงค์เชิงกลยุทธ์",q:"ร้านกาแฟทำแอปสะสมแต้ม จดจำเมนูโปรดของลูกค้า ทำให้ลูกค้ากลับมาซ้ำ ตรงกับวัตถุประสงค์ใด",
+  o:["Operational excellence","Customer intimacy","Survival","Competitive advantage"],a:1,
+  e:"สร้างความผูกพัน/ลูกค้ากลับมาซ้ำ = Customer & supplier intimacy"},
+ {t:"วัตถุประสงค์เชิงกลยุทธ์",q:"ธนาคารต้องเปิด mobile banking เพราะคู่แข่งทุกเจ้ามีแล้ว ไม่มีจะสู้ไม่ได้ ตรงกับวัตถุประสงค์ใด",
+  o:["Survival","Operational excellence","Improved decision making","New products"],a:0,
+  e:"“ไม่ทำแล้วสู้ไม่ได้ / ตามคู่แข่ง” = Survival"},
+ {t:"Environment",q:"ข้อใดไม่ใช่องค์ประกอบสิ่งแวดล้อม (Environment) ของระบบสารสนเทศ",
+  o:["ผู้ถือหุ้น (stockholders)","คู่แข่ง (competitors)","ฝ่ายบัญชีภายในบริษัท","หน่วยงานกำกับดูแล"],a:2,
+  e:"ฝ่ายบัญชีอยู่ภายในองค์กร ไม่ใช่ environment ; ที่เหลือเป็นปัจจัยภายนอก"},
+ {t:"Digital firm",q:"ข้อใดคือลักษณะเด่นของบริษัทดิจิทัล (Digital firm)",
+  o:["ทำงานได้เฉพาะในสำนักงานและเวลาเดียวกัน","ปรับเปลี่ยนเวลาและสถานที่ทำงานได้ (time/space shifting)","ไม่พึ่งพาอินเทอร์เน็ต","ตัดสินใจช้าลงเพราะข้อมูลเยอะ"],a:1,
+  e:"Digital firm เด่นเรื่อง time shifting + space shifting (ทำงานได้ทุกที่ทุกเวลา)"},
+ {t:"🔥 มิติ Management vs Organization",q:"ข้อใดเป็นสิ่งใหม่ด้าน “การจัดการ (Management)” ไม่ใช่ด้านองค์การ",
+  o:["Telework","Social business","Business Intelligence","Co-creation of business value"],a:2,hot:true,
+  e:"BI = เครื่องมือช่วยผู้จัดการวิเคราะห์/ตัดสินใจ = ด้าน Management ; Telework/Social business/Co-creation = ด้าน Organization"},
+ {t:"Data vs Information",q:"ข้อใดคือ “Information” (ผ่านการประมวลผลแล้ว) ไม่ใช่ raw data",
+  o:["ลูกค้าคนหนึ่งซื้อของราคา 250 บาท เวลา 14:32","ยอดขายเฉลี่ยต่อวันของสาขา = 45,000 บาท","บิลเลขที่ 00123","รหัสสินค้า A17"],a:1,
+  e:"“ค่าเฉลี่ย” = ผ่านการประมวลผล = Information ; ที่เหลือเป็นข้อเท็จจริงดิบเดี่ยวๆ = raw data"},
+ {t:"Enterprise apps",q:"ระบบที่จัดการความสัมพันธ์กับซัพพลายเออร์และการจัดส่งสินค้า (orders, inventory, delivery) คือ",
+  o:["CRM","SCM","KMS","ESS"],a:1,
+  e:"จัดการซัพพลายเออร์/การจัดส่ง = SCM (Supply Chain Management)"},
+ {t:"🔥 Collaboration",q:"เครื่องมือใดเหมาะกับการทำงานร่วมแบบ “ต่างเวลา ต่างสถานที่” (Different time / Different place)",
+  o:["Video conferencing","โทรศัพท์","E-mail หรือ Wiki","ประชุมในห้องเดียวกัน"],a:2,hot:true,
+  e:"ต่างเวลา = ทิ้งข้อความไว้ให้อ่านทีหลัง = E-mail/Wiki ; Video conf/โทรศัพท์ = เวลาเดียวกัน"},
+ {t:"Enterprise System",q:"แนวคิด “หนึ่งบริษัท หนึ่งฐานข้อมูล” (one company, one database) เป็นของระบบใด",
+  o:["ERP","DSS","TPS","KMS"],a:0,
+  e:"รวมข้อมูลทุกฝ่ายไว้ฐานเดียว = ERP (Enterprise System)"},
+ {t:"MIS report",q:"รายงานที่ถูกสร้างขึ้นอัตโนมัติเมื่อค่าผิดปกติเกิน trigger point ที่ตั้งไว้ คือรายงานประเภทใด",
+  o:["Scheduled report","On-demand report","Exception report","Summary report"],a:2,
+  e:"สร้างอัตโนมัติเมื่อผิดปกติตาม trigger point = Exception report"}
+];
+
+const quiz=document.getElementById("quiz");
+Q.forEach((item,qi)=>{
+  const div=document.createElement("div");
+  div.className="q";
+  let opts="";
+  item.o.forEach((o,oi)=>{opts+=`<label class="opt" data-q="${qi}" data-o="${oi}"><input type="radio" name="q${qi}" value="${oi}">${o}</label>`;});
+  div.innerHTML=`<div class="qtext"><span class="num">${qi+1}.</span>${item.q}</div>${opts}<div class="expl" id="e${qi}"></div>`;
+  quiz.appendChild(div);
+});
+
+quiz.addEventListener("click",e=>{
+  const lab=e.target.closest(".opt"); if(!lab) return;
+  const qi=lab.dataset.q;
+  document.querySelectorAll(`.opt[data-q="${qi}"]`).forEach(l=>l.classList.remove("sel"));
+  lab.classList.add("sel"); lab.querySelector("input").checked=true;
+});
+
+document.getElementById("check").addEventListener("click",()=>{
+  let score=0;
+  Q.forEach((item,qi)=>{
+    const sel=document.querySelector(`input[name="q${qi}"]:checked`);
+    const opts=document.querySelectorAll(`.opt[data-q="${qi}"]`);
+    opts.forEach(o=>o.classList.remove("correct","wrong"));
+    const expl=document.getElementById("e"+qi);
+    expl.classList.add("show"); expl.classList.remove("wrongmark");
+    opts[item.a].classList.add("correct");
+    if(sel){
+      const c=parseInt(sel.value);
+      if(c===item.a) score++;
+      else{ opts[c].classList.add("wrong"); expl.classList.add("wrongmark"); }
+    }
+    expl.innerHTML=`✅ คำตอบ: <b>${item.o[item.a]}</b><br>${item.e}`;
+  });
+  const s=document.getElementById("score");
+  s.textContent=`คะแนน: ${score} / 20`;
+  s.style.color= score>=16?"#7ee6a5":score>=10?"#ffd98a":"#ff9a9a";
+  if(score===20) s.textContent+="  🎉 เต็ม!";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+document.getElementById("reset").addEventListener("click",()=>{
+  document.querySelectorAll("input[type=radio]").forEach(r=>r.checked=false);
+  document.querySelectorAll(".opt").forEach(o=>o.classList.remove("sel","correct","wrong"));
+  document.querySelectorAll(".expl").forEach(x=>x.classList.remove("show","wrongmark"));
+  document.getElementById("score").textContent="";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+</script>
+</body>
+</html>
