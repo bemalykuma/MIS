@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เตรียมสอบกลางภาค 1/2569 — ภาษาญี่ปุ่นเบื้องต้น</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1EAD9;
+    --paper-card:#FFFCF5;
+    --ink:#26324A;
+    --ink-soft:#5B6579;
+    --hanko:#B23A2E;
+    --hanko-dark:#8E2C22;
+    --gold:#C99A3E;
+    --moss:#4C7A5E;
+    --rule:#DCD1B4;
+    --line:#c9bd9c;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0) 220px),
+      var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans Thai','Noto Sans JP',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .jp{ font-family:'Noto Sans JP','IBM Plex Sans Thai',sans-serif; }
+  .display{ font-family:'Shippori Mincho', serif; }
+
+  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px;}
+
+  /* ---------- Header / Hanko hero ---------- */
+  header.hero{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:22px 4px 26px;
+    border-bottom:2px solid var(--rule);
+    margin-bottom:22px;
+  }
+  .stamp{
+    flex:0 0 auto;
+    width:64px;height:64px;
+    border-radius:8px;
+    border:3px solid var(--hanko);
+    color:var(--hanko);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Shippori Mincho',serif;
+    font-weight:800;
+    font-size:15px;
+    line-height:1.05;
+    text-align:center;
+    transform:rotate(-3deg);
+    box-shadow: 2px 2px 0 rgba(178,58,46,0.15);
+  }
+  .hero-text h1{
+    margin:0 0 4px;
+    font-family:'Shippori Mincho', serif;
+    font-weight:700;
+    font-size:23px;
+    color:var(--ink);
+    letter-spacing:.2px;
+  }
+  .hero-text p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:13.5px;
+  }
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:22px;
+  }
+  nav.tabs button{
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--ink-soft);
+    background:var(--paper-card);
+    border:1.5px solid var(--rule);
+    border-radius:3px;
+    padding:9px 13px;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  nav.tabs button .num{
+    font-family:'Shippori Mincho',serif;
+    color:var(--hanko);
+    margin-right:6px;
+  }
+  nav.tabs button.active{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:#F1EAD9;
+  }
+  nav.tabs button.active .num{ color:var(--gold); }
+  nav.tabs button:hover:not(.active){ border-color:var(--hanko); color:var(--ink); }
+
+  /* ---------- Panel / exam card ---------- */
+  section.panel{ display:none; }
+  section.panel.active{ display:block; animation:fade .25s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+  .panel-head{
+    margin-bottom:16px;
+  }
+  .panel-head h2{
+    font-family:'Shippori Mincho',serif;
+    font-size:19px;
+    margin:0 0 4px;
+  }
+  .panel-head p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:13px;
+  }
+
+  .card{
+    background:var(--paper-card);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:22px;
+    position:relative;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:4px;
+    background:var(--hanko);
+    border-radius:4px 0 0 4px;
+  }
+
+  .progress-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-bottom:14px;
+  }
+  .score-pill{
+    font-family:'Shippori Mincho',serif;
+    color:var(--moss);
+    font-weight:700;
+  }
+  .score-pill.zero{ color:var(--ink-soft); }
+
+  .question-th{
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:16px;
+    line-height:1.55;
+  }
+  .question-th .jp-inline{
+    font-family:'Noto Sans JP',sans-serif;
+    color:var(--hanko-dark);
+  }
+
+  /* mcq options */
+  .options{ display:flex; flex-direction:column; gap:9px; margin-bottom:16px; }
+  .opt{
+    text-align:left;
+    font-family:'Noto Sans JP','IBM Plex Sans Thai',sans-serif;
+    font-size:15px;
+    padding:11px 14px;
+    border:1.5px solid var(--line);
+    background:#fff;
+    border-radius:3px;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .opt:hover{ border-color:var(--hanko); }
+  .opt.correct{ border-color:var(--moss); background:#EEF5EF; color:var(--moss); font-weight:600;}
+  .opt.wrong{ border-color:var(--hanko); background:#FBEEEC; color:var(--hanko-dark); font-weight:600;}
+  .opt[disabled]{ cursor:default; }
+
+  /* typing input, genkouyoushi-flavoured */
+  .type-row{ display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap;}
+  input.answer, textarea.answer{
+    flex:1 1 220px;
+    font-family:'Noto Sans JP','IBM Plex Sans Thai',sans-serif;
+    font-size:16px;
+    padding:12px 14px;
+    border:1.5px solid var(--line);
+    border-radius:3px;
+    background:
+      repeating-linear-gradient(90deg, transparent 0, transparent 27px, rgba(38,50,74,0.07) 27px, rgba(38,50,74,0.07) 28px);
+    background-color:#fff;
+  }
+  textarea.answer{ min-height:56px; resize:vertical; background-image:none; }
+  input.answer:focus, textarea.answer:focus{ outline:none; border-color:var(--hanko); }
+
+  .feedback{
+    font-size:14px;
+    font-weight:600;
+    padding:10px 13px;
+    border-radius:3px;
+    margin:10px 0;
+    display:none;
+  }
+  .feedback.show{ display:block; }
+  .feedback.ok{ background:#EEF5EF; color:var(--moss); }
+  .feedback.no{ background:#FBEEEC; color:var(--hanko-dark); }
+  .feedback .answer-key{ display:block; margin-top:4px; font-weight:500; color:var(--ink-soft); }
+
+  .btn-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+  button.btn{
+    font-family:'IBM Plex Sans Thai',sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    padding:10px 18px;
+    border-radius:3px;
+    border:1.5px solid var(--ink);
+    background:var(--ink);
+    color:#F1EAD9;
+    cursor:pointer;
+  }
+  button.btn.secondary{
+    background:transparent;
+    color:var(--ink);
+  }
+  button.btn.hanko{
+    border-color:var(--hanko);
+    background:var(--hanko);
+  }
+  button.btn:hover{ opacity:.88; }
+  button.btn:disabled{ opacity:.4; cursor:default; }
+
+  .toggle-row{
+    display:flex; align-items:center; gap:8px;
+    font-size:12.5px; color:var(--ink-soft);
+    margin-bottom:14px;
+  }
+  .toggle-row input{ accent-color:var(--hanko); }
+
+  /* sentence order chips */
+  .sentence-target{
+    min-height:52px;
+    display:flex; flex-wrap:wrap; gap:8px;
+    padding:12px;
+    border:1.5px dashed var(--line);
+    border-radius:3px;
+    background:#fff;
+    margin-bottom:12px;
+  }
+  .sentence-target .placeholder{ color:#b9b1a0; font-size:13px; }
+  .bank{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
+  .chip{
+    font-family:'Noto Sans JP',sans-serif;
+    font-size:15px;
+    padding:8px 13px;
+    background:#fff;
+    border:1.5px solid var(--line);
+    border-radius:20px;
+    cursor:pointer;
+  }
+  .chip:hover{ border-color:var(--hanko); }
+  .chip.placed{ opacity:.35; pointer-events:none; }
+  .chip.in-target{ background:var(--ink); color:#fff; border-color:var(--ink); }
+
+  /* self-intro form */
+  .field-block{ margin-bottom:18px; }
+  .field-block label{
+    display:block;
+    font-size:13.5px;
+    font-weight:600;
+    margin-bottom:4px;
+    color:var(--ink);
+  }
+  .field-block .pattern{
+    font-family:'Noto Sans JP',sans-serif;
+    font-size:12.5px;
+    color:var(--hanko-dark);
+    margin-bottom:6px;
+    display:block;
+  }
+  .reveal{
+    margin-top:6px;
+    font-size:13px;
+    color:var(--ink-soft);
+    display:none;
+    border-left:3px solid var(--gold);
+    padding-left:10px;
+  }
+  .reveal.show{ display:block; }
+  .link-btn{
+    background:none;border:none;
+    color:var(--hanko-dark);
+    font-size:12.5px;
+    font-weight:600;
+    text-decoration:underline;
+    cursor:pointer;
+    padding:0;
+  }
+
+  .kanji-display{
+    font-family:'Noto Sans JP',serif;
+    font-size:38px;
+    text-align:center;
+    padding:14px 0 18px;
+    color:var(--ink);
+  }
+  .num-display{
+    font-family:'Shippori Mincho',serif;
+    font-size:38px;
+    text-align:center;
+    padding:14px 0 18px;
+    color:var(--ink);
+  }
+
+  footer{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:12px;
+    margin-top:30px;
+  }
+
+  /* ---------- handwriting tab ---------- */
+  .write-controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    margin-bottom:16px;
+  }
+  select.answer{
+    font-family:'IBM Plex Sans Thai',sans-serif;
+    font-size:13.5px;
+    padding:9px 12px;
+    border:1.5px solid var(--line);
+    border-radius:3px;
+    background:#fff;
+  }
+  .write-meaning{
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:4px;
+  }
+  .write-reading{
+    font-family:'Noto Sans JP',sans-serif;
+    color:var(--ink-soft);
+    font-size:13px;
+    margin-bottom:14px;
+  }
+  .write-boxes{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .write-box{
+    width:84px; height:84px;
+    border:1.5px solid var(--line);
+    border-radius:4px;
+    background:#fff;
+    touch-action:none;
+    cursor:crosshair;
+  }
+  .custom-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:6px;
+    padding-top:14px;
+    border-top:1px dashed var(--rule);
+  }
+
+  @media (max-width:480px){
+    .hero-text h1{ font-size:19px; }
+    nav.tabs button{ font-size:12.5px; padding:8px 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="stamp display">合格<br>祈願</div>
+    <div class="hero-text">
+      <h1>เตรียมสอบกลางภาค 1/2569</h1>
+      <p>แบบฝึกหัดภาษาญี่ปุ่นเบื้องต้น — จากเอกสารทบทวนก่อนสอบ ทั้ง 5 ส่วน</p>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabNav"></nav>
+
+  <!-- ===================== TAB 1: GREETINGS MCQ ===================== -->
+  <section class="panel" id="panel-1">
+    <div class="panel-head">
+      <h2>คำทักทายและสำนวน — เลือกตอบ</h2>
+      <p>ดูความหมายภาษาไทย แล้วเลือกสำนวนภาษาญี่ปุ่นที่ถูกต้อง</p>
+    </div>
+    <div class="card">
+      <div class="progress-row">
+        <span>ข้อที่ <span id="g-idx">1</span>/<span id="g-total">10</span></span>
+        <span class="score-pill" id="g-score">คะแนน 0/0</span>
+      </div>
+      <div class="question-th" id="g-question"></div>
+      <div class="options" id="g-options"></div>
+      <div class="feedback" id="g-feedback"></div>
+      <div class="btn-row">
+        <button class="btn secondary" id="g-restart">เริ่มใหม่</button>
+        <button class="btn hanko" id="g-next" disabled>ข้อถัดไป</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TAB 2: TYPING ROMAJI ===================== -->
+  <section class="panel" id="panel-2">
+    <div class="panel-head">
+      <h2>พิมพ์คำตอบ — โรมันจิ</h2>
+      <p>อ่านความหมายภาษาไทย แล้วพิมพ์สำนวนภาษาญี่ปุ่นเป็นโรมันจิ (ไม่ต้องกังวลเรื่องเว้นวรรค/ตัวพิมพ์เล็กใหญ่)</p>
+    </div>
+    <div class="card">
+      <div class="progress-row">
+        <span>ข้อที่ <span id="t-idx">1</span>/<span id="t-total">27</span></span>
+        <span class="score-pill" id="t-score">คะแนน 0/0</span>
+      </div>
+      <div class="question-th" id="t-question"></div>
+      <div class="type-row">
+        <input type="text" class="answer" id="t-input" placeholder="พิมพ์โรมันจิที่นี่..." autocomplete="off">
+      </div>
+      <div class="feedback" id="t-feedback"></div>
+      <div class="btn-row">
+        <button class="btn secondary" id="t-restart">เริ่มใหม่</button>
+        <button class="btn" id="t-check">ตรวจคำตอบ</button>
+        <button class="btn hanko" id="t-next" disabled>ข้อถัดไป</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TAB 3: KANJI NUMBERS ===================== -->
+  <section class="panel" id="panel-3">
+    <div class="panel-head">
+      <h2>คันจิตัวเลข</h2>
+      <p>ฝึกแปลงตัวเลขคันจิ ↔ ตัวเลขอารบิก (เช่น 十八 = 18)</p>
+    </div>
+    <div class="card">
+      <div class="toggle-row">
+        <label style="display:flex;align-items:center;gap:6px;">
+          <input type="checkbox" id="k-direction"> สลับโหมด: ดูเลขอารบิก → พิมพ์คันจิ
+        </label>
+      </div>
+      <div class="progress-row">
+        <span>ข้อที่ <span id="k-idx">1</span></span>
+        <span class="score-pill" id="k-score">คะแนน 0/0</span>
+      </div>
+      <div class="kanji-display" id="k-display">十八</div>
+      <div class="type-row">
+        <input type="text" class="answer" id="k-input" placeholder="พิมพ์คำตอบที่นี่..." autocomplete="off" style="text-align:center;">
+      </div>
+      <div class="feedback" id="k-feedback"></div>
+      <div class="btn-row">
+        <button class="btn" id="k-check">ตรวจคำตอบ</button>
+        <button class="btn hanko" id="k-next">ข้อถัดไป</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TAB 4: VOCAB TYPING ===================== -->
+  <section class="panel" id="panel-4">
+    <div class="panel-head">
+      <h2>คำศัพท์ — เขียนภาษาญี่ปุ่น</h2>
+      <p>ดูความหมายภาษาไทย แล้วพิมพ์คำศัพท์เป็นฮิรางานะ (ตามข้อสอบที่ให้เขียนตัวญี่ปุ่นเท่านั้น)</p>
+    </div>
+    <div class="card">
+      <div class="toggle-row">
+        <label style="display:flex;align-items:center;gap:6px;">
+          <input type="checkbox" id="v-easy"> โหมดฝึก: ยอมรับคำตอบเป็นโรมันจิด้วย
+        </label>
+      </div>
+      <div class="progress-row">
+        <span>ข้อที่ <span id="v-idx">1</span>/<span id="v-total">8</span></span>
+        <span class="score-pill" id="v-score">คะแนน 0/0</span>
+      </div>
+      <div class="question-th" id="v-question"></div>
+      <div class="type-row">
+        <input type="text" class="answer jp" id="v-input" placeholder="พิมพ์คำตอบที่นี่ (ひらがな)" autocomplete="off">
+      </div>
+      <div class="feedback" id="v-feedback"></div>
+      <div class="btn-row">
+        <button class="btn secondary" id="v-restart">เริ่มใหม่</button>
+        <button class="btn" id="v-check">ตรวจคำตอบ</button>
+        <button class="btn hanko" id="v-next" disabled>ข้อถัดไป</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TAB 5: SENTENCE ORDER ===================== -->
+  <section class="panel" id="panel-5">
+    <div class="panel-head">
+      <h2>เรียงประโยค</h2>
+      <p>แตะคำศัพท์ตามลำดับให้เป็นประโยคที่ถูกต้อง ฝึกโครงสร้าง は / の / です / ではありません</p>
+    </div>
+    <div class="card">
+      <div class="progress-row">
+        <span>ข้อที่ <span id="s-idx">1</span>/<span id="s-total">6</span></span>
+        <span class="score-pill" id="s-score">คะแนน 0/0</span>
+      </div>
+      <div class="question-th" id="s-question"></div>
+      <div class="sentence-target" id="s-target"><span class="placeholder">แตะคำด้านล่างเพื่อเรียงประโยค...</span></div>
+      <div class="bank" id="s-bank"></div>
+      <div class="feedback" id="s-feedback"></div>
+      <div class="btn-row">
+        <button class="btn secondary" id="s-clear">ล้างคำตอบ</button>
+        <button class="btn" id="s-check">ตรวจคำตอบ</button>
+        <button class="btn hanko" id="s-next" disabled>ข้อถัดไป</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TAB 6: SELF INTRO ===================== -->
+  <section class="panel" id="panel-6">
+    <div class="panel-head">
+      <h2>แนะนำตัวเอง</h2>
+      <p>ตอบเป็นภาษาญี่ปุ่นเท่านั้น ไม่มีเฉลยตายตัวเพราะเป็นข้อมูลของตัวเอง — พิมพ์คำตอบแล้วกดดูตัวอย่างเพื่อเทียบรูปประโยค</p>
+    </div>
+    <div class="card" id="intro-card"></div>
+  </section>
+
+  <!-- ===================== TAB 7: HANDWRITING ===================== -->
+  <section class="panel" id="panel-7">
+    <div class="panel-head">
+      <h2>ฝึกเขียนด้วยปากกา</h2>
+      <p>ใช้เมาส์ นิ้ว หรือปากกาสไตลัสลากเขียนในช่องตาราง (แบบกระดาษเก็งโค) ทับตัวอย่างจางๆ เพื่อฝึกลายเส้น</p>
+    </div>
+    <div class="card">
+      <div class="write-controls">
+        <select class="answer" id="w-category">
+          <option value="numbers">ตัวเลขคันจิ</option>
+          <option value="vocab">คำศัพท์ (สถานที่)</option>
+          <option value="greetings">คำทักทาย</option>
+          <option value="hiragana">ฮิรางานะพื้นฐาน</option>
+        </select>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-soft);">
+          <input type="checkbox" id="w-guide" checked> แสดงตัวอย่างจางๆ ให้ลากทับ
+        </label>
+      </div>
+
+      <div class="write-meaning" id="w-meaning">โรงเรียน</div>
+      <div class="write-reading" id="w-reading">gakkou</div>
+
+      <div class="write-boxes" id="w-boxes"></div>
+
+      <div class="btn-row">
+        <button class="btn secondary" id="w-clear">ล้างทั้งหมด</button>
+        <button class="btn hanko" id="w-next">คำถัดไป</button>
+      </div>
+
+      <div class="custom-row">
+        <input type="text" class="answer jp" id="w-custom" placeholder="หรือพิมพ์คำที่อยากฝึกเขียนเอง เช่น ありがとう" style="flex:1 1 220px;">
+        <button class="btn" id="w-custom-go">สร้างช่องฝึกเขียน</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>ทำจากเอกสารทบทวนก่อนสอบกลางภาค 1/2569 · ฝึกซ้ำได้ไม่จำกัด</footer>
+</div>
+
+<script>
+/* ===================================================================
+   DATA
+=================================================================== */
+const PHRASES = [
+  {jp:"おはようございます", ro:["ohayougozaimasu","ohayogozaimasu"], th:"สวัสดีตอนเช้า"},
+  {jp:"こんにちは", ro:["konnichiwa"], th:"สวัสดี (ตอนสายๆถึงช่วงใกล้เย็น)"},
+  {jp:"こんばんは", ro:["konbanwa"], th:"สวัสดีตอนเย็น"},
+  {jp:"おげんきですか", ro:["ogenkidesuka"], th:"สบายดีไหมคะ/ครับ"},
+  {jp:"はい、げんきです", ro:["haigenkidesu"], th:"ค่ะ/ครับ สบายดี"},
+  {jp:"おくにはどちらですか", ro:["okuniwadochiradesuka"], th:"คุณมาจากประเทศอะไรคะ/ครับ"},
+  {jp:"おなまえはなんですか", ro:["onamaewanandesuka"], th:"คุณชื่ออะไรคะ/ครับ"},
+  {jp:"おたんじょうびはいつですか", ro:["otanjoubiwaitsudesuka"], th:"วันเกิดของคุณคือเมื่อไหร่คะ/ครับ"},
+  {jp:"しゅみはなんですか", ro:["shumiwanandesuka"], th:"งานอดิเรกของคุณคืออะไรคะ/ครับ"},
+  {jp:"はじめまして", ro:["hajimemashite"], th:"สวัสดีค่ะ/ครับ (พบกันครั้งแรก)"},
+  {jp:"どうぞよろしくおねがいします", ro:["douzoyoroshikuonegaishimasu"], th:"ยินดีที่ได้รู้จัก ฝากเนื้อฝากตัวด้วย"},
+  {jp:"わたしのなまえは＿＿＿です", ro:["watashinonamaewadesu"], th:"ชื่อของฉันคือ..."},
+  {jp:"なにがすきですか", ro:["naniga sukidesuka".replace(/\s/g,"")], th:"ชอบอะไร"},
+  {jp:"＿＿＿はどこですか", ro:["wadokodesuka"], th:"...อยู่ที่ไหน"},
+  {jp:"ほんのきもちです", ro:["honnokimochidesu"], th:"ของฝากเล็กๆน้อยๆ"},
+  {jp:"おねがいします", ro:["onegaishimasu"], th:"รบกวนด้วยนะครับ/คะ"},
+  {jp:"ありがとう", ro:["arigatou","arigato"], th:"ขอบคุณ"},
+  {jp:"どういたしまして", ro:["douitashimashite"], th:"ไม่เป็นไร"},
+  {jp:"すみません", ro:["sumimasen"], th:"ขอโทษ / ขอบคุณ / เรียกความสนใจ (ใช้ได้ทุกสถานการณ์)"},
+  {jp:"ごめんなさい", ro:["gomennasai"], th:"ขอโทษ (สำนึกผิด เสียใจกับสิ่งที่ทำ)"},
+  {jp:"にほんごすこしはなせます", ro:["nihongosukoshihanasemasu"], th:"พูดภาษาญี่ปุ่นได้นิดหน่อย"},
+  {jp:"わかりました", ro:["wakarimashita"], th:"เข้าใจแล้วครับ/ค่ะ"},
+  {jp:"わかりません", ro:["wakarimasen"], th:"ไม่เข้าใจครับ/ค่ะ"},
+  {jp:"すみません、これはいくらですか", ro:["sumimasenkorewaikuradesuka"], th:"ขอโทษนะคะ อันนี้ราคาเท่าไหร่ครับ/คะ"},
+  {jp:"コーヒーをおねがいします", ro:["koohiiwoonegaishimasu","kohiiwoonegaishimasu"], th:"ขอเป็นกาแฟครับ/ค่ะ"},
+  {jp:"これはなんですか", ro:["korewanandesuka"], th:"อันนี้คืออะไร"},
+  {jp:"おすすめはなんですか", ro:["osusumewanandesuka"], th:"มีอะไรแนะนำไหมครับ/คะ"},
+];
+
+const VOCAB = [
+  {jp:"えき", ro:"eki", th:"สถานี"},
+  {jp:"きょうしつ", ro:"kyoushitsu", th:"ห้องเรียน"},
+  {jp:"くうこう", ro:"kuukou", th:"สนามบิน"},
+  {jp:"しょくどう", ro:"shokudou", th:"โรงอาหาร"},
+  {jp:"いえ", ro:"ie", th:"บ้าน"},
+  {jp:"だいがく", ro:"daigaku", th:"มหาวิทยาลัย"},
+  {jp:"かいしゃ", ro:"kaisha", th:"บริษัท"},
+  {jp:"がっこう", ro:"gakkou", th:"โรงเรียน"},
+];
+
+const SENTENCES = [
+  {chips:["わたし","は","がくせい","です"], th:"ฉันเป็นนักเรียน/นักศึกษา"},
+  {chips:["これ","は","わたし","の","ほん","です"], th:"นี่คือหนังสือของฉัน"},
+  {chips:["あれ","は","せんせい","の","かばん","です"], th:"นั่นคือกระเป๋าของอาจารย์"},
+  {chips:["たなかさん","は","だいがくせい","です"], th:"คุณทานากะเป็นนักศึกษามหาวิทยาลัย"},
+  {chips:["わたし","は","にほんじん","では","ありません"], th:"ฉันไม่ใช่คนญี่ปุ่น"},
+  {chips:["これ","は","なん","です","か"], th:"นี่คืออะไร"},
+];
+
+/* ===================================================================
+   HELPERS
+=================================================================== */
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function pick(arr,n){ return shuffle(arr).slice(0,n); }
+function norm(s){ return s.toLowerCase().replace(/[\s。、,.\-_！!？?＿_]/g,""); }
+
+/* ===================================================================
+   TAB NAV
+=================================================================== */
+const TABS = [
+  {id:1, label:"ทักทาย"},
+  {id:2, label:"พิมพ์โรมันจิ"},
+  {id:3, label:"คันจิตัวเลข"},
+  {id:4, label:"คำศัพท์"},
+  {id:5, label:"เรียงประโยค"},
+  {id:6, label:"แนะนำตัวเอง"},
+  {id:7, label:"ฝึกเขียน (ปากกา)"},
+];
+const tabNav = document.getElementById('tabNav');
+TABS.forEach(t=>{
+  const b = document.createElement('button');
+  b.innerHTML = `<span class="num">${t.id}</span>${t.label}`;
+  b.onclick = ()=> showTab(t.id);
+  b.dataset.tab = t.id;
+  tabNav.appendChild(b);
+});
+function showTab(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  tabNav.querySelectorAll('button').forEach(b=> b.classList.toggle('active', +b.dataset.tab===id));
+}
+
+/* ===================================================================
+   TAB 1: GREETINGS MCQ
+=================================================================== */
+let gQ=[], gI=0, gScore=0, gAnswered=0;
+function gStart(){
+  gQ = pick(PHRASES,10);
+  gI=0; gScore=0; gAnswered=0;
+  document.getElementById('g-total').textContent = gQ.length;
+  gRender();
+}
+function gRender(){
+  const q = gQ[gI];
+  document.getElementById('g-idx').textContent = gI+1;
+  document.getElementById('g-score').textContent = `คะแนน ${gScore}/${gAnswered}`;
+  document.getElementById('g-score').className = 'score-pill'+(gAnswered===0?' zero':'');
+  document.getElementById('g-question').innerHTML = `ความหมายนี้ตรงกับสำนวนใด: <br><b>“${q.th}”</b>`;
+  const wrongs = pick(PHRASES.filter(p=>p!==q),3);
+  const opts = shuffle([q, ...wrongs]);
+  const box = document.getElementById('g-options');
+  box.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='opt jp';
+    b.textContent = o.jp;
+    b.onclick = ()=> gAnswer(b,o,q);
+    box.appendChild(b);
+  });
+  document.getElementById('g-feedback').className='feedback';
+  document.getElementById('g-next').disabled = true;
+}
+function gAnswer(btn,chosen,correct){
+  document.querySelectorAll('#g-options .opt').forEach(b=>b.disabled=true);
+  gAnswered++;
+  const fb = document.getElementById('g-feedback');
+  if(chosen===correct){
+    gScore++;
+    btn.classList.add('correct');
+    fb.textContent = 'ถูกต้อง! 🎌';
+    fb.className='feedback show ok';
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('#g-options .opt').forEach(b=>{ if(b.textContent===correct.jp) b.classList.add('correct'); });
+    fb.textContent = 'ยังไม่ถูก — เฉลย: '+correct.jp;
+    fb.className='feedback show no';
+  }
+  document.getElementById('g-score').textContent = `คะแนน ${gScore}/${gAnswered}`;
+  document.getElementById('g-score').className='score-pill';
+  document.getElementById('g-next').disabled = false;
+}
+document.getElementById('g-next').onclick = ()=>{ gI++; if(gI>=gQ.length){ gI=0; } gRender(); };
+document.getElementById('g-restart').onclick = gStart;
+gStart();
+
+/* ===================================================================
+   TAB 2: TYPING ROMAJI
+=================================================================== */
+let tQ=[], tI=0, tScore=0, tAnswered=0;
+function tStart(){
+  tQ = shuffle(PHRASES);
+  tI=0; tScore=0; tAnswered=0;
+  document.getElementById('t-total').textContent = tQ.length;
+  tRender();
+}
+function tRender(){
+  const q = tQ[tI];
+  document.getElementById('t-idx').textContent = tI+1;
+  document.getElementById('t-score').textContent = `คะแนน ${tScore}/${tAnswered}`;
+  document.getElementById('t-question').innerHTML = `พิมพ์โรมันจิของ: <br><b>“${q.th}”</b>`;
+  const input = document.getElementById('t-input');
+  input.value=''; input.disabled=false; input.focus();
+  document.getElementById('t-feedback').className='feedback';
+  document.getElementById('t-next').disabled = true;
+  document.getElementById('t-check').disabled = false;
+}
+function tCheck(){
+  const q = tQ[tI];
+  const input = document.getElementById('t-input');
+  const val = norm(input.value);
+  const ok = q.ro.some(r=> norm(r)===val) && val.length>0;
+  tAnswered++;
+  input.disabled=true;
+  const fb = document.getElementById('t-feedback');
+  if(ok){
+    tScore++;
+    fb.innerHTML = 'ถูกต้อง! 🎌';
+    fb.className='feedback show ok';
+  } else {
+    fb.innerHTML = `ยังไม่ตรง <span class="answer-key">เฉลย: ${q.jp}  (${q.ro[0]})</span>`;
+    fb.className='feedback show no';
+  }
+  document.getElementById('t-score').textContent = `คะแนน ${tScore}/${tAnswered}`;
+  document.getElementById('t-next').disabled=false;
+  document.getElementById('t-check').disabled=true;
+}
+document.getElementById('t-check').onclick = tCheck;
+document.getElementById('t-input').addEventListener('keydown', e=>{ if(e.key==='Enter' && !document.getElementById('t-check').disabled) tCheck(); });
+document.getElementById('t-next').onclick = ()=>{ tI++; if(tI>=tQ.length){ tI=0; } tRender(); };
+document.getElementById('t-restart').onclick = tStart;
+tStart();
+
+/* ===================================================================
+   TAB 3: KANJI NUMBERS
+=================================================================== */
+const K_DIGIT = ['','一','二','三','四','五','六','七','八','九'];
+function numToKanji(n){
+  if(n===0) return '零';
+  let tens = Math.floor(n/10), ones = n%10;
+  let s='';
+  if(tens>0){ s += (tens===1?'':K_DIGIT[tens]) + '十'; }
+  if(ones>0){ s += K_DIGIT[ones]; }
+  return s;
+}
+let kScore=0, kAnswered=0, kCurrent=null, kDir='k2n';
+function kNewQuestion(){
+  const n = 1 + Math.floor(Math.random()*99);
+  kDir = document.getElementById('k-direction').checked ? 'n2k' : 'k2n';
+  kCurrent = {n, kanji:numToKanji(n)};
+  const disp = document.getElementById('k-display');
+  disp.className='kanji-display';
+  if(kDir==='k2n'){
+    disp.textContent = kCurrent.kanji;
+    disp.className='kanji-display';
+    document.getElementById('k-input').placeholder='พิมพ์ตัวเลขอารบิก เช่น 18';
+  } else {
+    disp.textContent = kCurrent.n;
+    disp.className='num-display';
+    document.getElementById('k-input').placeholder='พิมพ์คันจิ เช่น 十八';
+  }
+  document.getElementById('k-input').value='';
+  document.getElementById('k-input').disabled=false;
+  document.getElementById('k-feedback').className='feedback';
+}
+function kCheck(){
+  const val = document.getElementById('k-input').value.trim();
+  kAnswered++;
+  let ok=false;
+  if(kDir==='k2n'){ ok = val === String(kCurrent.n); }
+  else { ok = norm(val) === norm(kCurrent.kanji); }
+  const fb = document.getElementById('k-feedback');
+  if(ok){
+    kScore++;
+    fb.textContent='ถูกต้อง! 🎌';
+    fb.className='feedback show ok';
+  } else {
+    fb.innerHTML = `ยังไม่ถูก <span class="answer-key">เฉลย: ${kDir==='k2n' ? kCurrent.n : kCurrent.kanji}</span>`;
+    fb.className='feedback show no';
+  }
+  document.getElementById('k-score').textContent = `คะแนน ${kScore}/${kAnswered}`;
+  document.getElementById('k-idx').textContent = kAnswered;
+  document.getElementById('k-input').disabled=true;
+}
+document.getElementById('k-check').onclick = kCheck;
+document.getElementById('k-input').addEventListener('keydown', e=>{ if(e.key==='Enter') kCheck(); });
+document.getElementById('k-next').onclick = kNewQuestion;
+document.getElementById('k-direction').onchange = kNewQuestion;
+kNewQuestion();
+
+/* ===================================================================
+   TAB 4: VOCAB TYPING
+=================================================================== */
+let vQ=[], vI=0, vScore=0, vAnswered=0;
+function vStart(){
+  vQ = shuffle(VOCAB);
+  vI=0; vScore=0; vAnswered=0;
+  document.getElementById('v-total').textContent = vQ.length;
+  vRender();
+}
+function vRender(){
+  const q = vQ[vI];
+  document.getElementById('v-idx').textContent = vI+1;
+  document.getElementById('v-score').textContent = `คะแนน ${vScore}/${vAnswered}`;
+  document.getElementById('v-question').innerHTML = `คำว่า “${q.th}” ภาษาญี่ปุ่นเขียนว่าอย่างไร`;
+  const input = document.getElementById('v-input');
+  input.value=''; input.disabled=false; input.focus();
+  document.getElementById('v-feedback').className='feedback';
+  document.getElementById('v-next').disabled=true;
+  document.getElementById('v-check').disabled=false;
+}
+function vCheck(){
+  const q = vQ[vI];
+  const easy = document.getElementById('v-easy').checked;
+  const val = norm(document.getElementById('v-input').value);
+  const ok = val.length>0 && ( val===norm(q.jp) || (easy && val===norm(q.ro)) );
+  vAnswered++;
+  document.getElementById('v-input').disabled=true;
+  const fb = document.getElementById('v-feedback');
+  if(ok){
+    vScore++;
+    fb.textContent='ถูกต้อง! 🎌';
+    fb.className='feedback show ok';
+  } else {
+    fb.innerHTML = `ยังไม่ถูก <span class="answer-key">เฉลย: ${q.jp} (${q.ro})</span>`;
+    fb.className='feedback show no';
+  }
+  document.getElementById('v-score').textContent = `คะแนน ${vScore}/${vAnswered}`;
+  document.getElementById('v-next').disabled=false;
+  document.getElementById('v-check').disabled=true;
+}
+document.getElementById('v-check').onclick = vCheck;
+document.getElementById('v-input').addEventListener('keydown', e=>{ if(e.key==='Enter' && !document.getElementById('v-check').disabled) vCheck(); });
+document.getElementById('v-next').onclick = ()=>{ vI++; if(vI>=vQ.length){ vI=0; } vRender(); };
+document.getElementById('v-restart').onclick = vStart;
+vStart();
+
+/* ===================================================================
+   TAB 5: SENTENCE ORDER
+=================================================================== */
+let sQ=[], sI=0, sScore=0, sAnswered=0, sPlaced=[], sBankState=[];
+function sStart(){
+  sQ = shuffle(SENTENCES);
+  sI=0; sScore=0; sAnswered=0;
+  document.getElementById('s-total').textContent = sQ.length;
+  sRender();
+}
+function sRender(){
+  const q = sQ[sI];
+  document.getElementById('s-idx').textContent = sI+1;
+  document.getElementById('s-score').textContent = `คะแนน ${sScore}/${sAnswered}`;
+  document.getElementById('s-question').innerHTML = `เรียงคำให้เป็นประโยคที่แปลว่า: <br><b>“${q.th}”</b>`;
+  sPlaced = [];
+  sBankState = shuffle(q.chips.map((c,idx)=>({c,idx})));
+  sDraw();
+  document.getElementById('s-feedback').className='feedback';
+  document.getElementById('s-next').disabled = true;
+}
+function sDraw(){
+  const target = document.getElementById('s-target');
+  const bank = document.getElementById('s-bank');
+  target.innerHTML = sPlaced.length ? '' : '<span class="placeholder">แตะคำด้านล่างเพื่อเรียงประโยค...</span>';
+  sPlaced.forEach(p=>{
+    const chip = document.createElement('span');
+    chip.className='chip in-target';
+    chip.textContent = p.c;
+    chip.onclick = ()=>{ sPlaced = sPlaced.filter(x=>x!==p); sDraw(); };
+    target.appendChild(chip);
+  });
+  bank.innerHTML='';
+  sBankState.forEach(item=>{
+    const chip = document.createElement('button');
+    chip.className='chip' + (sPlaced.includes(item)?' placed':'');
+    chip.textContent = item.c;
+    chip.onclick = ()=>{ if(sPlaced.includes(item)) return; sPlaced.push(item); sDraw(); };
+    bank.appendChild(chip);
+  });
+}
+function sCheck(){
+  const q = sQ[sI];
+  sAnswered++;
+  const built = sPlaced.map(p=>p.c);
+  const ok = built.length===q.chips.length && built.every((c,i)=>c===q.chips[i]);
+  const fb = document.getElementById('s-feedback');
+  if(ok){
+    sScore++;
+    fb.textContent='ถูกต้อง! เรียงประโยคได้สมบูรณ์ 🎌';
+    fb.className='feedback show ok';
+  } else {
+    fb.innerHTML = `ยังไม่ถูกลำดับ <span class="answer-key">เฉลย: ${q.chips.join('')}</span>`;
+    fb.className='feedback show no';
+  }
+  document.getElementById('s-score').textContent = `คะแนน ${sScore}/${sAnswered}`;
+  document.getElementById('s-next').disabled=false;
+}
+document.getElementById('s-check').onclick = sCheck;
+document.getElementById('s-clear').onclick = ()=>{ sPlaced=[]; sDraw(); };
+document.getElementById('s-next').onclick = ()=>{ sI++; if(sI>=sQ.length){ sI=0; } sRender(); };
+sStart();
+
+/* ===================================================================
+   TAB 6: SELF INTRO
+=================================================================== */
+const INTRO_FIELDS = [
+  {label:"ชื่อของคุณ", pattern:"わたしのなまえは＿＿＿です。", example:"わたしのなまえはタナカです。"},
+  {label:"วันเกิด", pattern:"＿＿月＿＿日です。", example:"8月16日です。"},
+  {label:"สิ่งที่ชอบ", pattern:"＿＿＿がすきです。", example:"コーヒーがすきです。"},
+  {label:"งานอดิเรก", pattern:"わたしのしゅみは＿＿＿です。", example:"わたしのしゅみはえいがです。"},
+];
+const introCard = document.getElementById('intro-card');
+INTRO_FIELDS.forEach((f,i)=>{
+  const block = document.createElement('div');
+  block.className='field-block';
+  block.innerHTML = `
+    <label>${f.label}</label>
+    <span class="pattern jp">รูปแบบ: ${f.pattern}</span>
+    <textarea class="answer jp" id="intro-${i}" placeholder="พิมพ์คำตอบเป็นภาษาญี่ปุ่น..."></textarea>
+    <div style="margin-top:6px;">
+      <button class="link-btn" id="intro-reveal-${i}">ดูตัวอย่างคำตอบ</button>
+    </div>
+    <div class="reveal jp" id="intro-example-${i}">ตัวอย่าง: ${f.example}</div>
+  `;
+  introCard.appendChild(block);
+});
+INTRO_FIELDS.forEach((f,i)=>{
+  document.getElementById(`intro-reveal-${i}`).onclick = ()=>{
+    document.getElementById(`intro-example-${i}`).classList.toggle('show');
+  };
+});
+
+/* ===================================================================
+   TAB 7: HANDWRITING PRACTICE
+=================================================================== */
+const HIRAGANA_BASIC = [
+  ['あ','a'],['い','i'],['う','u'],['え','e'],['お','o'],
+  ['か','ka'],['き','ki'],['く','ku'],['け','ke'],['こ','ko'],
+  ['さ','sa'],['し','shi'],['す','su'],['せ','se'],['そ','so'],
+  ['た','ta'],['ち','chi'],['つ','tsu'],['て','te'],['と','to'],
+  ['な','na'],['に','ni'],['ぬ','nu'],['ね','ne'],['の','no'],
+  ['は','ha'],['ひ','hi'],['ふ','fu'],['へ','he'],['ほ','ho'],
+  ['ま','ma'],['み','mi'],['む','mu'],['め','me'],['も','mo'],
+  ['や','ya'],['ゆ','yu'],['よ','yo'],
+  ['ら','ra'],['り','ri'],['る','ru'],['れ','re'],['ろ','ro'],
+  ['わ','wa'],['を','wo'],['ん','n'],
+];
+
+function wPickWord(){
+  const cat = document.getElementById('w-category').value;
+  if(cat==='numbers'){
+    const n = 1 + Math.floor(Math.random()*99);
+    return {word:numToKanji(n), meaning:`เลข ${n}`, reading:String(n)};
+  }
+  if(cat==='vocab'){
+    const v = VOCAB[Math.floor(Math.random()*VOCAB.length)];
+    return {word:v.jp, meaning:v.th, reading:v.ro};
+  }
+  if(cat==='greetings'){
+    const pool = PHRASES.filter(p=>!p.jp.includes('＿'));
+    const p = pool[Math.floor(Math.random()*pool.length)];
+    return {word:p.jp, meaning:p.th, reading:p.ro[0]};
+  }
+  // hiragana
+  const h = HIRAGANA_BASIC[Math.floor(Math.random()*HIRAGANA_BASIC.length)];
+  return {word:h[0], meaning:`ฮิรางานะ “${h[0]}”`, reading:h[1]};
+}
+
+function wBuildBoxes(text){
+  const container = document.getElementById('w-boxes');
+  container.innerHTML = '';
+  [...text].forEach(ch=>{
+    const canvas = document.createElement('canvas');
+    canvas.className = 'write-box';
+    canvas.width = 84; canvas.height = 84;
+    container.appendChild(canvas);
+    wSetupCanvas(canvas, ch);
+  });
+}
+
+function wDrawGuideAndGrid(ctx, ch){
+  const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.clearRect(0,0,w,h);
+  // faint grid cross (genkouyoushi style)
+  ctx.strokeStyle = 'rgba(38,50,74,0.15)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3,3]);
+  ctx.beginPath();
+  ctx.moveTo(w/2,0); ctx.lineTo(w/2,h);
+  ctx.moveTo(0,h/2); ctx.lineTo(w,h/2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  // faint guide character
+  if(document.getElementById('w-guide').checked && ch && ch.trim()){
+    ctx.fillStyle = 'rgba(38,50,74,0.22)';
+    ctx.font = "54px 'Noto Sans JP', sans-serif";
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(ch, w/2, h/2+2);
+  }
+}
+
+function wSetupCanvas(canvas, ch){
+  const ctx = canvas.getContext('2d');
+  wDrawGuideAndGrid(ctx, ch);
+  let drawing = false, last = null;
+
+  function pos(e){
+    const r = canvas.getBoundingClientRect();
+    return { x:(e.clientX-r.left)*(canvas.width/r.width), y:(e.clientY-r.top)*(canvas.height/r.height) };
+  }
+  function start(e){
+    drawing = true;
+    last = pos(e);
+    canvas.setPointerCapture(e.pointerId);
+  }
+  function move(e){
+    if(!drawing) return;
+    const p = pos(e);
+    ctx.strokeStyle = '#26324A';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(last.x,last.y);
+    ctx.lineTo(p.x,p.y);
+    ctx.stroke();
+    last = p;
+  }
+  function end(){ drawing=false; last=null; }
+
+  canvas.addEventListener('pointerdown', start);
+  canvas.addEventListener('pointermove', move);
+  canvas.addEventListener('pointerup', end);
+  canvas.addEventListener('pointerleave', end);
+  canvas._chGuide = ch;
+}
+
+function wSetWord(item){
+  document.getElementById('w-meaning').textContent = item.meaning;
+  document.getElementById('w-reading').textContent = item.reading;
+  wBuildBoxes(item.word);
+}
+
+document.getElementById('w-category').onchange = ()=> wSetWord(wPickWord());
+document.getElementById('w-next').onclick = ()=> wSetWord(wPickWord());
+document.getElementById('w-clear').onclick = ()=>{
+  document.querySelectorAll('#w-boxes canvas').forEach(c=> wDrawGuideAndGrid(c.getContext('2d'), c._chGuide));
+};
+document.getElementById('w-guide').onchange = ()=>{
+  document.querySelectorAll('#w-boxes canvas').forEach(c=> wDrawGuideAndGrid(c.getContext('2d'), c._chGuide));
+};
+document.getElementById('w-custom-go').onclick = ()=>{
+  const text = document.getElementById('w-custom').value.trim();
+  if(!text) return;
+  document.getElementById('w-meaning').textContent = 'คำที่คุณพิมพ์เอง';
+  document.getElementById('w-reading').textContent = text;
+  wBuildBoxes(text);
+};
+document.getElementById('w-custom').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('w-custom-go').click(); });
+
+wSetWord(wPickWord());
+</script>
+</body>
+</html>
