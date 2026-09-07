@@ -168,7 +168,34 @@
 
   /* mcq options */
   .options{ display:flex; flex-direction:column; gap:9px; margin-bottom:16px; }
+  .speak-ico{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:22px;height:22px;
+    margin-left:8px;
+    font-size:13px;
+    border-radius:50%;
+    background:rgba(38,50,74,0.08);
+    cursor:pointer;
+    vertical-align:middle;
+    flex:0 0 auto;
+  }
+  .speak-ico:hover{ background:rgba(178,58,46,0.15); }
+  button.speak-btn{
+    flex:0 0 auto;
+    font-size:16px;
+    padding:0 14px;
+    border-radius:3px;
+    border:1.5px solid var(--line);
+    background:#fff;
+    cursor:pointer;
+  }
+  button.speak-btn:hover{ border-color:var(--hanko); }
   .opt{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
     text-align:left;
     font-family:'Noto Sans JP','IBM Plex Sans Thai',sans-serif;
     font-size:15px;
@@ -179,6 +206,7 @@
     cursor:pointer;
     transition:border-color .15s, background .15s;
   }
+  .opt .opt-text{ flex:1; }
   .opt .romaji{
     display:block;
     font-family:'IBM Plex Sans Thai',sans-serif;
@@ -456,6 +484,7 @@
       <div class="question-th" id="t-question"></div>
       <div class="type-row">
         <input type="text" class="answer" id="t-input" placeholder="พิมพ์โรมันจิที่นี่..." autocomplete="off">
+        <button type="button" class="speak-btn" id="t-speak" title="ฟังเสียง">🔊</button>
       </div>
       <div class="feedback" id="t-feedback"></div>
       <div class="btn-row">
@@ -483,6 +512,9 @@
         <span class="score-pill" id="k-score">คะแนน 0/0</span>
       </div>
       <div class="kanji-display" id="k-display">十八</div>
+      <div style="text-align:center;margin-top:-10px;margin-bottom:6px;">
+        <button type="button" class="speak-btn" id="k-speak" title="ฟังเสียง">🔊 ฟังเสียง</button>
+      </div>
       <div class="type-row">
         <input type="text" class="answer" id="k-input" placeholder="พิมพ์คำตอบที่นี่..." autocomplete="off" style="text-align:center;">
       </div>
@@ -513,6 +545,7 @@
       <div class="question-th" id="v-question"></div>
       <div class="type-row">
         <input type="text" class="answer jp" id="v-input" placeholder="พิมพ์คำตอบที่นี่ (ひらがな)" autocomplete="off">
+        <button type="button" class="speak-btn" id="v-speak" title="ฟังเสียง">🔊</button>
       </div>
       <div class="feedback" id="v-feedback"></div>
       <div class="btn-row">
@@ -541,6 +574,7 @@
       <div class="btn-row">
         <button class="btn secondary" id="s-clear">ล้างคำตอบ</button>
         <button class="btn" id="s-check">ตรวจคำตอบ</button>
+        <button class="btn secondary" id="s-speak" disabled title="ฟังประโยคที่ถูกต้อง">🔊 ฟังประโยค</button>
         <button class="btn hanko" id="s-next" disabled>ข้อถัดไป</button>
       </div>
     </div>
@@ -575,7 +609,7 @@
       </div>
 
       <div class="write-meaning" id="w-meaning">โรงเรียน</div>
-      <div class="write-reading" id="w-reading">gakkou</div>
+      <div class="write-reading"><span id="w-reading">gakkou</span> <button type="button" class="speak-btn" id="w-speak" title="ฟังเสียง" style="margin-left:6px;">🔊</button></div>
 
       <div class="write-boxes" id="w-boxes"></div>
 
@@ -655,6 +689,35 @@ function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=
 function pick(arr,n){ return shuffle(arr).slice(0,n); }
 function norm(s){ return s.toLowerCase().replace(/[\s。、,.\-_！!？?＿_]/g,""); }
 
+/* ---------- speech (Web Speech API, ja-JP) ---------- */
+let jaVoice = null, speechOK = ('speechSynthesis' in window);
+function loadJaVoice(){
+  if(!speechOK) return;
+  const voices = speechSynthesis.getVoices();
+  jaVoice = voices.find(v=>v.lang==='ja-JP') || voices.find(v=>v.lang && v.lang.startsWith('ja')) || null;
+}
+if(speechOK){
+  loadJaVoice();
+  speechSynthesis.onvoiceschanged = loadJaVoice;
+}
+function speak(text){
+  if(!speechOK || !text) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/＿/g,''));
+  u.lang = 'ja-JP';
+  if(jaVoice) u.voice = jaVoice;
+  u.rate = 0.82;
+  speechSynthesis.speak(u);
+}
+function speakIcon(text, title){
+  const s = document.createElement('span');
+  s.className = 'speak-ico';
+  s.textContent = '🔊';
+  s.title = title || 'ฟังเสียง';
+  s.onclick = (e)=>{ e.stopPropagation(); speak(text); };
+  return s;
+}
+
 /* ===================================================================
    TAB NAV
 =================================================================== */
@@ -705,7 +768,11 @@ function gRender(){
     const b=document.createElement('button');
     b.className='opt jp';
     b.dataset.jp = o.jp;
-    b.innerHTML = `${o.jp}<span class="romaji">${o.ro[0]}</span>`;
+    const textSpan = document.createElement('span');
+    textSpan.className = 'opt-text';
+    textSpan.innerHTML = `${o.jp}<span class="romaji">${o.ro[0]}</span>`;
+    b.appendChild(textSpan);
+    b.appendChild(speakIcon(o.jp));
     b.onclick = ()=> gAnswer(b,o,q);
     box.appendChild(b);
   });
@@ -755,6 +822,7 @@ function tRender(){
   document.getElementById('t-feedback').className='feedback';
   document.getElementById('t-next').disabled = true;
   document.getElementById('t-check').disabled = false;
+  document.getElementById('t-speak').onclick = ()=> speak(q.jp);
 }
 function tCheck(){
   const q = tQ[tI];
@@ -813,6 +881,7 @@ function kNewQuestion(){
   document.getElementById('k-input').value='';
   document.getElementById('k-input').disabled=false;
   document.getElementById('k-feedback').className='feedback';
+  document.getElementById('k-speak').onclick = ()=> speak(kCurrent.kanji);
 }
 function kCheck(){
   const val = document.getElementById('k-input').value.trim();
@@ -859,6 +928,7 @@ function vRender(){
   document.getElementById('v-feedback').className='feedback';
   document.getElementById('v-next').disabled=true;
   document.getElementById('v-check').disabled=false;
+  document.getElementById('v-speak').onclick = ()=> speak(q.jp);
 }
 function vCheck(){
   const q = vQ[vI];
@@ -906,6 +976,7 @@ function sRender(){
   sDraw();
   document.getElementById('s-feedback').className='feedback';
   document.getElementById('s-next').disabled = true;
+  document.getElementById('s-speak').disabled = true;
 }
 function sDraw(){
   const target = document.getElementById('s-target');
@@ -943,6 +1014,8 @@ function sCheck(){
   }
   document.getElementById('s-score').textContent = `คะแนน ${sScore}/${sAnswered}`;
   document.getElementById('s-next').disabled=false;
+  document.getElementById('s-speak').disabled=false;
+  document.getElementById('s-speak').onclick = ()=> speak(q.chips.join(''));
 }
 document.getElementById('s-check').onclick = sCheck;
 document.getElementById('s-clear').onclick = ()=>{ sPlaced=[]; sDraw(); };
@@ -969,7 +1042,7 @@ INTRO_FIELDS.forEach((f,i)=>{
     <div style="margin-top:6px;">
       <button class="link-btn" id="intro-reveal-${i}">ดูตัวอย่างคำตอบ</button>
     </div>
-    <div class="reveal jp" id="intro-example-${i}">ตัวอย่าง: ${f.example}<span class="romaji">${f.exampleRo}</span></div>
+    <div class="reveal jp" id="intro-example-${i}">ตัวอย่าง: <span id="intro-ex-text-${i}">${f.example}</span><button type="button" class="speak-btn" id="intro-speak-${i}" title="ฟังเสียง" style="margin-left:8px;padding:0 10px;font-size:13px;">🔊</button><span class="romaji">${f.exampleRo}</span></div>
   `;
   introCard.appendChild(block);
 });
@@ -977,6 +1050,7 @@ INTRO_FIELDS.forEach((f,i)=>{
   document.getElementById(`intro-reveal-${i}`).onclick = ()=>{
     document.getElementById(`intro-example-${i}`).classList.toggle('show');
   };
+  document.getElementById(`intro-speak-${i}`).onclick = ()=> speak(f.example);
 });
 
 /* ===================================================================
@@ -1088,6 +1162,7 @@ function wSetupCanvas(canvas, ch){
 function wSetWord(item){
   document.getElementById('w-meaning').textContent = item.meaning;
   document.getElementById('w-reading').textContent = item.reading;
+  document.getElementById('w-speak').onclick = ()=> speak(item.word);
   wBuildBoxes(item.word);
 }
 
@@ -1104,6 +1179,7 @@ document.getElementById('w-custom-go').onclick = ()=>{
   if(!text) return;
   document.getElementById('w-meaning').textContent = 'คำที่คุณพิมพ์เอง';
   document.getElementById('w-reading').textContent = text;
+  document.getElementById('w-speak').onclick = ()=> speak(text);
   wBuildBoxes(text);
 };
 document.getElementById('w-custom').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('w-custom-go').click(); });
