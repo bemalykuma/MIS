@@ -5,173 +5,207 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>เตรียมสอบกลางภาค 1/2569 — ภาษาญี่ปุ่นเบื้องต้น</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=M+PLUS+Rounded+1c:wght@400;500;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F1EAD9;
-    --paper-card:#FFFCF5;
-    --ink:#26324A;
-    --ink-soft:#5B6579;
-    --hanko:#B23A2E;
-    --hanko-dark:#8E2C22;
-    --gold:#C99A3E;
-    --moss:#4C7A5E;
-    --rule:#DCD1B4;
-    --line:#c9bd9c;
-    --sky:#2F6FA8;
+    --paper:#F7F3EC;
+    --paper-card:#FFFFFF;
+    --ink:#141414;
+    --ink-soft:#767066;
+    --yellow:#FFE59A;
+    --yellow-strong:#F7C948;
+    --pink:#FFB5C1;
+    --pink-strong:#F0899C;
+    --mint:#B7E1D1;
+    --mint-strong:#4FA97E;
+    --blue:#A9D3FF;
+    --blue-strong:#4C93D6;
+    --rule:#E9E2D3;
+    --line:#DED5C0;
+    --ok-bg:#EAF7EF;
+    --ok-ink:#2F8F5B;
+    --no-bg:#FDECEE;
+    --no-ink:#D65C72;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
-    background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 220px),var(--paper);
+    background:var(--paper);
     color:var(--ink);
-    font-family:'IBM Plex Sans Thai','Noto Sans JP',sans-serif;
+    font-family:'IBM Plex Sans Thai','M PLUS Rounded 1c',sans-serif;
     -webkit-font-smoothing:antialiased;
   }
-  .jp{font-family:'Noto Sans JP','IBM Plex Sans Thai',sans-serif;}
-  .display{font-family:'Shippori Mincho',serif;}
+  .jp{font-family:'Zen Maru Gothic','IBM Plex Sans Thai',sans-serif;}
+  .display{font-family:'Zen Maru Gothic','M PLUS Rounded 1c',sans-serif;}
   .wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px;}
 
-  header.hero{display:flex;align-items:center;gap:18px;padding:22px 4px 26px;border-bottom:2px solid var(--rule);margin-bottom:22px;}
-  .stamp{flex:0 0 auto;width:64px;height:64px;border-radius:8px;border:3px solid var(--hanko);color:var(--hanko);display:flex;align-items:center;justify-content:center;font-family:'Shippori Mincho',serif;font-weight:800;font-size:15px;line-height:1.05;text-align:center;transform:rotate(-3deg);box-shadow:2px 2px 0 rgba(178,58,46,.15);}
-  .hero-text h1{margin:0 0 4px;font-family:'Shippori Mincho',serif;font-weight:700;font-size:23px;color:var(--ink);letter-spacing:.2px;}
-  .hero-text p{margin:0;color:var(--ink-soft);font-size:13.5px;}
+  /* -------- header -------- */
+  header.hero{position:relative;display:flex;align-items:center;gap:18px;padding:22px 20px 26px;border-radius:26px;margin-bottom:22px;background:var(--paper-card);border:1px solid var(--rule);overflow:hidden;}
+  header.hero::after{content:"";position:absolute;right:-30px;bottom:-46px;width:150px;height:150px;border-radius:50%;background:var(--yellow);opacity:.55;z-index:0;}
+  .mascot{position:relative;z-index:1;flex:0 0 auto;width:64px;height:64px;}
+  .mascot svg{width:100%;height:100%;display:block;}
+  .hero-text{position:relative;z-index:1;}
+  .hero-text h1{margin:0 0 6px;font-family:'Zen Maru Gothic',serif;font-weight:900;font-size:22px;color:var(--ink);letter-spacing:.2px;}
+  .hero-text p{margin:0;color:var(--ink-soft);font-size:13px;line-height:1.6;}
 
   nav.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
-  nav.tabs button{font-family:inherit;font-size:13px;font-weight:600;color:var(--ink-soft);background:var(--paper-card);border:1.5px solid var(--rule);border-radius:3px;padding:8px 11px;cursor:pointer;transition:all .15s ease;}
-  nav.tabs button .num{font-family:'Shippori Mincho',serif;color:var(--hanko);margin-right:5px;}
-  nav.tabs button.active{background:var(--ink);border-color:var(--ink);color:#F1EAD9;}
-  nav.tabs button.active .num{color:var(--gold);}
-  nav.tabs button:hover:not(.active){border-color:var(--hanko);color:var(--ink);}
+  nav.tabs button{font-family:'IBM Plex Sans Thai',sans-serif;font-size:13px;font-weight:600;color:var(--ink);background:var(--paper-card);border:1.5px solid var(--rule);border-radius:999px;padding:9px 15px;cursor:pointer;transition:all .15s ease;}
+  nav.tabs button .num{font-family:'Zen Maru Gothic',serif;color:var(--pink-strong);margin-right:5px;}
+  nav.tabs button.active{background:var(--ink);border-color:var(--ink);color:#F7F3EC;}
+  nav.tabs button.active .num{color:var(--yellow);}
+  nav.tabs button:hover:not(.active){border-color:var(--ink);}
 
   section.panel{display:none;}
   section.panel.active{display:block;animation:fade .25s ease;}
   @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
 
   .panel-head{margin-bottom:16px;}
-  .panel-head h2{font-family:'Shippori Mincho',serif;font-size:19px;margin:0 0 4px;}
+  .panel-head h2{font-family:'Zen Maru Gothic',serif;font-weight:700;font-size:18px;margin:0 0 4px;}
   .panel-head p{margin:0;color:var(--ink-soft);font-size:13px;}
 
-  .card{background:var(--paper-card);border:1px solid var(--rule);border-radius:4px;padding:22px;position:relative;box-shadow:0 1px 0 rgba(0,0,0,.03);}
-  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--hanko);border-radius:4px 0 0 4px;}
+  .card{background:var(--paper-card);border:1px solid var(--rule);border-radius:20px;padding:22px;position:relative;box-shadow:0 2px 10px rgba(20,20,20,.04);}
 
   .progress-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;}
-  .score-pill{font-family:'Shippori Mincho',serif;color:var(--moss);font-weight:700;}
-  .score-pill.zero{color:var(--ink-soft);}
+  .score-pill{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;background:var(--mint);color:#215C41;padding:4px 12px;border-radius:999px;font-size:12px;}
+  .score-pill.zero{background:var(--rule);color:var(--ink-soft);}
 
-  .question-th{font-size:16px;font-weight:600;margin-bottom:16px;line-height:1.55;}
+  .question-th{font-size:16px;font-weight:600;margin-bottom:16px;line-height:1.6;}
   .options{display:flex;flex-direction:column;gap:9px;margin-bottom:16px;}
 
-  .speak-ico{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin-left:8px;font-size:13px;border-radius:50%;background:rgba(38,50,74,.08);cursor:pointer;vertical-align:middle;flex:0 0 auto;}
-  .speak-ico:hover{background:rgba(178,58,46,.15);}
-  button.speak-btn{flex:0 0 auto;font-size:16px;padding:0 14px;border-radius:3px;border:1.5px solid var(--line);background:#fff;cursor:pointer;}
-  button.speak-btn:hover{border-color:var(--hanko);}
+  .speak-ico{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-left:8px;font-size:13px;border-radius:50%;background:var(--yellow);cursor:pointer;vertical-align:middle;flex:0 0 auto;}
+  .speak-ico:hover{background:var(--yellow-strong);}
+  button.speak-btn{flex:0 0 auto;font-size:16px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--yellow);cursor:pointer;}
+  button.speak-btn:hover{background:var(--yellow-strong);border-color:var(--yellow-strong);}
 
-  .opt{display:flex;align-items:center;justify-content:space-between;text-align:left;font-family:'Noto Sans JP','IBM Plex Sans Thai',sans-serif;font-size:15px;padding:11px 14px;border:1.5px solid var(--line);background:#fff;border-radius:3px;cursor:pointer;transition:border-color .15s,background .15s;}
+  .opt{display:flex;align-items:center;justify-content:space-between;text-align:left;font-family:'Zen Maru Gothic','IBM Plex Sans Thai',sans-serif;font-size:15px;padding:12px 15px;border:1.5px solid var(--line);background:#fff;border-radius:14px;cursor:pointer;transition:border-color .15s,background .15s,transform .1s;}
   .opt .opt-text{flex:1;}
   .opt .romaji{display:block;font-family:'IBM Plex Sans Thai',sans-serif;font-size:12px;font-weight:400;color:var(--ink-soft);margin-top:2px;}
-  .opt:hover{border-color:var(--hanko);}
-  .opt.correct{border-color:var(--moss);background:#EEF5EF;color:var(--moss);font-weight:600;}
-  .opt.wrong{border-color:var(--hanko);background:#FBEEEC;color:var(--hanko-dark);font-weight:600;}
+  .opt:hover{border-color:var(--ink);transform:translateY(-1px);}
+  .opt.correct{border-color:var(--ok-ink);background:var(--ok-bg);color:var(--ok-ink);font-weight:700;}
+  .opt.wrong{border-color:var(--no-ink);background:var(--no-bg);color:var(--no-ink);font-weight:700;}
   .opt[disabled]{cursor:default;}
 
   .type-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
-  input.answer,textarea.answer{flex:1 1 220px;font-family:'Noto Sans JP','IBM Plex Sans Thai',sans-serif;font-size:16px;padding:12px 14px;border:1.5px solid var(--line);border-radius:3px;background:repeating-linear-gradient(90deg,transparent 0,transparent 27px,rgba(38,50,74,.07) 27px,rgba(38,50,74,.07) 28px);background-color:#fff;}
-  textarea.answer{min-height:56px;resize:vertical;background-image:none;}
-  input.answer:focus,textarea.answer:focus{outline:none;border-color:var(--hanko);}
+  input.answer,textarea.answer{flex:1 1 220px;font-family:'Zen Maru Gothic','IBM Plex Sans Thai',sans-serif;font-size:16px;padding:12px 16px;border:1.5px solid var(--line);border-radius:14px;background:#fff;}
+  textarea.answer{min-height:56px;resize:vertical;}
+  input.answer:focus,textarea.answer:focus{outline:none;border-color:var(--ink);}
 
-  .feedback{font-size:14px;font-weight:600;padding:10px 13px;border-radius:3px;margin:10px 0;display:none;}
+  .feedback{font-size:14px;font-weight:700;padding:11px 15px;border-radius:14px;margin:10px 0;display:none;}
   .feedback.show{display:block;}
-  .feedback.ok{background:#EEF5EF;color:var(--moss);}
-  .feedback.no{background:#FBEEEC;color:var(--hanko-dark);}
+  .feedback.ok{background:var(--ok-bg);color:var(--ok-ink);}
+  .feedback.no{background:var(--no-bg);color:var(--no-ink);}
   .feedback .answer-key{display:block;margin-top:4px;font-weight:500;color:var(--ink-soft);}
 
   .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
-  button.btn{font-family:'IBM Plex Sans Thai',sans-serif;font-size:13.5px;font-weight:600;padding:10px 18px;border-radius:3px;border:1.5px solid var(--ink);background:var(--ink);color:#F1EAD9;cursor:pointer;}
+  button.btn{display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Sans Thai',sans-serif;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:999px;border:1.5px solid var(--ink);background:var(--ink);color:#F7F3EC;cursor:pointer;transition:opacity .15s,transform .1s;}
   button.btn.secondary{background:transparent;color:var(--ink);}
-  button.btn.hanko{border-color:var(--hanko);background:var(--hanko);}
-  button.btn:hover{opacity:.88;}
-  button.btn:disabled{opacity:.4;cursor:default;}
+  button.btn.hanko{border-color:var(--ink);background:var(--ink);}
+  button.btn:hover{transform:translateY(-1px);opacity:.92;}
+  button.btn:disabled{opacity:.35;cursor:default;transform:none;}
+  button.btn.hanko::after,button.btn#g-next::after{content:"";width:18px;height:18px;border-radius:50%;background:var(--yellow);flex:0 0 auto;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23141414' d='M8 5l8 7-8 7z'/%3E%3C/svg%3E");background-size:10px;background-repeat:no-repeat;background-position:center;}
 
   .toggle-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;}
-  .toggle-row input{accent-color:var(--hanko);}
+  .toggle-row input{accent-color:var(--ink);}
 
-  .sentence-target{min-height:52px;display:flex;flex-wrap:wrap;gap:8px;padding:12px;border:1.5px dashed var(--line);border-radius:3px;background:#fff;margin-bottom:12px;}
+  .sentence-target{min-height:52px;display:flex;flex-wrap:wrap;gap:8px;padding:14px;border:1.5px dashed var(--line);border-radius:16px;background:var(--paper);margin-bottom:12px;}
   .sentence-target .placeholder{color:#b9b1a0;font-size:13px;}
   .bank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
-  .chip{font-family:'Noto Sans JP',sans-serif;font-size:15px;padding:8px 13px;background:#fff;border:1.5px solid var(--line);border-radius:20px;cursor:pointer;text-align:center;line-height:1.3;}
+  .chip{font-family:'Zen Maru Gothic',sans-serif;font-size:15px;padding:9px 14px;background:#fff;border:1.5px solid var(--line);border-radius:999px;cursor:pointer;text-align:center;line-height:1.3;}
   .chip .romaji{display:block;font-family:'IBM Plex Sans Thai',sans-serif;font-size:10.5px;font-weight:400;color:var(--ink-soft);}
-  .chip.in-target .romaji{color:#cfd6e6;}
-  .chip:hover{border-color:var(--hanko);}
+  .chip.in-target .romaji{color:#d9d9d9;}
+  .chip:hover{border-color:var(--ink);}
   .chip.placed{opacity:.35;pointer-events:none;}
   .chip.in-target{background:var(--ink);color:#fff;border-color:var(--ink);}
 
   .field-block{margin-bottom:18px;}
-  .field-block label{display:block;font-size:13.5px;font-weight:600;margin-bottom:4px;color:var(--ink);}
-  .field-block .pattern{font-family:'Noto Sans JP',sans-serif;font-size:12.5px;color:var(--hanko-dark);margin-bottom:6px;display:block;}
-  .reveal{margin-top:6px;font-size:13px;color:var(--ink-soft);display:none;border-left:3px solid var(--gold);padding-left:10px;}
+  .field-block label{display:block;font-size:13.5px;font-weight:700;margin-bottom:4px;color:var(--ink);}
+  .field-block .pattern{font-family:'Zen Maru Gothic',sans-serif;font-size:12.5px;color:var(--pink-strong);margin-bottom:6px;display:block;}
+  .reveal{margin-top:6px;font-size:13px;color:var(--ink-soft);display:none;border-left:3px solid var(--yellow-strong);padding-left:10px;}
   .field-block .pattern .romaji,.reveal .romaji{display:block;font-family:'IBM Plex Sans Thai',sans-serif;font-size:12px;font-weight:400;color:var(--ink-soft);margin-top:1px;}
   .reveal.show{display:block;}
-  .link-btn{background:none;border:none;color:var(--hanko-dark);font-size:12.5px;font-weight:600;text-decoration:underline;cursor:pointer;padding:0;}
+  .link-btn{background:none;border:none;color:var(--pink-strong);font-size:12.5px;font-weight:700;text-decoration:underline;cursor:pointer;padding:0;}
 
-  .kanji-display{font-family:'Noto Sans JP',serif;font-size:38px;text-align:center;padding:14px 0 18px;color:var(--ink);}
-  .num-display{font-family:'Shippori Mincho',serif;font-size:38px;text-align:center;padding:14px 0 18px;color:var(--ink);}
+  .kanji-display{font-family:'Zen Maru Gothic',serif;font-size:38px;text-align:center;padding:14px 0 18px;color:var(--ink);}
+  .num-display{font-family:'M PLUS Rounded 1c',serif;font-size:38px;text-align:center;padding:14px 0 18px;color:var(--ink);}
 
   /* -------- こそあど tab -------- */
   .kosoad-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:20px;}
-  .kosoad-card{background:var(--paper-card);border:1.5px solid var(--rule);border-radius:6px;padding:14px 10px;text-align:center;cursor:pointer;transition:border-color .15s,transform .1s;}
-  .kosoad-card:hover{border-color:var(--hanko);transform:translateY(-2px);}
-  .kosoad-card.selected{border-color:var(--sky);background:#EEF4FB;}
+  .kosoad-card{background:var(--paper-card);border:1.5px solid var(--rule);border-radius:18px;padding:16px 10px;text-align:center;cursor:pointer;transition:border-color .15s,transform .1s;}
+  .kosoad-card:hover{border-color:var(--ink);transform:translateY(-2px);}
+  .kosoad-card.selected{border-color:var(--blue-strong);background:#EEF6FF;}
   .kosoad-img{width:90px;height:90px;object-fit:contain;margin:0 auto 10px;display:block;}
-  .kosoad-jp{font-family:'Noto Sans JP',sans-serif;font-size:22px;font-weight:700;color:var(--ink);display:block;}
+  .kosoad-jp{font-family:'Zen Maru Gothic',sans-serif;font-size:22px;font-weight:700;color:var(--ink);display:block;}
   .kosoad-ro{font-family:'IBM Plex Sans Thai',sans-serif;font-size:12px;color:var(--ink-soft);display:block;margin-top:2px;}
   .kosoad-th{font-size:13px;color:var(--ink-soft);display:block;margin-top:4px;line-height:1.4;}
-  .kosoad-badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;margin-top:6px;}
-  .kosoad-badge.ko{background:#FFF0EE;color:var(--hanko);}
-  .kosoad-badge.so{background:#FFF8EA;color:#8A6200;}
-  .kosoad-badge.a{background:#EEF5EF;color:var(--moss);}
-  .kosoad-badge.do{background:#EEF4FB;color:var(--sky);}
+  .kosoad-badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;margin-top:8px;}
+  .kosoad-badge.ko{background:#FFF3D2;color:#9A7411;}
+  .kosoad-badge.so{background:#FFE3E9;color:#C2506A;}
+  .kosoad-badge.a{background:#DFF3E8;color:#2F8F5B;}
+  .kosoad-badge.do{background:#DCEBFF;color:#2F6FA8;}
 
   .kosoad-quiz-wrap{margin-top:20px;}
   .kosoad-table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:16px;}
-  .kosoad-table th{background:var(--ink);color:#F1EAD9;padding:8px 10px;text-align:center;font-weight:600;}
-  .kosoad-table td{padding:8px 10px;text-align:center;border-bottom:1px solid var(--rule);}
-  .kosoad-table td.jp-cell{font-family:'Noto Sans JP',sans-serif;font-size:18px;}
+  .kosoad-table th{background:var(--ink);color:#F7F3EC;padding:9px 10px;text-align:center;font-weight:700;}
+  .kosoad-table th:first-child{border-radius:12px 0 0 0;}
+  .kosoad-table th:last-child{border-radius:0 12px 0 0;}
+  .kosoad-table td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--rule);}
+  .kosoad-table td.jp-cell{font-family:'Zen Maru Gothic',sans-serif;font-size:18px;}
   .kosoad-table tr:last-child td{border-bottom:none;}
-  .kosoad-table tr:nth-child(even) td{background:rgba(241,234,217,.4);}
+  .kosoad-table tr:nth-child(even) td{background:var(--paper);}
+
+  /* -------- kana tables -------- */
+  .kana-section{margin-bottom:16px;}
+  .kana-section-title{font-family:'Zen Maru Gothic',serif;font-weight:700;font-size:15px;margin:0 0 4px;}
+  .kana-section-note{font-size:12px;color:var(--ink-soft);margin:0 0 12px;}
+  .kana-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+  .kana-cell{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:9px 2px;text-align:center;cursor:pointer;transition:border-color .15s,transform .1s;}
+  .kana-cell:hover{border-color:var(--ink);transform:translateY(-2px);}
+  .kana-cell.played{border-color:var(--blue-strong);background:#EEF6FF;}
+  .kana-cell .h{font-family:'Zen Maru Gothic',sans-serif;font-size:19px;font-weight:700;color:var(--ink);display:block;line-height:1.2;}
+  .kana-cell .k{font-family:'Zen Maru Gothic',sans-serif;font-size:12.5px;color:var(--blue-strong);display:block;margin-top:1px;}
+  .kana-cell .ro{font-family:'IBM Plex Sans Thai',sans-serif;font-size:10px;color:var(--ink-soft);display:block;margin-top:2px;}
+  .kana-cell.empty{visibility:hidden;pointer-events:none;}
+  .kana-youon-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  .kana-youon-group{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:8px;}
+  .kana-youon-label{font-size:11px;color:var(--ink-soft);font-weight:700;text-align:center;margin-bottom:6px;}
+  .kana-youon-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+  .kana-toggle{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .kana-toggle button{font-family:'IBM Plex Sans Thai',sans-serif;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;border:1.5px solid var(--rule);background:#fff;cursor:pointer;}
+  .kana-toggle button.active{background:var(--ink);border-color:var(--ink);color:#F7F3EC;}
 
   /* -------- handwriting -------- */
   .write-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px;}
-  select.answer{font-family:'IBM Plex Sans Thai',sans-serif;font-size:13.5px;padding:9px 12px;border:1.5px solid var(--line);border-radius:3px;background:#fff;}
-  .write-meaning{font-size:15px;font-weight:600;margin-bottom:4px;}
-  .write-reading{font-family:'Noto Sans JP',sans-serif;color:var(--ink-soft);font-size:13px;margin-bottom:14px;}
+  select.answer{font-family:'IBM Plex Sans Thai',sans-serif;font-size:13.5px;padding:10px 14px;border:1.5px solid var(--line);border-radius:999px;background:#fff;}
+  .write-meaning{font-size:15px;font-weight:700;margin-bottom:4px;}
+  .write-reading{font-family:'Zen Maru Gothic',sans-serif;color:var(--ink-soft);font-size:13px;margin-bottom:14px;}
   .write-boxes{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
-  .write-box{width:84px;height:84px;border:1.5px solid var(--line);border-radius:4px;background:#fff;touch-action:none;cursor:crosshair;}
+  .write-box{width:84px;height:84px;border:1.5px solid var(--line);border-radius:14px;background:#fff;touch-action:none;cursor:crosshair;}
   .custom-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;padding-top:14px;border-top:1px dashed var(--rule);}
 
   /* -------- review -------- */
   .review-card{margin-bottom:16px;}
-  .review-h{font-family:'Shippori Mincho',serif;font-size:15.5px;margin:0 0 10px;color:var(--hanko-dark);}
+  .review-h{font-family:'Zen Maru Gothic',serif;font-weight:700;font-size:15.5px;margin:0 0 10px;color:var(--ink);}
   .review-note{font-size:12.5px;color:var(--ink-soft);margin:0 0 12px;line-height:1.7;}
   .review-list{display:flex;flex-direction:column;}
-  .review-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule);}
+  .review-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule);}
   .review-row:last-child{border-bottom:none;}
   .review-left{flex:1 1 auto;min-width:0;}
-  .review-jp{font-family:'Noto Sans JP',sans-serif;font-size:15px;font-weight:500;}
+  .review-jp{font-family:'Zen Maru Gothic',sans-serif;font-size:15px;font-weight:500;}
   .review-ro{font-family:'IBM Plex Sans Thai',sans-serif;font-size:11.5px;color:var(--ink-soft);margin-top:2px;}
   .review-th{flex:0 0 42%;font-size:13px;color:var(--ink-soft);text-align:right;}
-  .review-th.strong{color:var(--gold);font-weight:700;font-size:15px;}
+  .review-th.strong{color:var(--pink-strong);font-weight:700;font-size:15px;}
   .review-pattern-block{padding:10px 0;border-bottom:1px solid var(--rule);}
   .review-pattern-block:last-child{border-bottom:none;}
   .review-pattern-block .label{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:4px;}
-  .review-pattern-block .line{font-family:'Noto Sans JP',sans-serif;font-size:14px;margin-bottom:2px;}
-  .review-pattern-block .line.ex{color:var(--moss);}
+  .review-pattern-block .line{font-family:'Zen Maru Gothic',sans-serif;font-size:14px;margin-bottom:2px;}
+  .review-pattern-block .line.ex{color:var(--mint-strong);}
 
-  footer{text-align:center;color:var(--ink-soft);font-size:12px;margin-top:30px;}
+  footer{text-align:center;color:var(--ink-soft);font-size:12px;margin-top:30px;display:flex;align-items:center;justify-content:center;gap:8px;}
+  footer .foot-dot{width:16px;height:16px;border-radius:50%;background:var(--yellow);display:inline-block;}
 
   @media(max-width:480px){
-    .hero-text h1{font-size:19px;}
-    nav.tabs button{font-size:12px;padding:7px 9px;}
+    .hero-text h1{font-size:18px;}
+    nav.tabs button{font-size:12px;padding:8px 12px;}
     .kosoad-grid{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));}
   }
 </style>
@@ -180,7 +214,14 @@
 <div class="wrap">
 
 <header class="hero">
-  <div class="stamp display">合格<br>祈願</div>
+  <div class="mascot">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="32" cy="32" r="30" fill="#FFFDF8" stroke="#141414" stroke-width="2"/>
+      <circle cx="23" cy="30" r="4.2" fill="#141414"/>
+      <circle cx="41" cy="30" r="4.2" fill="#141414"/>
+      <path d="M23 42c4 4 14 4 18 0" stroke="#141414" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
   <div class="hero-text">
     <h1>เตรียมสอบกลางภาค 1/2569</h1>
     <p>แบบฝึกหัดภาษาญี่ปุ่นเบื้องต้น — คำทักทาย, คันจิ (ถึงหมื่น), โครงสร้างประโยค, คำศัพท์, こそあど</p>
@@ -230,8 +271,8 @@
     <div style="text-align:center;margin-top:-10px;margin-bottom:6px;"><button type="button" class="speak-btn" id="k-speak">🔊 ฟังเสียง</button></div>
     <div class="type-row"><input type="text" class="answer" id="k-input" placeholder="พิมพ์คำตอบที่นี่..." autocomplete="off" style="text-align:center;"></div>
     <div class="feedback" id="k-feedback"></div>
-    <div style="margin-top:14px;padding:12px;background:rgba(201,154,62,.08);border-radius:4px;font-size:12.5px;color:var(--ink-soft);line-height:1.8;">
-      <b style="color:var(--gold);">สรุปหลักการ:</b><br>
+    <div style="margin-top:14px;padding:14px 16px;background:#FFF3D2;border-radius:14px;font-size:12.5px;color:#6b5410;line-height:1.8;">
+      <b style="color:#9A7411;">สรุปหลักการ:</b><br>
       ร้อย = 百 (ひゃく) &nbsp;|&nbsp; สองร้อย = 二百, สามร้อย = 三百, ...<br>
       พัน = 千 (せん) &nbsp;|&nbsp; สองพัน = 二千, สามพัน = 三千, ...<br>
       หมื่น = 万 (まん) &nbsp;|&nbsp; หมื่นหนึ่ง = 一万, สองหมื่น = 二万, ...<br>
@@ -338,7 +379,30 @@
   <div class="card review-card"><h3 class="review-h">Part 5 — แนะนำตัวเอง</h3><div id="review-part5"></div></div>
 </section>
 
-<footer>ทำจากเอกสารทบทวนก่อนสอบกลางภาค 1/2569 · ฝึกซ้ำได้ไม่จำกัด</footer>
+<!-- TAB 10: KANA TABLES -->
+<section class="panel" id="panel-10">
+  <div class="panel-head"><h2>ตารางฮิรางานะ &amp; คาตาคานะ</h2><p>แต่ละช่องแสดง ひらがな / カタカナ / โรมันจิ — แตะช่องเพื่อฟังเสียง</p></div>
+
+  <div class="card kana-section">
+    <div class="kana-section-title">โกะจูอง (五十音) — เสียงพื้นฐาน</div>
+    <p class="kana-section-note">あ / い / う / え / お ตามลำดับคอลัมน์ในแต่ละแถว</p>
+    <div class="kana-grid" id="kana-seion"></div>
+  </div>
+
+  <div class="card kana-section">
+    <div class="kana-section-title">เสียงก้อง (濁音) &amp; เสียงกึ่งก้อง (半濁音)</div>
+    <p class="kana-section-note">が ざ だ ば = เติมจุด (゛) · ぱ = เติมวงกลม (゜)</p>
+    <div class="kana-grid" id="kana-dakuten"></div>
+  </div>
+
+  <div class="card kana-section">
+    <div class="kana-section-title">เสียงควบ (拗音)</div>
+    <p class="kana-section-note">พยัญชนะ + ゃ/ゅ/ょ ตัวเล็ก อ่านรวบเป็นพยางค์เดียว</p>
+    <div class="kana-youon-wrap" id="kana-youon"></div>
+  </div>
+</section>
+
+<footer><span class="foot-dot"></span>ทำจากเอกสารทบทวนก่อนสอบกลางภาค 1/2569 · ฝึกซ้ำได้ไม่จำกัด</footer>
 </div>
 
 <script>
@@ -397,38 +461,34 @@ const SENTENCES=[
 
 /* こそあど data */
 const KOSOAD=[
-  {jp:"これ",ro:"kore",th:"อันนี้ (ใกล้ผู้พูด)",group:"ko",type:"สิ่ง",
-   img:"https://www.irasutoya.com/favicon.ico", // placeholder
-   irasutoya:"https://1.bp.blogspot.com/-ZrwlMaFa2Do/VW6TJC4OuWI/AAAAAAAAuGI/8GtH0pG7LiY/s400/finger_sashishimesu_man.png"},
-  {jp:"それ",ro:"sore",th:"อันนั้น (ใกล้ผู้ฟัง)",group:"so",type:"สิ่ง",
-   irasutoya:"https://4.bp.blogspot.com/-aKLIlYZ7VoU/VW6TJC4OuWI/AAAAAAAAuGI/8GtH0pG7LiY/s400/finger_sashishimesu_man.png"},
-  {jp:"あれ",ro:"are",th:"อันโน่น (ไกลทั้งคู่)",group:"a",type:"สิ่ง",
-   irasutoya:""},
-  {jp:"どれ",ro:"dore",th:"อันไหน (คำถาม)",group:"do",type:"สิ่ง",irasutoya:""},
-  {jp:"ここ",ro:"koko",th:"ที่นี่ (ใกล้ผู้พูด)",group:"ko",type:"สถานที่",irasutoya:""},
-  {jp:"そこ",ro:"soko",th:"ที่นั่น (ใกล้ผู้ฟัง)",group:"so",type:"สถานที่",irasutoya:""},
-  {jp:"あそこ",ro:"asoko",th:"ที่โน่น (ไกลทั้งคู่)",group:"a",type:"สถานที่",irasutoya:""},
-  {jp:"どこ",ro:"doko",th:"ที่ไหน (คำถาม)",group:"do",type:"สถานที่",irasutoya:""},
-  {jp:"こちら",ro:"kochira",th:"ทางนี้ (สุภาพ = ここ)",group:"ko",type:"สุภาพ",irasutoya:""},
-  {jp:"そちら",ro:"sochira",th:"ทางนั้น (สุภาพ = そこ)",group:"so",type:"สุภาพ",irasutoya:""},
-  {jp:"あちら",ro:"achira",th:"ทางโน้น (สุภาพ = あそこ)",group:"a",type:"สุภาพ",irasutoya:""},
-  {jp:"どちら",ro:"dochira",th:"ทางไหน (สุภาพ = どこ)",group:"do",type:"สุภาพ",irasutoya:""},
+  {jp:"これ",ro:"kore",th:"อันนี้ (ใกล้ผู้พูด)",group:"ko",type:"สิ่ง"},
+  {jp:"それ",ro:"sore",th:"อันนั้น (ใกล้ผู้ฟัง)",group:"so",type:"สิ่ง"},
+  {jp:"あれ",ro:"are",th:"อันโน่น (ไกลทั้งคู่)",group:"a",type:"สิ่ง"},
+  {jp:"どれ",ro:"dore",th:"อันไหน (คำถาม)",group:"do",type:"สิ่ง"},
+  {jp:"ここ",ro:"koko",th:"ที่นี่ (ใกล้ผู้พูด)",group:"ko",type:"สถานที่"},
+  {jp:"そこ",ro:"soko",th:"ที่นั่น (ใกล้ผู้ฟัง)",group:"so",type:"สถานที่"},
+  {jp:"あそこ",ro:"asoko",th:"ที่โน่น (ไกลทั้งคู่)",group:"a",type:"สถานที่"},
+  {jp:"どこ",ro:"doko",th:"ที่ไหน (คำถาม)",group:"do",type:"สถานที่"},
+  {jp:"こちら",ro:"kochira",th:"ทางนี้ (สุภาพ = ここ)",group:"ko",type:"สุภาพ"},
+  {jp:"そちら",ro:"sochira",th:"ทางนั้น (สุภาพ = そこ)",group:"so",type:"สุภาพ"},
+  {jp:"あちら",ro:"achira",th:"ทางโน้น (สุภาพ = あそこ)",group:"a",type:"สุภาพ"},
+  {jp:"どちら",ro:"dochira",th:"ทางไหน (สุภาพ = どこ)",group:"do",type:"สุภาพ"},
 ];
 
-/* irasutoya icons for place concepts */
+/* pastel icon set matching the ko/so/a/do palette: yellow / pink / mint / blue */
 const KOSOAD_SVG = {
-  ここ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="32" r="18" fill="#FFD580" stroke="#C99A3E" stroke-width="2"/><text x="40" y="38" text-anchor="middle" font-size="18" font-family="Noto Sans JP" fill="#26324A">ここ</text><polygon points="40,55 33,68 47,68" fill="#B23A2E"/><circle cx="40" cy="72" r="5" fill="#B23A2E" opacity=".3"/></svg>`,
-  そこ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="32" r="14" fill="#FFF0C0" stroke="#C99A3E" stroke-width="2"/><text x="60" y="37" text-anchor="middle" font-size="14" font-family="Noto Sans JP" fill="#26324A">そこ</text><polygon points="60,50 55,60 65,60" fill="#C99A3E"/><circle cx="40" cy="65" r="8" fill="#4C7A5E" opacity=".25"/><text x="18" y="70" font-size="10" font-family="IBM Plex Sans Thai" fill="#5B6579">ผู้พูด</text><circle cx="18" cy="62" r="6" fill="#4C7A5E" opacity=".4"/></svg>`,
-  あそこ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="68" cy="18" r="10" fill="#E8F5EF" stroke="#4C7A5E" stroke-width="2"/><text x="68" y="23" text-anchor="middle" font-size="10" font-family="Noto Sans JP" fill="#26324A">あ</text><text x="12" y="70" font-size="9" font-family="IBM Plex Sans Thai" fill="#5B6579">ผู้พูด</text><circle cx="12" cy="62" r="5" fill="#B23A2E" opacity=".4"/><text x="35" y="70" font-size="9" font-family="IBM Plex Sans Thai" fill="#5B6579">ผู้ฟัง</text><circle cx="40" cy="62" r="5" fill="#2F6FA8" opacity=".4"/><line x1="45" y1="62" x2="63" y2="22" stroke="#4C7A5E" stroke-width="1.5" stroke-dasharray="3,2"/></svg>`,
-  どこ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><text x="40" y="28" text-anchor="middle" font-size="28" font-family="Noto Sans JP" fill="#2F6FA8">？</text><circle cx="40" cy="50" r="16" fill="none" stroke="#2F6FA8" stroke-width="2" stroke-dasharray="4,3"/><text x="40" y="55" text-anchor="middle" font-size="13" font-family="Noto Sans JP" fill="#2F6FA8">どこ</text></svg>`,
-  これ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><rect x="22" y="20" width="36" height="28" rx="4" fill="#FFD580" stroke="#C99A3E" stroke-width="2"/><text x="40" y="40" text-anchor="middle" font-size="14" font-family="Noto Sans JP" fill="#26324A">これ</text><line x1="30" y1="48" x2="26" y2="60" stroke="#26324A" stroke-width="2"/><line x1="50" y1="48" x2="54" y2="60" stroke="#26324A" stroke-width="2"/><circle cx="10" cy="62" r="5" fill="#B23A2E" opacity=".5"/><line x1="14" y1="60" x2="22" y2="34" stroke="#B23A2E" stroke-width="1.5" stroke-dasharray="2,2"/></svg>`,
-  それ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><rect x="34" y="16" width="34" height="26" rx="4" fill="#FFF0C0" stroke="#C99A3E" stroke-width="2"/><text x="51" y="34" text-anchor="middle" font-size="13" font-family="Noto Sans JP" fill="#26324A">それ</text><circle cx="10" cy="58" r="5" fill="#B23A2E" opacity=".5"/><circle cx="40" cy="62" r="5" fill="#2F6FA8" opacity=".5"/><line x1="44" y1="61" x2="48" y2="40" stroke="#2F6FA8" stroke-width="1.5" stroke-dasharray="2,2"/></svg>`,
-  あれ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="10" width="26" height="20" rx="3" fill="#E8F5EF" stroke="#4C7A5E" stroke-width="2"/><text x="63" y="25" text-anchor="middle" font-size="11" font-family="Noto Sans JP" fill="#26324A">あれ</text><circle cx="8" cy="62" r="4" fill="#B23A2E" opacity=".5"/><circle cx="36" cy="65" r="4" fill="#2F6FA8" opacity=".5"/><line x1="38" y1="63" x2="50" y2="28" stroke="#4C7A5E" stroke-width="1.5" stroke-dasharray="2,2"/></svg>`,
-  どれ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="20" width="20" height="16" rx="3" fill="#EEF4FB" stroke="#2F6FA8" stroke-width="1.5"/><rect x="30" y="20" width="20" height="16" rx="3" fill="#EEF4FB" stroke="#2F6FA8" stroke-width="1.5"/><rect x="52" y="20" width="20" height="16" rx="3" fill="#EEF4FB" stroke="#2F6FA8" stroke-width="1.5"/><text x="40" y="55" text-anchor="middle" font-size="18" font-family="Noto Sans JP" fill="#2F6FA8">？</text></svg>`,
-  こちら:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="32" r="18" fill="#FFF8EA" stroke="#C99A3E" stroke-width="2"/><text x="40" y="29" text-anchor="middle" font-size="11" font-family="Noto Sans JP" fill="#26324A">こちら</text><text x="40" y="42" text-anchor="middle" font-size="9" font-family="IBM Plex Sans Thai" fill="#5B6579">(สุภาพ)</text><polygon points="40,55 33,68 47,68" fill="#C99A3E"/></svg>`,
-  そちら:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="52" cy="32" r="16" fill="#FFF0C0" stroke="#C99A3E" stroke-width="2"/><text x="52" y="29" text-anchor="middle" font-size="11" font-family="Noto Sans JP" fill="#26324A">そちら</text><text x="52" y="41" text-anchor="middle" font-size="9" font-family="IBM Plex Sans Thai" fill="#5B6579">(สุภาพ)</text><circle cx="16" cy="62" r="6" fill="#4C7A5E" opacity=".3"/></svg>`,
-  あちら:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="62" cy="22" r="14" fill="#E8F5EF" stroke="#4C7A5E" stroke-width="2"/><text x="62" y="19" text-anchor="middle" font-size="11" font-family="Noto Sans JP" fill="#26324A">あちら</text><text x="62" y="30" text-anchor="middle" font-size="8" font-family="IBM Plex Sans Thai" fill="#5B6579">(สุภาพ)</text><line x1="50" y1="30" x2="30" y2="60" stroke="#4C7A5E" stroke-width="1.5" stroke-dasharray="3,2"/></svg>`,
-  どちら:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="35" r="20" fill="#EEF4FB" stroke="#2F6FA8" stroke-width="2" stroke-dasharray="4,3"/><text x="40" y="32" text-anchor="middle" font-size="14" font-family="Noto Sans JP" fill="#2F6FA8">どちら</text><text x="40" y="46" text-anchor="middle" font-size="9" font-family="IBM Plex Sans Thai" fill="#2F6FA8">(สุภาพ)</text></svg>`,
+  ここ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="32" r="18" fill="#FFE59A" stroke="#9A7411" stroke-width="2"/><text x="40" y="38" text-anchor="middle" font-size="18" font-family="Zen Maru Gothic" fill="#141414">ここ</text><polygon points="40,55 33,68 47,68" fill="#F7C948"/><circle cx="40" cy="72" r="5" fill="#F7C948" opacity=".4"/></svg>`,
+  そこ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="32" r="14" fill="#FFD9E1" stroke="#C2506A" stroke-width="2"/><text x="60" y="37" text-anchor="middle" font-size="14" font-family="Zen Maru Gothic" fill="#141414">そこ</text><polygon points="60,50 55,60 65,60" fill="#F0899C"/><circle cx="40" cy="65" r="8" fill="#B7E1D1" opacity=".5"/><text x="18" y="70" font-size="10" font-family="IBM Plex Sans Thai" fill="#767066">ผู้พูด</text><circle cx="18" cy="62" r="6" fill="#4FA97E" opacity=".5"/></svg>`,
+  あそこ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="68" cy="18" r="10" fill="#DFF3E8" stroke="#4FA97E" stroke-width="2"/><text x="68" y="23" text-anchor="middle" font-size="10" font-family="Zen Maru Gothic" fill="#141414">あ</text><text x="12" y="70" font-size="9" font-family="IBM Plex Sans Thai" fill="#767066">ผู้พูด</text><circle cx="12" cy="62" r="5" fill="#F0899C" opacity=".6"/><text x="35" y="70" font-size="9" font-family="IBM Plex Sans Thai" fill="#767066">ผู้ฟัง</text><circle cx="40" cy="62" r="5" fill="#A9D3FF" opacity=".8"/><line x1="45" y1="62" x2="63" y2="22" stroke="#4FA97E" stroke-width="1.5" stroke-dasharray="3,2"/></svg>`,
+  どこ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><text x="40" y="28" text-anchor="middle" font-size="28" font-family="Zen Maru Gothic" fill="#2F6FA8">？</text><circle cx="40" cy="50" r="16" fill="none" stroke="#2F6FA8" stroke-width="2" stroke-dasharray="4,3"/><text x="40" y="55" text-anchor="middle" font-size="13" font-family="Zen Maru Gothic" fill="#2F6FA8">どこ</text></svg>`,
+  これ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><rect x="22" y="20" width="36" height="28" rx="8" fill="#FFE59A" stroke="#9A7411" stroke-width="2"/><text x="40" y="40" text-anchor="middle" font-size="14" font-family="Zen Maru Gothic" fill="#141414">これ</text><line x1="30" y1="48" x2="26" y2="60" stroke="#141414" stroke-width="2"/><line x1="50" y1="48" x2="54" y2="60" stroke="#141414" stroke-width="2"/><circle cx="10" cy="62" r="5" fill="#F0899C" opacity=".7"/><line x1="14" y1="60" x2="22" y2="34" stroke="#F0899C" stroke-width="1.5" stroke-dasharray="2,2"/></svg>`,
+  それ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><rect x="34" y="16" width="34" height="26" rx="8" fill="#FFD9E1" stroke="#C2506A" stroke-width="2"/><text x="51" y="34" text-anchor="middle" font-size="13" font-family="Zen Maru Gothic" fill="#141414">それ</text><circle cx="10" cy="58" r="5" fill="#F0899C" opacity=".7"/><circle cx="40" cy="62" r="5" fill="#A9D3FF" opacity=".8"/><line x1="44" y1="61" x2="48" y2="40" stroke="#A9D3FF" stroke-width="1.5" stroke-dasharray="2,2"/></svg>`,
+  あれ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="10" width="26" height="20" rx="6" fill="#DFF3E8" stroke="#4FA97E" stroke-width="2"/><text x="63" y="25" text-anchor="middle" font-size="11" font-family="Zen Maru Gothic" fill="#141414">あれ</text><circle cx="8" cy="62" r="4" fill="#F0899C" opacity=".7"/><circle cx="36" cy="65" r="4" fill="#A9D3FF" opacity=".8"/><line x1="38" y1="63" x2="50" y2="28" stroke="#4FA97E" stroke-width="1.5" stroke-dasharray="2,2"/></svg>`,
+  どれ:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="20" width="20" height="16" rx="5" fill="#DCEBFF" stroke="#2F6FA8" stroke-width="1.5"/><rect x="30" y="20" width="20" height="16" rx="5" fill="#DCEBFF" stroke="#2F6FA8" stroke-width="1.5"/><rect x="52" y="20" width="20" height="16" rx="5" fill="#DCEBFF" stroke="#2F6FA8" stroke-width="1.5"/><text x="40" y="55" text-anchor="middle" font-size="18" font-family="Zen Maru Gothic" fill="#2F6FA8">？</text></svg>`,
+  こちら:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="32" r="18" fill="#FFF3D2" stroke="#9A7411" stroke-width="2"/><text x="40" y="29" text-anchor="middle" font-size="11" font-family="Zen Maru Gothic" fill="#141414">こちら</text><text x="40" y="42" text-anchor="middle" font-size="9" font-family="IBM Plex Sans Thai" fill="#767066">(สุภาพ)</text><polygon points="40,55 33,68 47,68" fill="#F7C948"/></svg>`,
+  そちら:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="52" cy="32" r="16" fill="#FFE3E9" stroke="#C2506A" stroke-width="2"/><text x="52" y="29" text-anchor="middle" font-size="11" font-family="Zen Maru Gothic" fill="#141414">そちら</text><text x="52" y="41" text-anchor="middle" font-size="9" font-family="IBM Plex Sans Thai" fill="#767066">(สุภาพ)</text><circle cx="16" cy="62" r="6" fill="#B7E1D1" opacity=".6"/></svg>`,
+  あちら:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="62" cy="22" r="14" fill="#DFF3E8" stroke="#4FA97E" stroke-width="2"/><text x="62" y="19" text-anchor="middle" font-size="11" font-family="Zen Maru Gothic" fill="#141414">あちら</text><text x="62" y="30" text-anchor="middle" font-size="8" font-family="IBM Plex Sans Thai" fill="#767066">(สุภาพ)</text><line x1="50" y1="30" x2="30" y2="60" stroke="#4FA97E" stroke-width="1.5" stroke-dasharray="3,2"/></svg>`,
+  どちら:`<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="35" r="20" fill="#DCEBFF" stroke="#2F6FA8" stroke-width="2" stroke-dasharray="4,3"/><text x="40" y="32" text-anchor="middle" font-size="14" font-family="Zen Maru Gothic" fill="#2F6FA8">どちら</text><text x="40" y="46" text-anchor="middle" font-size="9" font-family="IBM Plex Sans Thai" fill="#2F6FA8">(สุภาพ)</text></svg>`,
 };
 
 const KOSOAD_QUIZ=[
@@ -520,7 +580,7 @@ function getRandomN(){
 ============================================================ */
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function pick(arr,n){return shuffle(arr).slice(0,n);}
-function norm(s){return s.toLowerCase().replace(/[\s。、,.'\-_！!？?＿_]/g,'');}
+function norm(s){return s.toLowerCase().replace(/[\s。、,.'\-_！!？＿_]/g,'');}
 
 let jaVoice=null,speechOK=('speechSynthesis' in window);
 function loadJaVoice(){if(!speechOK)return;const voices=speechSynthesis.getVoices();jaVoice=voices.find(v=>v.lang==='ja-JP')||voices.find(v=>v.lang&&v.lang.startsWith('ja'))||null;}
@@ -534,7 +594,7 @@ function speakIcon(text){const s=document.createElement('span');s.className='spe
 const TABS=[
   {id:1,label:"ทักทาย"},{id:2,label:"พิมพ์โรมันจิ"},{id:3,label:"คันจิตัวเลข"},
   {id:4,label:"คำศัพท์"},{id:5,label:"เรียงประโยค"},{id:6,label:"こそあど"},
-  {id:7,label:"แนะนำตัวเอง"},{id:8,label:"ฝึกเขียน"},{id:9,label:"ทบทวนทั้งหมด"},
+  {id:7,label:"แนะนำตัวเอง"},{id:8,label:"ฝึกเขียน"},{id:9,label:"ทบทวนทั้งหมด"},{id:10,label:"ひらがな・カタカナ"},
 ];
 const tabNav=document.getElementById('tabNav');
 TABS.forEach(t=>{
@@ -833,10 +893,10 @@ function wBuildBoxes(text){
 function wDrawGuideAndGrid(ctx,ch){
   const w=ctx.canvas.width,h=ctx.canvas.height;
   ctx.clearRect(0,0,w,h);
-  ctx.strokeStyle='rgba(38,50,74,.15)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+  ctx.strokeStyle='rgba(20,20,20,.12)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
   ctx.beginPath();ctx.moveTo(w/2,0);ctx.lineTo(w/2,h);ctx.moveTo(0,h/2);ctx.lineTo(w,h/2);ctx.stroke();ctx.setLineDash([]);
   if(document.getElementById('w-guide').checked&&ch&&ch.trim()){
-    ctx.fillStyle='rgba(38,50,74,.22)';ctx.font="54px 'Noto Sans JP',sans-serif";
+    ctx.fillStyle='rgba(20,20,20,.20)';ctx.font="54px 'Zen Maru Gothic',sans-serif";
     ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(ch,w/2,h/2+2);
   }
 }
@@ -845,7 +905,7 @@ function wSetupCanvas(canvas,ch){
   let drawing=false,last=null;
   function pos(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*(canvas.width/r.width),y:(e.clientY-r.top)*(canvas.height/r.height)};}
   function start(e){drawing=true;last=pos(e);canvas.setPointerCapture(e.pointerId);}
-  function move(e){if(!drawing)return;const p=pos(e);ctx.strokeStyle='#26324A';ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;}
+  function move(e){if(!drawing)return;const p=pos(e);ctx.strokeStyle='#141414';ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;}
   function end(){drawing=false;last=null;}
   canvas.addEventListener('pointerdown',start);canvas.addEventListener('pointermove',move);
   canvas.addEventListener('pointerup',end);canvas.addEventListener('pointerleave',end);
@@ -899,6 +959,66 @@ function buildReview(){
   });
 }
 buildReview();
+
+/* ============================================================
+   TAB 10: KANA TABLES (ひらがな・カタカナ)
+============================================================ */
+const KANA_SEION=[
+  [{ro:'a',h:'あ',k:'ア'},{ro:'i',h:'い',k:'イ'},{ro:'u',h:'う',k:'ウ'},{ro:'e',h:'え',k:'エ'},{ro:'o',h:'お',k:'オ'}],
+  [{ro:'ka',h:'か',k:'カ'},{ro:'ki',h:'き',k:'キ'},{ro:'ku',h:'く',k:'ク'},{ro:'ke',h:'け',k:'ケ'},{ro:'ko',h:'こ',k:'コ'}],
+  [{ro:'sa',h:'さ',k:'サ'},{ro:'shi',h:'し',k:'シ'},{ro:'su',h:'す',k:'ス'},{ro:'se',h:'せ',k:'セ'},{ro:'so',h:'そ',k:'ソ'}],
+  [{ro:'ta',h:'た',k:'タ'},{ro:'chi',h:'ち',k:'チ'},{ro:'tsu',h:'つ',k:'ツ'},{ro:'te',h:'て',k:'テ'},{ro:'to',h:'と',k:'ト'}],
+  [{ro:'na',h:'な',k:'ナ'},{ro:'ni',h:'に',k:'ニ'},{ro:'nu',h:'ぬ',k:'ヌ'},{ro:'ne',h:'ね',k:'ネ'},{ro:'no',h:'の',k:'ノ'}],
+  [{ro:'ha',h:'は',k:'ハ'},{ro:'hi',h:'ひ',k:'ヒ'},{ro:'fu',h:'ふ',k:'フ'},{ro:'he',h:'へ',k:'ヘ'},{ro:'ho',h:'ほ',k:'ホ'}],
+  [{ro:'ma',h:'ま',k:'マ'},{ro:'mi',h:'み',k:'ミ'},{ro:'mu',h:'む',k:'ム'},{ro:'me',h:'め',k:'メ'},{ro:'mo',h:'も',k:'モ'}],
+  [{ro:'ya',h:'や',k:'ヤ'},null,{ro:'yu',h:'ゆ',k:'ユ'},null,{ro:'yo',h:'よ',k:'ヨ'}],
+  [{ro:'ra',h:'ら',k:'ラ'},{ro:'ri',h:'り',k:'リ'},{ro:'ru',h:'る',k:'ル'},{ro:'re',h:'れ',k:'レ'},{ro:'ro',h:'ろ',k:'ロ'}],
+  [{ro:'wa',h:'わ',k:'ワ'},null,null,null,{ro:'wo',h:'を',k:'ヲ'}],
+  [{ro:'n',h:'ん',k:'ン'},null,null,null,null],
+];
+const KANA_DAKUTEN=[
+  [{ro:'ga',h:'が',k:'ガ'},{ro:'gi',h:'ぎ',k:'ギ'},{ro:'gu',h:'ぐ',k:'グ'},{ro:'ge',h:'げ',k:'ゲ'},{ro:'go',h:'ご',k:'ゴ'}],
+  [{ro:'za',h:'ざ',k:'ザ'},{ro:'ji',h:'じ',k:'ジ'},{ro:'zu',h:'ず',k:'ズ'},{ro:'ze',h:'ぜ',k:'ゼ'},{ro:'zo',h:'ぞ',k:'ゾ'}],
+  [{ro:'da',h:'だ',k:'ダ'},{ro:'ji',h:'ぢ',k:'ヂ'},{ro:'zu',h:'づ',k:'ヅ'},{ro:'de',h:'で',k:'デ'},{ro:'do',h:'ど',k:'ド'}],
+  [{ro:'ba',h:'ば',k:'バ'},{ro:'bi',h:'び',k:'ビ'},{ro:'bu',h:'ぶ',k:'ブ'},{ro:'be',h:'べ',k:'ベ'},{ro:'bo',h:'ぼ',k:'ボ'}],
+  [{ro:'pa',h:'ぱ',k:'パ'},{ro:'pi',h:'ぴ',k:'ピ'},{ro:'pu',h:'ぷ',k:'プ'},{ro:'pe',h:'ぺ',k:'ペ'},{ro:'po',h:'ぽ',k:'ポ'}],
+];
+const KANA_YOUON=[
+  {label:'ky',cells:[{ro:'kya',h:'きゃ',k:'キャ'},{ro:'kyu',h:'きゅ',k:'キュ'},{ro:'kyo',h:'きょ',k:'キョ'}]},
+  {label:'sh',cells:[{ro:'sha',h:'しゃ',k:'シャ'},{ro:'shu',h:'しゅ',k:'シュ'},{ro:'sho',h:'しょ',k:'ショ'}]},
+  {label:'ch',cells:[{ro:'cha',h:'ちゃ',k:'チャ'},{ro:'chu',h:'ちゅ',k:'チュ'},{ro:'cho',h:'ちょ',k:'チョ'}]},
+  {label:'ny',cells:[{ro:'nya',h:'にゃ',k:'ニャ'},{ro:'nyu',h:'にゅ',k:'ニュ'},{ro:'nyo',h:'にょ',k:'ニョ'}]},
+  {label:'hy',cells:[{ro:'hya',h:'ひゃ',k:'ヒャ'},{ro:'hyu',h:'ひゅ',k:'ヒュ'},{ro:'hyo',h:'ひょ',k:'ヒョ'}]},
+  {label:'my',cells:[{ro:'mya',h:'みゃ',k:'ミャ'},{ro:'myu',h:'みゅ',k:'ミュ'},{ro:'myo',h:'みょ',k:'ミョ'}]},
+  {label:'ry',cells:[{ro:'rya',h:'りゃ',k:'リャ'},{ro:'ryu',h:'りゅ',k:'リュ'},{ro:'ryo',h:'りょ',k:'リョ'}]},
+  {label:'gy',cells:[{ro:'gya',h:'ぎゃ',k:'ギャ'},{ro:'gyu',h:'ぎゅ',k:'ギュ'},{ro:'gyo',h:'ぎょ',k:'ギョ'}]},
+  {label:'j',cells:[{ro:'ja',h:'じゃ',k:'ジャ'},{ro:'ju',h:'じゅ',k:'ジュ'},{ro:'jo',h:'じょ',k:'ジョ'}]},
+  {label:'by',cells:[{ro:'bya',h:'びゃ',k:'ビャ'},{ro:'byu',h:'びゅ',k:'ビュ'},{ro:'byo',h:'びょ',k:'ビョ'}]},
+  {label:'py',cells:[{ro:'pya',h:'ぴゃ',k:'ピャ'},{ro:'pyu',h:'ぴゅ',k:'ピュ'},{ro:'pyo',h:'ぴょ',k:'ピョ'}]},
+];
+function kanaCell(item){
+  if(!item){const e=document.createElement('div');e.className='kana-cell empty';return e;}
+  const c=document.createElement('div');c.className='kana-cell';
+  c.innerHTML=`<span class="h">${item.h}</span><span class="k">${item.k}</span><span class="ro">${item.ro}</span>`;
+  c.onclick=()=>{speak(item.h);c.classList.add('played');setTimeout(()=>c.classList.remove('played'),500);};
+  return c;
+}
+function buildKanaTables(){
+  const seionBox=document.getElementById('kana-seion');
+  KANA_SEION.forEach(row=>row.forEach(item=>seionBox.appendChild(kanaCell(item))));
+  const dakutenBox=document.getElementById('kana-dakuten');
+  KANA_DAKUTEN.forEach(row=>row.forEach(item=>dakutenBox.appendChild(kanaCell(item))));
+  const youonBox=document.getElementById('kana-youon');
+  KANA_YOUON.forEach(g=>{
+    const wrap=document.createElement('div');wrap.className='kana-youon-group';
+    const label=document.createElement('div');label.className='kana-youon-label';label.textContent=g.label;
+    wrap.appendChild(label);
+    const row=document.createElement('div');row.className='kana-youon-row';
+    g.cells.forEach(item=>row.appendChild(kanaCell(item)));
+    wrap.appendChild(row);youonBox.appendChild(wrap);
+  });
+}
+buildKanaTables();
 
 /* init */
 showTab(1);
