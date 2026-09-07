@@ -179,6 +179,14 @@
     cursor:pointer;
     transition:border-color .15s, background .15s;
   }
+  .opt .romaji{
+    display:block;
+    font-family:'IBM Plex Sans Thai',sans-serif;
+    font-size:12px;
+    font-weight:400;
+    color:var(--ink-soft);
+    margin-top:2px;
+  }
   .opt:hover{ border-color:var(--hanko); }
   .opt.correct{ border-color:var(--moss); background:#EEF5EF; color:var(--moss); font-weight:600;}
   .opt.wrong{ border-color:var(--hanko); background:#FBEEEC; color:var(--hanko-dark); font-weight:600;}
@@ -263,7 +271,17 @@
     border:1.5px solid var(--line);
     border-radius:20px;
     cursor:pointer;
+    text-align:center;
+    line-height:1.3;
   }
+  .chip .romaji{
+    display:block;
+    font-family:'IBM Plex Sans Thai',sans-serif;
+    font-size:10.5px;
+    font-weight:400;
+    color:var(--ink-soft);
+  }
+  .chip.in-target .romaji{ color:#cfd6e6; }
   .chip:hover{ border-color:var(--hanko); }
   .chip.placed{ opacity:.35; pointer-events:none; }
   .chip.in-target{ background:var(--ink); color:#fff; border-color:var(--ink); }
@@ -291,6 +309,15 @@
     display:none;
     border-left:3px solid var(--gold);
     padding-left:10px;
+  }
+  .field-block .pattern .romaji,
+  .reveal .romaji{
+    display:block;
+    font-family:'IBM Plex Sans Thai',sans-serif;
+    font-size:12px;
+    font-weight:400;
+    color:var(--ink-soft);
+    margin-top:1px;
   }
   .reveal.show{ display:block; }
   .link-btn{
@@ -613,12 +640,12 @@ const VOCAB = [
 ];
 
 const SENTENCES = [
-  {chips:["わたし","は","がくせい","です"], th:"ฉันเป็นนักเรียน/นักศึกษา"},
-  {chips:["これ","は","わたし","の","ほん","です"], th:"นี่คือหนังสือของฉัน"},
-  {chips:["あれ","は","せんせい","の","かばん","です"], th:"นั่นคือกระเป๋าของอาจารย์"},
-  {chips:["たなかさん","は","だいがくせい","です"], th:"คุณทานากะเป็นนักศึกษามหาวิทยาลัย"},
-  {chips:["わたし","は","にほんじん","では","ありません"], th:"ฉันไม่ใช่คนญี่ปุ่น"},
-  {chips:["これ","は","なん","です","か"], th:"นี่คืออะไร"},
+  {chips:["わたし","は","がくせい","です"], ro:["watashi","wa","gakusei","desu"], th:"ฉันเป็นนักเรียน/นักศึกษา"},
+  {chips:["これ","は","わたし","の","ほん","です"], ro:["kore","wa","watashi","no","hon","desu"], th:"นี่คือหนังสือของฉัน"},
+  {chips:["あれ","は","せんせい","の","かばん","です"], ro:["are","wa","sensei","no","kaban","desu"], th:"นั่นคือกระเป๋าของอาจารย์"},
+  {chips:["たなかさん","は","だいがくせい","です"], ro:["tanakasan","wa","daigakusei","desu"], th:"คุณทานากะเป็นนักศึกษามหาวิทยาลัย"},
+  {chips:["わたし","は","にほんじん","では","ありません"], ro:["watashi","wa","nihonjin","dewa","arimasen"], th:"ฉันไม่ใช่คนญี่ปุ่น"},
+  {chips:["これ","は","なん","です","か"], ro:["kore","wa","nan","desu","ka"], th:"นี่คืออะไร"},
 ];
 
 /* ===================================================================
@@ -677,7 +704,8 @@ function gRender(){
   opts.forEach(o=>{
     const b=document.createElement('button');
     b.className='opt jp';
-    b.textContent = o.jp;
+    b.dataset.jp = o.jp;
+    b.innerHTML = `${o.jp}<span class="romaji">${o.ro[0]}</span>`;
     b.onclick = ()=> gAnswer(b,o,q);
     box.appendChild(b);
   });
@@ -695,7 +723,7 @@ function gAnswer(btn,chosen,correct){
     fb.className='feedback show ok';
   } else {
     btn.classList.add('wrong');
-    document.querySelectorAll('#g-options .opt').forEach(b=>{ if(b.textContent===correct.jp) b.classList.add('correct'); });
+    document.querySelectorAll('#g-options .opt').forEach(b=>{ if(b.dataset.jp===correct.jp) b.classList.add('correct'); });
     fb.textContent = 'ยังไม่ถูก — เฉลย: '+correct.jp;
     fb.className='feedback show no';
   }
@@ -874,7 +902,7 @@ function sRender(){
   document.getElementById('s-score').textContent = `คะแนน ${sScore}/${sAnswered}`;
   document.getElementById('s-question').innerHTML = `เรียงคำให้เป็นประโยคที่แปลว่า: <br><b>“${q.th}”</b>`;
   sPlaced = [];
-  sBankState = shuffle(q.chips.map((c,idx)=>({c,idx})));
+  sBankState = shuffle(q.chips.map((c,idx)=>({c, r:q.ro[idx], idx})));
   sDraw();
   document.getElementById('s-feedback').className='feedback';
   document.getElementById('s-next').disabled = true;
@@ -886,7 +914,7 @@ function sDraw(){
   sPlaced.forEach(p=>{
     const chip = document.createElement('span');
     chip.className='chip in-target';
-    chip.textContent = p.c;
+    chip.innerHTML = `${p.c}<span class="romaji">${p.r}</span>`;
     chip.onclick = ()=>{ sPlaced = sPlaced.filter(x=>x!==p); sDraw(); };
     target.appendChild(chip);
   });
@@ -894,7 +922,7 @@ function sDraw(){
   sBankState.forEach(item=>{
     const chip = document.createElement('button');
     chip.className='chip' + (sPlaced.includes(item)?' placed':'');
-    chip.textContent = item.c;
+    chip.innerHTML = `${item.c}<span class="romaji">${item.r}</span>`;
     chip.onclick = ()=>{ if(sPlaced.includes(item)) return; sPlaced.push(item); sDraw(); };
     bank.appendChild(chip);
   });
@@ -910,7 +938,7 @@ function sCheck(){
     fb.textContent='ถูกต้อง! เรียงประโยคได้สมบูรณ์ 🎌';
     fb.className='feedback show ok';
   } else {
-    fb.innerHTML = `ยังไม่ถูกลำดับ <span class="answer-key">เฉลย: ${q.chips.join('')}</span>`;
+    fb.innerHTML = `ยังไม่ถูกลำดับ <span class="answer-key">เฉลย: ${q.chips.join('')} (${q.ro.join(' ')})</span>`;
     fb.className='feedback show no';
   }
   document.getElementById('s-score').textContent = `คะแนน ${sScore}/${sAnswered}`;
@@ -925,10 +953,10 @@ sStart();
    TAB 6: SELF INTRO
 =================================================================== */
 const INTRO_FIELDS = [
-  {label:"ชื่อของคุณ", pattern:"わたしのなまえは＿＿＿です。", example:"わたしのなまえはタナカです。"},
-  {label:"วันเกิด", pattern:"＿＿月＿＿日です。", example:"8月16日です。"},
-  {label:"สิ่งที่ชอบ", pattern:"＿＿＿がすきです。", example:"コーヒーがすきです。"},
-  {label:"งานอดิเรก", pattern:"わたしのしゅみは＿＿＿です。", example:"わたしのしゅみはえいがです。"},
+  {label:"ชื่อของคุณ", pattern:"わたしのなまえは＿＿＿です。", patternRo:"watashi no namae wa ___ desu.", example:"わたしのなまえはタナカです。", exampleRo:"watashi no namae wa Tanaka desu."},
+  {label:"วันเกิด", pattern:"＿＿月＿＿日です。", patternRo:"___ gatsu ___ nichi desu.", example:"8月16日です。", exampleRo:"hachi gatsu juuroku nichi desu."},
+  {label:"สิ่งที่ชอบ", pattern:"＿＿＿がすきです。", patternRo:"___ ga suki desu.", example:"コーヒーがすきです。", exampleRo:"koohii ga suki desu."},
+  {label:"งานอดิเรก", pattern:"わたしのしゅみは＿＿＿です。", patternRo:"watashi no shumi wa ___ desu.", example:"わたしのしゅみはえいがです。", exampleRo:"watashi no shumi wa eiga desu."},
 ];
 const introCard = document.getElementById('intro-card');
 INTRO_FIELDS.forEach((f,i)=>{
@@ -936,12 +964,12 @@ INTRO_FIELDS.forEach((f,i)=>{
   block.className='field-block';
   block.innerHTML = `
     <label>${f.label}</label>
-    <span class="pattern jp">รูปแบบ: ${f.pattern}</span>
+    <span class="pattern jp">รูปแบบ: ${f.pattern}<span class="romaji">${f.patternRo}</span></span>
     <textarea class="answer jp" id="intro-${i}" placeholder="พิมพ์คำตอบเป็นภาษาญี่ปุ่น..."></textarea>
     <div style="margin-top:6px;">
       <button class="link-btn" id="intro-reveal-${i}">ดูตัวอย่างคำตอบ</button>
     </div>
-    <div class="reveal jp" id="intro-example-${i}">ตัวอย่าง: ${f.example}</div>
+    <div class="reveal jp" id="intro-example-${i}">ตัวอย่าง: ${f.example}<span class="romaji">${f.exampleRo}</span></div>
   `;
   introCard.appendChild(block);
 });
