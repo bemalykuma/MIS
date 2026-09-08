@@ -173,6 +173,17 @@
   .kana-toggle button{font-family:'IBM Plex Sans Thai',sans-serif;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;border:1.5px solid var(--rule);background:#fff;cursor:pointer;}
   .kana-toggle button.active{background:var(--ink);border-color:var(--ink);color:#F7F3EC;}
 
+  /* -------- flashcards -------- */
+  .flip-card{perspective:1200px;margin-bottom:6px;}
+  .flip-inner{position:relative;width:100%;height:230px;transition:transform .45s ease;transform-style:preserve-3d;cursor:pointer;}
+  .flip-inner.flipped{transform:rotateY(180deg);}
+  .flip-face{position:absolute;inset:0;backface-visibility:hidden;border:1.5px solid var(--line);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;}
+  .flip-face.flip-back{transform:rotateY(180deg);background:var(--paper);}
+  .flip-face .big{font-family:'Zen Maru Gothic',sans-serif;font-size:66px;font-weight:700;color:var(--ink);}
+  .flip-face .kata{font-family:'Zen Maru Gothic',sans-serif;font-size:30px;font-weight:700;color:var(--blue-strong);}
+  .flip-face .sub{font-size:13px;color:var(--ink-soft);margin-top:10px;}
+  .flip-hint{font-size:11.5px;color:var(--ink-soft);margin-top:14px;}
+
   /* -------- handwriting -------- */
   .write-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px;}
   select.answer{font-family:'IBM Plex Sans Thai',sans-serif;font-size:13.5px;padding:10px 14px;border:1.5px solid var(--line);border-radius:999px;background:#fff;}
@@ -402,6 +413,21 @@
   </div>
 </section>
 
+<!-- TAB 11: FLASHCARDS -->
+<section class="panel" id="panel-11">
+  <div class="panel-head"><h2>แฟลชการ์ด ひらがな</h2><p>สุ่มครบทุกตัว (พื้นฐาน + เสียงก้อง/กึ่งก้อง + เสียงควบ) แตะการ์ดเพื่อพลิกดูคำตอบ</p></div>
+  <div class="card">
+    <div class="progress-row"><span>การ์ดที่ <span id="fc-idx">1</span>/<span id="fc-total">104</span></span><span class="score-pill zero" id="fc-remain">เหลือ 103 ใบ</span></div>
+    <div class="flip-card">
+      <div class="flip-inner" id="fc-inner">
+        <div class="flip-face flip-front" id="fc-front"></div>
+        <div class="flip-face flip-back" id="fc-back"></div>
+      </div>
+    </div>
+    <div class="btn-row"><button class="btn secondary" id="fc-restart">สุ่มใหม่</button><button class="btn" id="fc-flip">พลิกการ์ด</button><button class="btn hanko" id="fc-next">ถัดไป</button></div>
+  </div>
+</section>
+
 <footer><span class="foot-dot"></span>ทำจากเอกสารทบทวนก่อนสอบกลางภาค 1/2569 · ฝึกซ้ำได้ไม่จำกัด</footer>
 </div>
 
@@ -594,7 +620,7 @@ function speakIcon(text){const s=document.createElement('span');s.className='spe
 const TABS=[
   {id:1,label:"ทักทาย"},{id:2,label:"พิมพ์โรมันจิ"},{id:3,label:"คันจิตัวเลข"},
   {id:4,label:"คำศัพท์"},{id:5,label:"เรียงประโยค"},{id:6,label:"こそあど"},
-  {id:7,label:"แนะนำตัวเอง"},{id:8,label:"ฝึกเขียน"},{id:9,label:"ทบทวนทั้งหมด"},{id:10,label:"ひらがな・カタカナ"},
+  {id:7,label:"แนะนำตัวเอง"},{id:8,label:"ฝึกเขียน"},{id:9,label:"ทบทวนทั้งหมด"},{id:10,label:"ひらがな・カタカナ"},{id:11,label:"แฟลชการ์ด"},
 ];
 const tabNav=document.getElementById('tabNav');
 TABS.forEach(t=>{
@@ -1019,6 +1045,44 @@ function buildKanaTables(){
   });
 }
 buildKanaTables();
+
+/* ============================================================
+   TAB 11: FLASHCARDS (random, full set)
+============================================================ */
+function buildFlatKanaDeck(){
+  let all=[];
+  KANA_SEION.forEach(row=>row.forEach(item=>{if(item)all.push(item);}));
+  KANA_DAKUTEN.forEach(row=>row.forEach(item=>{if(item)all.push(item);}));
+  KANA_YOUON.forEach(g=>g.cells.forEach(item=>{if(item)all.push(item);}));
+  return all;
+}
+let fcDeck=[],fcI=0,fcFlipped=false;
+function fcStart(){
+  fcDeck=shuffle(buildFlatKanaDeck());fcI=0;
+  document.getElementById('fc-total').textContent=fcDeck.length;
+  fcRender();
+}
+function fcRender(){
+  const item=fcDeck[fcI];
+  document.getElementById('fc-idx').textContent=fcI+1;
+  const remain=fcDeck.length-fcI-1;
+  document.getElementById('fc-remain').textContent=`เหลือ ${remain} ใบ`;
+  document.getElementById('fc-remain').className='score-pill'+(remain===0?' zero':'');
+  document.getElementById('fc-front').innerHTML=`<span class="big jp">${item.h}</span><span class="flip-hint">แตะเพื่อดูคำตอบ</span>`;
+  document.getElementById('fc-back').innerHTML=`<span class="kata jp">${item.k}</span><span class="sub">${item.ro}</span>`;
+  fcFlipped=false;
+  document.getElementById('fc-inner').classList.remove('flipped');
+}
+function fcFlip(){
+  fcFlipped=!fcFlipped;
+  document.getElementById('fc-inner').classList.toggle('flipped',fcFlipped);
+  speak(fcDeck[fcI].h);
+}
+document.getElementById('fc-inner').onclick=fcFlip;
+document.getElementById('fc-flip').onclick=fcFlip;
+document.getElementById('fc-next').onclick=()=>{fcI++;if(fcI>=fcDeck.length)fcI=0;fcRender();};
+document.getElementById('fc-restart').onclick=fcStart;
+fcStart();
 
 /* init */
 showTab(1);
