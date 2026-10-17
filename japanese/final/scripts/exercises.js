@@ -44,7 +44,7 @@ JF.ex = (function () {
       var r = U.normRomaji(input);
       var rOk = (f.romaji || []).some(function (a) { return U.normRomaji(a) === r; });
       if (f.kind === 'reading') return rOk ? { ok: true } : { ok: false, note: longVowelNote(r, f.romaji) };
-      if (rOk) return { ok: false, note: 'อ่านถูก แต่ข้อนี้ต้องตอบเป็นอักษรญี่ปุ่น (คานะ)' };
+      if (rOk) return { ok: false, note: f.hira ? 'อ่านถูก แต่ข้อนี้ต้องตอบเป็นฮิรางานะ: ' + f.answers[0] : 'อ่านถูก แต่ข้อนี้ต้องตอบเป็นอักษรญี่ปุ่น (คานะ)' };
       return { ok: false };
     }
     var h = U.toHira(n);

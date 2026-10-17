@@ -230,7 +230,7 @@ JF.pages = (function () {
       card('จำวันทั้ง 7 วันแบบง่าย ๆ', memory, 'memory-card', 'i-lightbulb') +
       '<div class="two-col">' + card('สุ่มฝึก (Random Practice)', drill, '', 'i-shuffle') + card('โหมดท่องจำ (Flashcards)', deck, '', 'i-layers') + '</div>' +
       card('', game, 'game-card'));
-    h += practiceSection(['p2-days'], 'พิมพ์คำอ่านเป็นฮิรางานะหรือโรมาจิก็ได้ (ตามคำสั่งในเอกสาร) · ความหมายพิมพ์ "วันจันทร์" หรือ "จันทร์" ได้');
+    h += practiceSection(['p2-days'], 'พิมพ์คำอ่านเป็นฮิรางานะเท่านั้น · ความหมายพิมพ์ "วันจันทร์" หรือ "จันทร์" ได้');
     return h;
   }
   var drillState = { i: Math.floor(Math.random() * 7), shown: false };

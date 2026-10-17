@@ -118,7 +118,7 @@ window.JF = window.JF || {};
       id: prefix + (i + 1), type: 'text', src: 'doc',
       big: v.docForm, bigAlt: v.jp, dayId: d.id,
       fields: [
-        { key: 'reading', label: 'คำอ่าน (ฮิรางานะ หรือ โรมาจิ)', kind: 'reading', answers: [v.kana], romaji: [v.romaji], placeholder: 'เช่น げつようび / getsuyoubi' },
+        { key: 'reading', label: 'คำอ่าน (ฮิรางานะ)', kind: 'kana', hira: true, answers: [v.kana], romaji: [v.romaji], placeholder: 'เช่น げつようび' },
         { key: 'th', label: 'ความหมายภาษาไทย', kind: 'thai', answers: d.th, placeholder: 'เช่น วันจันทร์' }
       ],
       answerText: v.kana + ' (' + v.romaji + ') — ' + v.th,

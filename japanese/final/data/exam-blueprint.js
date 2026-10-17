@@ -27,11 +27,11 @@ JF.examBlueprint = {
       id: 'part-2', num: 2,
       title: 'คันจิเรื่องวัน',
       titleEn: 'Days of the Week (Kanji)',
-      format: 'เขียนคำอ่าน (ฮิรางานะหรือโรมาจิ) + ความหมาย',
+      format: 'เขียนคำอ่าน (ฮิรางานะ) + ความหมาย',
       questionCount: 7,
       countNote: 'เอกสารแสดงครบ 7 วัน',
       instructions: 'เขียนคำอ่านเป็น Hiragana หรือ Romanji และบอกความหมายให้ถูกต้อง',
-      displayRule: 'เอกสารเขียนแบบ 月ようび (คันจิ + ようび)',
+      displayRule: 'เอกสารเขียนแบบ 月ようび (คันจิ + ようび) · เว็บให้ฝึกตอบคำอ่านเป็นฮิรางานะเท่านั้น',
       confirmed: ['月ようび 火ようび 水ようび 木ようび 金ようび 土ようび 日ようび — คำอ่านและความหมายภาษาไทย'],
       topics: ['days'],
       grammar: []
