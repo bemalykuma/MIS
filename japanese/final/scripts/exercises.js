@@ -259,6 +259,7 @@ JF.ex = (function () {
       case 'order':
         var used = s.v || [];
         h += '<p class="q-text">เรียงคำให้เป็นประโยคที่ถูกต้อง</p>';
+        h += '<p class="q-text ord-th">“' + esc(it.th) + '”</p>';
         h += '<div class="ord-line" aria-label="ประโยคที่เรียงแล้ว">';
         if (!used.length) h += '<span class="ord-ph">แตะคำด้านล่างเพื่อเรียงประโยค</span>';
         used.forEach(function (ci, k) {

@@ -421,6 +421,7 @@ ruby rt { font-size: .5em; color: var(--muted); }
 .q-bigsub { font-size: 13px; color: var(--red); font-weight: 600; }
 .q-orig-note { font-size: 12px; color: var(--muted); }
 .q-th { color: var(--muted); font-size: 14px; }
+.ord-th { color: var(--text); font-size: 16px; font-weight: 600; margin-top: 2px; }
 .q-img { width: fit-content; max-width: 100%; position: relative; }
 .img-zoom { display: block; padding: 10px; border-radius: 14px; border: 1px solid var(--border); background: #fff; cursor: zoom-in; }
 .img-zoom img { width: auto; max-width: min(260px, 100%); max-height: 180px; object-fit: contain; margin: 0 auto; }
